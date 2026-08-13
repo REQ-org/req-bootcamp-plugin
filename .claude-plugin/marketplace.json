@@ -1,0 +1,14 @@
+{
+  "name": "req-bootcamp-plugin",
+  "owner": {
+    "name": "Varden"
+  },
+  "plugins": [
+    {
+      "name": "req-kurs",
+      "source": "./plugins/req-kurs",
+      "description": "REQ AI Bootcamp — kursinformasjon, timeplan og oppsummeringer rett i Claude Code"
+    }
+  ],
+  "description": "Varden-kurs for REQ Capital: plugin med kursinformasjon for deltakerne på REQ AI Bootcamp"
+}
