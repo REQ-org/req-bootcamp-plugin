@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "req-bootcamp": {
+      "type": "http",
+      "url": "https://req-bootcamp-plugin.vercel.app/api/mcp"
+    }
+  }
+}
