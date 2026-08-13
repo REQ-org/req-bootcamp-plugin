@@ -5,8 +5,8 @@
   },
   "plugins": [
     {
-      "name": "req-kurs",
-      "source": "./plugins/req-kurs",
+      "name": "req-bootcamp-plugin",
+      "source": "./plugins/req-bootcamp-plugin",
       "description": "REQ AI Bootcamp — kursinformasjon, timeplan og oppsummeringer rett i Claude Code"
     }
   ],

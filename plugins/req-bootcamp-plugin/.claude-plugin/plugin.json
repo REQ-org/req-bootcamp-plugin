@@ -1,5 +1,7 @@
 {
-  "name": "req-kurs",
+  "name": "req-bootcamp-plugin",
   "description": "REQ AI Bootcamp — kursinformasjon, timeplan og oppsummeringer rett i Claude Code",
-  "author": { "name": "Varden" }
+  "author": {
+    "name": "Varden"
+  }
 }

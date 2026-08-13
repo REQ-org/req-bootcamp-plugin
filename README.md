@@ -8,10 +8,10 @@ Claude Code-plugin for deltakerne på REQ AI Bootcamp (Varden). Inneholder kursi
 
 ```
 /plugin marketplace add mainquest-labs/req-bootcamp-plugin
-/plugin install req-kurs@req-bootcamp-plugin
+/plugin install req-bootcamp-plugin@req-bootcamp-plugin
 ```
 
-Deretter kan du spørre Claude om alt som gjelder kurset — prøv kommandoen `/kurs`.
+Deretter kan du spørre Claude om alt som gjelder kurset — prøv kommandoen `/kurs` eller skillen `prep-me-for-bootcamp`.
 
 ## Oppdateringer
 

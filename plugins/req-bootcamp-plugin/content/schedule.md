@@ -1,13 +1,6 @@
----
-name: kursinfo
-description: Informasjon om REQ AI Bootcamp — timeplan, temaer per økt, forarbeid og praktiske detaljer. Brukes når deltakeren spør om kurset, en økt, datoer, forarbeid eller hva som skjer videre.
----
-
-# REQ AI Bootcamp — kursinformasjon
+# REQ AI Bootcamp — timeplan
 
 10 ukentlige økter à ~60 minutter, tirsdager kl. 08:30, oppstart 18. august 2026 i Sommerrogata 17, Oslo (hybrid på Teams; første økt fysisk).
-
-## Timeplan
 
 | # | Dato (tir 08:30) | Tema |
 |---|---|---|
@@ -21,12 +14,3 @@ description: Informasjon om REQ AI Bootcamp — timeplan, temaer per økt, forar
 | 08 | 6. okt 2026 | Risiko & governance — egenbygde MCP-er/skills, datatilgang, agentgrenser |
 | 09 | 13. okt 2026 | Wrap-up I — champions, rollefordeling |
 | 10 | 20. okt 2026 | Wrap-up II — alle har levert en fungerende skill/MCP/widget |
-
-## Oppsummeringer per økt
-
-*(fylles på etter hver økt — kjør `/plugin update req-kurs` for siste versjon)*
-
-## Praktisk
-
-- Spørsmål mellom øktene: still dem gjerne her i Claude — eller til Herman (Varden).
-- Kurset kjøres ellers i det delte Claude-prosjektet; denne pluginen er din lokale følgesvenn i Claude Code.
