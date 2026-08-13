@@ -1,6 +1,19 @@
 # REQ AI Bootcamp — spørsmål og svar
 
-*(fylles ut før kursstart — praktisk info, verktøy, tilganger)*
+## Praktisk
 
-- **Når og hvor?** Tirsdager kl. 08:30, Sommerrogata 17, Oslo — hybrid på Teams. Første økt (18. aug) er fysisk.
-- **Spørsmål mellom øktene?** Still dem her i Claude, eller til Herman (Varden).
+- **Når og hvor?** Tirsdager kl. 08:30, ti uker fra 18. august til 20. oktober 2026. Sommerrogata 17, Oslo — hybrid på Teams. Første økt (18. aug) er fysisk.
+- **Hvor lang er hver økt?** Ca. 60 minutter, minst 70 % hands-on. Kom med PC.
+- **Jeg gikk glipp av en økt — hva nå?** Spør Claude: «hva skjedde i økt N?» (skillen `bootcamp-recap` henter oppsummeringen). Forarbeidet til neste økt finner du med `prep-me-for-bootcamp` eller `/kurs`.
+
+## Verktøy
+
+- **Hva trenger jeg?** Claude-konto (dekkes av REQ) og fra økt 2: Claude Code med kurspluginen — installasjonsstegene står i README-en til dette repoet og i forarbeidet til økt 2.
+- **Hvordan oppdaterer jeg pluginen?** Kjør `/plugin update` i Claude Code (velg `req-bootcamp-plugin`), eller på kommandolinjen: `claude plugin update req-bootcamp-plugin@req-bootcamp-plugin`. Innholdet oppdateres etter hver økt.
+- **Hva er MCP-serveren?** Pluginen kobler Claude til kursets åpne server, som alltid har siste timeplan, oppsummeringer og FAQ. Ingenting å konfigurere — og i økt 7 ser vi hvordan en slik server bygges.
+
+## Kurset
+
+- **Hvor ambisiøst er dette?** Bevisst høyt — målet er at alle har levert en fungerende skill, MCP eller widget innen uke 10.
+- **Spørsmål mellom øktene?** Still dem her i Claude først — og ellers til Herman (Varden).
+- **Sensitiv informasjon?** Aldri i denne pluginen eller dette repoet — bruk de interne kanalene dere får i kurset.
