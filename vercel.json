@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/mcp.ts": {
+      "includeFiles": "plugins/req-bootcamp-plugin/content/**",
+      "maxDuration": 30
+    }
+  }
+}
