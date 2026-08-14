@@ -188,7 +188,7 @@
     line-height: 1.5;
   }
   .cmd + .cmd { border-top: 1px solid rgba(250,249,247,.07); }
-  .cmd code { flex: 1; color: #EDEFF6; word-break: break-all; }
+  .cmd code { flex: 1; color: #EDEFF6; overflow-wrap: break-word; min-width: 0; }
   .cmd code::before { content: "❯ "; color: #7E93D8; }
   .copy {
     font-family: var(--mono);
