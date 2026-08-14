@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>REQ AI Bootcamp — kursplugin for Claude</title>
-<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, oppsummeringer og FAQ — rett i Claude Code og Claude Desktop.">
+<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, oppsummeringer og FAQ — rett i Claude Desktop.">
 <meta property="og:title" content="REQ AI Bootcamp — kursplugin for Claude">
 <meta property="og:description" content="Timeplan, forarbeid, oppsummeringer og FAQ for alle ti øktene — alltid oppdatert, rett i Claude.">
 <meta property="og:image" content="https://req-bootcamp-plugin.vercel.app/req-logo.png">
@@ -21,7 +21,6 @@
     --navy-ghost: rgba(0, 29, 108, .07);
     --paper: #FAF9F7;
     --ink: #22252B;
-    --terminal: #041545;
     --sans: "Schibsted Grotesk", -apple-system, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, monospace;
   }
@@ -103,24 +102,6 @@
     color: var(--ink);
     animation: rise .6s ease .16s both;
   }
-  .meta {
-    margin-top: 34px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 0;
-    font-family: var(--mono);
-    font-size: 13.5px;
-    color: var(--navy);
-    animation: rise .6s ease .24s both;
-  }
-  .meta span { display: flex; align-items: center; }
-  .meta span + span::before {
-    content: "";
-    width: 4px; height: 4px;
-    border-radius: 50%;
-    background: var(--navy-faint);
-    margin: 0 14px;
-  }
   @keyframes rise {
     from { opacity: 0; transform: translateY(14px); }
     to   { opacity: 1; transform: none; }
@@ -158,39 +139,6 @@
   .step a { color: var(--navy); font-weight: 600; text-decoration-color: var(--navy-faint); text-underline-offset: 3px; }
   .step a:hover { text-decoration-color: var(--navy); }
 
-  .terminal {
-    margin-top: 18px;
-    background: var(--terminal);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 1px 2px rgba(4,21,69,.2), 0 12px 32px -16px rgba(4,21,69,.45);
-  }
-  .terminal-bar {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 11px 14px;
-    border-bottom: 1px solid rgba(250,249,247,.09);
-  }
-  .terminal-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(250,249,247,.16); }
-  .terminal-bar span {
-    margin-left: auto;
-    font-family: var(--mono);
-    font-size: 11.5px;
-    color: rgba(250,249,247,.4);
-  }
-  .cmd {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 16px;
-    font-family: var(--mono);
-    font-size: 13.5px;
-    line-height: 1.5;
-  }
-  .cmd + .cmd { border-top: 1px solid rgba(250,249,247,.07); }
-  .cmd code { flex: 1; color: #EDEFF6; overflow-wrap: break-word; min-width: 0; }
-  .cmd code::before { content: "❯ "; color: #7E93D8; }
   .copy {
     font-family: var(--mono);
     font-size: 11.5px;
@@ -273,10 +221,51 @@
   .url-chip .copy:hover { color: var(--navy); }
   .url-chip .copy.ok { color: #0A7A43; border-color: rgba(10,122,67,.3); background: rgba(10,122,67,.07); }
 
-  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
-  .grid3 h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
-  .grid3 p { font-size: 15px; color: var(--ink); }
-  .grid3 .cell { border-top: 2px solid var(--navy); padding-top: 16px; }
+  .manifest {
+    background: #fff;
+    border: 1px solid var(--navy-faint);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(4,21,69,.05), 0 14px 36px -24px rgba(4,21,69,.25);
+  }
+  .manifest-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    flex-wrap: wrap;
+    padding: 15px 24px;
+    background: var(--navy-ghost);
+    border-bottom: 1px solid var(--navy-faint);
+    font-family: var(--mono);
+  }
+  .manifest-head .pkg { font-size: 14px; font-weight: 500; color: var(--navy); }
+  .manifest-head .pkg::before { content: "❯ "; color: var(--navy-soft); }
+  .manifest-head .pkg-meta { font-size: 12px; color: var(--navy-soft); }
+  .mgroup { padding: 18px 24px 8px; }
+  .mgroup + .mgroup { border-top: 1px solid var(--navy-faint); }
+  .mgroup-label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--navy-soft);
+    margin-bottom: 4px;
+  }
+  .mrow {
+    display: grid;
+    grid-template-columns: 216px 1fr;
+    gap: 4px 20px;
+    padding: 11px 0;
+  }
+  .mrow + .mrow { border-top: 1px dashed var(--navy-faint); }
+  .mrow code {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--navy);
+    padding-top: 1px;
+  }
+  .mrow p { font-size: 15px; color: var(--ink); }
 
   footer { border-top: 1px solid var(--navy-faint); padding: 44px 0 60px; }
   .foot {
@@ -296,7 +285,8 @@
     .step { grid-template-columns: 1fr; gap: 10px; }
     .step-num { display: flex; align-items: center; gap: 10px; }
     .step-num::after { margin-top: 0; }
-    .grid3 { grid-template-columns: 1fr; gap: 24px; }
+    .mrow { grid-template-columns: 1fr; }
+    .mgroup, .manifest-head { padding-left: 18px; padding-right: 18px; }
     .topbar img { height: 44px; }
     .dots { right: -240px; }
   }
@@ -315,11 +305,6 @@
       <p class="eyebrow">REQ AI Bootcamp · Høsten 2026</p>
       <h1>Kurset, rett i Claude.</h1>
       <p>Kurspluginen gir deg timeplan, forarbeid, oppsummeringer og svar på vanlige spørsmål for alle ti øktene — alltid oppdatert, uten å lete i e-post eller dokumenter.</p>
-      <div class="meta">
-        <span>Ti tirsdager · 08:30</span>
-        <span>18. aug – 20. okt</span>
-        <span>Sommerrogata 17 / Teams</span>
-      </div>
     </div>
   </div>
 </header>
@@ -332,27 +317,26 @@
     <div class="step">
       <div class="step-num">01</div>
       <div>
-        <h3>Installer Claude Code</h3>
-        <p>Last ned skrivebordsappen eller CLI-en fra <a href="https://claude.com/claude-code">claude.com/claude-code</a> og logg inn med kurskontoen din.</p>
+        <h3>Åpne Claude</h3>
+        <p>Bruk Claude-appen på Mac/Windows eller <a href="https://claude.ai">claude.ai</a>, innlogget med kurskontoen din.</p>
       </div>
     </div>
 
     <div class="step">
       <div class="step-num">02</div>
       <div>
-        <h3>Kjør to kommandoer</h3>
-        <p>Åpne Claude Code og lim inn én linje om gangen:</p>
-        <div class="terminal">
-          <div class="terminal-bar"><i></i><i></i><i></i><span>claude</span></div>
-          <div class="cmd">
-            <code id="c1">/plugin marketplace add mainquest-labs/req-bootcamp-plugin</code>
-            <button class="copy" data-copy="c1">kopier</button>
-          </div>
-          <div class="cmd">
-            <code id="c2">/plugin install req-bootcamp-plugin@req-bootcamp-plugin</code>
-            <button class="copy" data-copy="c2">kopier</button>
-          </div>
-        </div>
+        <h3>Legg til kursserveren som connector</h3>
+        <ol class="desktop-steps">
+          <li>Åpne <strong>Settings → Connectors</strong></li>
+          <li>Velg <strong>Add custom connector</strong></li>
+          <li>Navn: <code>REQ Bootcamp</code> — og lim inn denne adressen:
+            <div class="url-chip">
+              <code id="c3">https://req-bootcamp-plugin.vercel.app/api/mcp</code>
+              <button class="copy" data-copy="c3">kopier</button>
+            </div>
+          </li>
+          <li>Klikk <strong>Add</strong> — ingen innlogging trengs, serveren er åpen.</li>
+        </ol>
       </div>
     </div>
 
@@ -360,7 +344,7 @@
       <div class="step-num">03</div>
       <div>
         <h3>Prøv det</h3>
-        <p>Kjør <code>/kurs</code> — eller bare spør:</p>
+        <p>Bare spør:</p>
         <div class="try">
           <span>«hva er forarbeidet til neste økt?»</span>
           <span>«hva skjedde i økt 3?»</span>
@@ -370,38 +354,56 @@
     </div>
   </section>
 
-  <section id="claude-desktop">
-    <h2>Bruker du Claude uten Claude Code?</h2>
-    <p style="max-width:36em">I Claude-appen på Mac/Windows eller på <a href="https://claude.ai" style="color:var(--navy);font-weight:600">claude.ai</a> kobler du deg til kursserveren som en <em>connector</em>:</p>
-    <ol class="desktop-steps">
-      <li>Åpne <strong>Settings → Connectors</strong></li>
-      <li>Velg <strong>Add custom connector</strong></li>
-      <li>Navn: <code>REQ Bootcamp</code> — og lim inn denne adressen:
-        <div class="url-chip">
-          <code id="c3">https://req-bootcamp-plugin.vercel.app/api/mcp</code>
-          <button class="copy" data-copy="c3">kopier</button>
-        </div>
-      </li>
-      <li>Klikk <strong>Add</strong> — ingen innlogging trengs, serveren er åpen.</li>
-    </ol>
-  </section>
-
   <section id="innhold">
-    <h2>Hva får du</h2>
-    <div class="grid3">
-      <div class="cell">
-        <h3>/kurs</h3>
-        <p>Én kommando som viser neste økt: dato, tema og forarbeidet du bør gjøre.</p>
+    <h2>Hva pluginen består av</h2>
+    <div class="manifest">
+      <div class="manifest-head">
+        <span class="pkg">req-bootcamp-plugin</span>
+        <span class="pkg-meta">1 kommando · 4 skills · 12 innholdsfiler</span>
       </div>
-      <div class="cell">
-        <h3>Skills</h3>
-        <p>Gikk du glipp av en økt? <code>bootcamp-recap</code> henter oppsummeringen. <code>prep-me-for-bootcamp</code> gjør deg klar til neste.</p>
+      <div class="mgroup">
+        <div class="mgroup-label">Kommando</div>
+        <div class="mrow">
+          <code>/kurs</code>
+          <p>Neste økt på ti sekunder — dato, tema og forarbeidet du bør gjøre.</p>
+        </div>
       </div>
-      <div class="cell">
-        <h3>Alltid oppdatert</h3>
-        <p>Innholdet oppdateres etter hver økt. Kjør <code>/plugin update</code> i Claude Code for siste versjon.</p>
+      <div class="mgroup">
+        <div class="mgroup-label">Skills — Claude tar dem i bruk selv når du spør</div>
+        <div class="mrow">
+          <code>prep-me-for-bootcamp</code>
+          <p>Gjør deg klar til neste økt: hva den dekker, forarbeidet og det praktiske.</p>
+        </div>
+        <div class="mrow">
+          <code>bootcamp-recap</code>
+          <p>Gikk du glipp av en økt? Henter oppsummering, nøkkelpunkter og mikrooppgaver.</p>
+        </div>
+        <div class="mrow">
+          <code>bootcamp-faq</code>
+          <p>Svar på det praktiske: tid, sted, Teams, verktøy og tilganger.</p>
+        </div>
+        <div class="mrow">
+          <code>visualiser-bootcamp</code>
+          <p>Tegner «Kartet» — kurset som en klatretur, med hvor langt dere er kommet.</p>
+        </div>
+      </div>
+      <div class="mgroup">
+        <div class="mgroup-label">Innhold</div>
+        <div class="mrow">
+          <code>timeplan</code>
+          <p>Alle ti tirsdagene med dato og tema, 18. august til 20. oktober.</p>
+        </div>
+        <div class="mrow">
+          <code>faq</code>
+          <p>Spørsmål og svar om kurset — oppmøte, opptak, kontaktpunkter.</p>
+        </div>
+        <div class="mrow">
+          <code>øktnotater 01–10</code>
+          <p>Én fil per økt: innhold, forarbeid og oppsummering i etterkant.</p>
+        </div>
       </div>
     </div>
+    <p class="hint">Innholdet oppdateres etter hver økt — serveren gir deg alltid siste versjon, uten at du trenger å gjøre noe.</p>
   </section>
 
 </main>
