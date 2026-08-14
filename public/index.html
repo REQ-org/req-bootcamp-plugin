@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REQ AI Bootcamp — kursplugin for Claude</title>
+<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, oppsummeringer og FAQ — rett i Claude Code og Claude Desktop.">
+<meta property="og:title" content="REQ AI Bootcamp — kursplugin for Claude">
+<meta property="og:description" content="Timeplan, forarbeid, oppsummeringer og FAQ for alle ti øktene — alltid oppdatert, rett i Claude.">
+<meta property="og:image" content="https://req-bootcamp-plugin.vercel.app/req-logo.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23001D6C'/%3E%3Crect x='11' y='8' width='10' height='2.4' rx='.5' fill='%23FAF9F7'/%3E%3Crect x='8' y='14.8' width='16' height='2.4' rx='.5' fill='%23FAF9F7'/%3E%3Crect x='5' y='21.6' width='22' height='2.4' rx='.5' fill='%23FAF9F7'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #001D6C;
+    --navy-soft: rgba(0, 29, 108, .55);
+    --navy-faint: rgba(0, 29, 108, .14);
+    --navy-ghost: rgba(0, 29, 108, .07);
+    --paper: #FAF9F7;
+    --ink: #22252B;
+    --terminal: #041545;
+    --sans: "Schibsted Grotesk", -apple-system, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--navy); color: var(--paper); }
+
+  /* Halftone arc echoing the REQ globe */
+  .dots {
+    position: absolute;
+    top: -120px;
+    right: -140px;
+    width: 560px;
+    height: 560px;
+    background-image: radial-gradient(circle, var(--navy) 1.5px, transparent 1.6px);
+    background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(circle at 70% 30%, rgba(0,0,0,.16), transparent 62%);
+    mask-image: radial-gradient(circle at 70% 30%, rgba(0,0,0,.16), transparent 62%);
+    pointer-events: none;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 28px; }
+
+  header {
+    position: relative;
+    overflow: hidden;
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 40px;
+  }
+  .topbar img { height: 56px; width: auto; display: block; }
+  .topbar a {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--navy-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--navy-faint);
+    padding-bottom: 1px;
+    transition: color .15s, border-color .15s;
+  }
+  .topbar a:hover { color: var(--navy); border-color: var(--navy); }
+
+  .hero { padding: 88px 0 72px; }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--navy-soft);
+    margin-bottom: 20px;
+    animation: rise .6s ease both;
+  }
+  h1 {
+    font-size: clamp(42px, 7.5vw, 68px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -.025em;
+    color: var(--navy);
+    max-width: 12ch;
+    animation: rise .6s ease .08s both;
+  }
+  .hero p {
+    margin-top: 26px;
+    font-size: 20px;
+    line-height: 1.55;
+    max-width: 34em;
+    color: var(--ink);
+    animation: rise .6s ease .16s both;
+  }
+  .meta {
+    margin-top: 34px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 0;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--navy);
+    animation: rise .6s ease .24s both;
+  }
+  .meta span { display: flex; align-items: center; }
+  .meta span + span::before {
+    content: "";
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--navy-faint);
+    margin: 0 14px;
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  .rule { border: 0; border-top: 1px solid var(--navy-faint); }
+
+  section { padding: 64px 0; }
+  section + section { border-top: 1px solid var(--navy-faint); }
+  h2 {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  h2::after { content: ""; flex: 1; border-top: 1px solid var(--navy-faint); transform: translateY(-3px); }
+
+  .step { display: grid; grid-template-columns: 76px 1fr; gap: 0 8px; }
+  .step + .step { margin-top: 44px; }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--navy);
+    padding-top: 3px;
+  }
+  .step-num::after { content: ""; display: block; width: 22px; border-top: 2px solid var(--navy); margin-top: 10px; }
+  .step h3 { font-size: 21px; font-weight: 700; letter-spacing: -.01em; color: var(--navy); }
+  .step p { margin-top: 8px; max-width: 33em; }
+  .step a { color: var(--navy); font-weight: 600; text-decoration-color: var(--navy-faint); text-underline-offset: 3px; }
+  .step a:hover { text-decoration-color: var(--navy); }
+
+  .terminal {
+    margin-top: 18px;
+    background: var(--terminal);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(4,21,69,.2), 0 12px 32px -16px rgba(4,21,69,.45);
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 14px;
+    border-bottom: 1px solid rgba(250,249,247,.09);
+  }
+  .terminal-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgba(250,249,247,.16); }
+  .terminal-bar span {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: rgba(250,249,247,.4);
+  }
+  .cmd {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .cmd + .cmd { border-top: 1px solid rgba(250,249,247,.07); }
+  .cmd code { flex: 1; color: #EDEFF6; word-break: break-all; }
+  .cmd code::before { content: "❯ "; color: #7E93D8; }
+  .copy {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: rgba(250,249,247,.55);
+    background: rgba(250,249,247,.07);
+    border: 1px solid rgba(250,249,247,.14);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s;
+  }
+  .copy:hover { color: #fff; background: rgba(250,249,247,.14); }
+  .copy.ok { color: #9DEFC2; border-color: rgba(157,239,194,.35); background: rgba(157,239,194,.08); }
+
+  .hint {
+    margin-top: 14px;
+    font-size: 15px;
+    color: var(--navy-soft);
+  }
+  .hint code, p code, li code {
+    font-family: var(--mono);
+    font-size: .88em;
+    background: var(--navy-ghost);
+    border-radius: 5px;
+    padding: 2px 6px;
+    color: var(--navy);
+  }
+
+  .try {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .try span {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--navy);
+    border: 1px solid var(--navy-faint);
+    border-radius: 999px;
+    padding: 7px 15px;
+    background: #fff;
+  }
+
+  .desktop-steps { list-style: none; counter-reset: d; max-width: 36em; }
+  .desktop-steps li {
+    counter-increment: d;
+    position: relative;
+    padding: 0 0 0 40px;
+    margin-top: 18px;
+  }
+  .desktop-steps li::before {
+    content: counter(d);
+    position: absolute;
+    left: 0; top: 2px;
+    width: 24px; height: 24px;
+    border: 1.5px solid var(--navy);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navy);
+  }
+  .url-chip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+    background: #fff;
+    border: 1px solid var(--navy-faint);
+    border-radius: 8px;
+    padding: 10px 8px 10px 14px;
+    max-width: 480px;
+  }
+  .url-chip code { flex: 1; font-family: var(--mono); font-size: 13px; color: var(--navy); word-break: break-all; background: none; padding: 0; }
+  .url-chip .copy { color: var(--navy-soft); background: var(--navy-ghost); border-color: var(--navy-faint); }
+  .url-chip .copy:hover { color: var(--navy); }
+  .url-chip .copy.ok { color: #0A7A43; border-color: rgba(10,122,67,.3); background: rgba(10,122,67,.07); }
+
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+  .grid3 h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .grid3 p { font-size: 15px; color: var(--ink); }
+  .grid3 .cell { border-top: 2px solid var(--navy); padding-top: 16px; }
+
+  footer { border-top: 1px solid var(--navy-faint); padding: 44px 0 60px; }
+  .foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .foot img { height: 22px; opacity: .75; }
+  .foot p { font-size: 13.5px; font-family: var(--mono); color: var(--navy-soft); }
+  .foot a { color: inherit; }
+
+  @media (max-width: 620px) {
+    section { padding: 52px 0; }
+    .hero { padding: 64px 0 56px; }
+    .step { grid-template-columns: 1fr; gap: 10px; }
+    .step-num { display: flex; align-items: center; gap: 10px; }
+    .step-num::after { margin-top: 0; }
+    .grid3 { grid-template-columns: 1fr; gap: 24px; }
+    .topbar img { height: 44px; }
+    .dots { right: -240px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="topbar">
+      <img src="/req-logo.png" alt="REQ Capital" width="1280" height="533">
+      <a href="https://github.com/mainquest-labs/req-bootcamp-plugin">github ↗</a>
+    </div>
+    <div class="hero">
+      <p class="eyebrow">REQ AI Bootcamp · Høsten 2026</p>
+      <h1>Kurset, rett i Claude.</h1>
+      <p>Kurspluginen gir deg timeplan, forarbeid, oppsummeringer og svar på vanlige spørsmål for alle ti øktene — alltid oppdatert, uten å lete i e-post eller dokumenter.</p>
+      <div class="meta">
+        <span>Ti tirsdager · 08:30</span>
+        <span>18. aug – 20. okt</span>
+        <span>Sommerrogata 17 / Teams</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="installasjon">
+    <h2>Slik installerer du</h2>
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div>
+        <h3>Installer Claude Code</h3>
+        <p>Last ned skrivebordsappen eller CLI-en fra <a href="https://claude.com/claude-code">claude.com/claude-code</a> og logg inn med kurskontoen din.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div>
+        <h3>Kjør to kommandoer</h3>
+        <p>Åpne Claude Code og lim inn én linje om gangen:</p>
+        <div class="terminal">
+          <div class="terminal-bar"><i></i><i></i><i></i><span>claude</span></div>
+          <div class="cmd">
+            <code id="c1">/plugin marketplace add mainquest-labs/req-bootcamp-plugin</code>
+            <button class="copy" data-copy="c1">kopier</button>
+          </div>
+          <div class="cmd">
+            <code id="c2">/plugin install req-bootcamp-plugin@req-bootcamp-plugin</code>
+            <button class="copy" data-copy="c2">kopier</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div>
+        <h3>Prøv det</h3>
+        <p>Kjør <code>/kurs</code> — eller bare spør:</p>
+        <div class="try">
+          <span>«hva er forarbeidet til neste økt?»</span>
+          <span>«hva skjedde i økt 3?»</span>
+          <span>«vis timeplanen»</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="claude-desktop">
+    <h2>Bruker du Claude uten Claude Code?</h2>
+    <p style="max-width:36em">I Claude-appen på Mac/Windows eller på <a href="https://claude.ai" style="color:var(--navy);font-weight:600">claude.ai</a> kobler du deg til kursserveren som en <em>connector</em>:</p>
+    <ol class="desktop-steps">
+      <li>Åpne <strong>Settings → Connectors</strong></li>
+      <li>Velg <strong>Add custom connector</strong></li>
+      <li>Navn: <code>REQ Bootcamp</code> — og lim inn denne adressen:
+        <div class="url-chip">
+          <code id="c3">https://req-bootcamp-plugin.vercel.app/api/mcp</code>
+          <button class="copy" data-copy="c3">kopier</button>
+        </div>
+      </li>
+      <li>Klikk <strong>Add</strong> — ingen innlogging trengs, serveren er åpen.</li>
+    </ol>
+  </section>
+
+  <section id="innhold">
+    <h2>Hva får du</h2>
+    <div class="grid3">
+      <div class="cell">
+        <h3>/kurs</h3>
+        <p>Én kommando som viser neste økt: dato, tema og forarbeidet du bør gjøre.</p>
+      </div>
+      <div class="cell">
+        <h3>Skills</h3>
+        <p>Gikk du glipp av en økt? <code>bootcamp-recap</code> henter oppsummeringen. <code>prep-me-for-bootcamp</code> gjør deg klar til neste.</p>
+      </div>
+      <div class="cell">
+        <h3>Alltid oppdatert</h3>
+        <p>Innholdet oppdateres etter hver økt. Kjør <code>/plugin update</code> i Claude Code for siste versjon.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <img src="/varden-wordmark.svg" alt="Varden">
+    <p>Bygget av <a href="https://vardenlab.com">Varden</a> for REQ Capital</p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll(".copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = document.getElementById(btn.dataset.copy).textContent;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = "kopiert ✓";
+        btn.classList.add("ok");
+        setTimeout(function () {
+          btn.textContent = "kopier";
+          btn.classList.remove("ok");
+        }, 2000);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
