@@ -1,16 +1,16 @@
 ---
 name: req-presentation
-description: Use when the attendee wants a presentation in REQ's own look — asks to «lag en presentasjon / REQ-presentasjon», wants slides or et lysbilde-dekk om et tema i REQ-stil, or to turn notes into an REQ-branded PowerPoint.
+description: Use when the attendee wants a presentation in REQ's own look — asks to «lag en presentasjon / REQ-presentasjon», a resultat-/PnL-presentasjon, slides or et lysbilde-dekk om et tema i REQ-stil, or to turn notes or numbers into an REQ-branded PowerPoint.
 ---
 
 # Lag en REQ-presentasjon
 
-Produce an **editable PowerPoint** (`.pptx`) in REQ's own visual identity and hand it to the attendee. The bundled `req_deck.py` carries the brand — navy `#001D6C` as the single accent, Calibri, white slides, petrol section dividers, the REQ logo — so you only decide the *content*.
+Produce an **editable PowerPoint** (`.pptx`) in REQ's own visual identity — including **REQ-branded charts** for results and P&L — and hand it to the attendee. The bundled `req_deck.py` carries the brand (navy `#001D6C` accent, Calibri, white slides, petrol section dividers, the REQ logo) and `req_charts.py` renders on-brand line / bar / waterfall / donut charts, so you only decide the *content and the numbers*.
 
 ## How
 
-1. **Ensure python-pptx.** Run `python3 -c "import pptx"`; if it fails, `python3 -m pip install python-pptx` (quietly).
-2. **Get the topic.** Use what the attendee gave you. If it is thin, ask one short question for the subject and audience, then proceed — do not stall.
+1. **Ensure the tools.** Run `python3 -c "import pptx, matplotlib"`; if it fails, `python3 -m pip install python-pptx matplotlib` (quietly). `matplotlib` is only needed when the deck has charts.
+2. **Get the topic and any data.** Use what the attendee gave you. If they point at numbers (a P&L, returns, a file), read them and use the **real figures**. If the ask is thin, ask one short question for subject and audience, then proceed — do not stall.
 3. **Draft the content**, then build the deck with the helper. Import from the skill directory:
 
    ```python
@@ -31,8 +31,24 @@ Produce an **editable PowerPoint** (`.pptx`) in REQ's own visual identity and ha
    ```
 
    Slide methods: `section(title)`, `content(heading, bullets, footer="")`, `figure(heading, placeholder=…, image=…, source=…)`, `closing()`. The title slide is created for you.
+
+   **Charts (for results, P&L, allocation).** Add on-brand charts with one call each — colours are fixed by the brand, you pass only data:
+
+   ```python
+   deck.kpi("Hovedtall", [("+4,2 %", "Avkastning i kvartalet"), ("1,24 mrd", "Forvaltet kapital")])
+   deck.chart_line("Avkastning slår referanseindeksen", ["Q1","Q2","Q3"],
+                   {"REQ Global Compounders": [0,4,8], "MSCI World": [0,2,4]})
+   deck.chart_bars("Kvartalsvis avkastning", ["Q1","Q2","Q3"], [3.1, -1.5, 4.2])   # negatives auto-red
+   deck.chart_waterfall("Utvikling i forvaltet kapital (mNOK)", ["Tegning","Avkastning","Innløsning"],
+                        [180, 96, -55], start=1020)
+   deck.chart_donut("Sektorallokering", ["Teknologi","Helse","Industri"], [34, 22, 18], center="18\nselskaper")
+   ```
+
+   **Read `reference/charts.md` to pick the right chart for the data** (which form for which job, and the full signatures). `examples/build_example.py` builds a complete results/P&L deck end-to-end; `examples/preview.png` shows how it looks.
 4. **Run the script**, then open the file (`open` on macOS, `start` on Windows, `xdg-open` on Linux).
 5. Tell the attendee in **Norwegian (bokmål)** what you built and where the file is — one or two sentences.
+
+For a results or P&L presentation, a good default shape is: title → section → `kpi` headline → `chart_line` (vs benchmark) → `chart_bars` (by period) → `chart_waterfall` (the bridge) → `chart_donut` (allocation) → a short `content` read-through → `closing`.
 
 ## REQ house style (the helper enforces the look; you keep the substance on-brand)
 

@@ -146,6 +146,68 @@ class ReqDeck:
             self._box(s, MARGIN, Inches(6.9), Inches(9), Inches(0.35), source, 10, GREY)
         return s
 
+    # -- chart slides (REQ-branded matplotlib figures) ----------------------
+
+    def _chart_slide(self, heading, png, source=""):
+        s = self._slide(WHITE)
+        self._box(s, MARGIN, Inches(0.55), SLIDE_W - 2 * MARGIN, Inches(0.7),
+                  heading, 26, NAVY, bold=True, font=FONT_LIGHT)
+        self._rule(s, MARGIN, Inches(1.35), SLIDE_W - 2 * MARGIN)
+        from PIL import Image
+        iw, ih = Image.open(png).size
+        w = SLIDE_W - 2 * MARGIN
+        h = int(w * ih / iw)
+        max_h = Inches(4.9)
+        if h > max_h:
+            h = max_h
+            w = int(h * iw / ih)
+        x = int((SLIDE_W - w) / 2)
+        s.shapes.add_picture(png, x, Inches(1.7), width=w, height=h)
+        if source:
+            self._box(s, MARGIN, Inches(6.9), Inches(9), Inches(0.35), source, 10, GREY)
+        return s
+
+    def chart_line(self, heading, categories, series, source="", pct=True):
+        from req_charts import line
+        return self._chart_slide(heading, line(categories, series, pct=pct), source)
+
+    def chart_bars(self, heading, categories, values, source="", pct=True):
+        from req_charts import bars
+        return self._chart_slide(heading, bars(categories, values, pct=pct), source)
+
+    def chart_waterfall(self, heading, labels, deltas, start=0.0, unit="", source="",
+                        start_label="Inngående", end_label="Utgående"):
+        from req_charts import waterfall
+        png = waterfall(labels, deltas, start=start, unit=unit,
+                        start_label=start_label, end_label=end_label)
+        return self._chart_slide(heading, png, source)
+
+    def chart_donut(self, heading, labels, values, center=None, source=""):
+        from req_charts import donut
+        return self._chart_slide(heading, donut(labels, values, center=center), source)
+
+    def kpi(self, heading, tiles, source=""):
+        """A row of headline numbers. tiles = [(value, label), …] — up to five."""
+        s = self._slide(WHITE)
+        self._box(s, MARGIN, Inches(0.55), SLIDE_W - 2 * MARGIN, Inches(0.7),
+                  heading, 26, NAVY, bold=True, font=FONT_LIGHT)
+        self._rule(s, MARGIN, Inches(1.35), SLIDE_W - 2 * MARGIN)
+        n = min(len(tiles), 5)
+        gap = Inches(0.35)
+        total_w = SLIDE_W - 2 * MARGIN
+        col_w = int((total_w - gap * (n - 1)) / n)
+        for i, (value, label) in enumerate(tiles[:n]):
+            x = MARGIN + i * (col_w + gap)
+            self._box(s, x, Inches(2.7), col_w, Inches(1.2), str(value), 44, NAVY,
+                      bold=True, font=FONT_LIGHT, align=PP_ALIGN.LEFT)
+            self._box(s, x, Inches(4.0), col_w, Inches(0.9), label, 14, GREY,
+                      align=PP_ALIGN.LEFT)
+            if i > 0:
+                self._rule(s, x - int(gap / 2), Inches(2.75), Pt(1), color=HAIR, h=Inches(1.9))
+        if source:
+            self._box(s, MARGIN, Inches(6.9), Inches(9), Inches(0.35), source, 10, GREY)
+        return s
+
     def closing(self, line="Investing with insight. Building what's next."):
         s = self._slide(WHITE)
         s.shapes.add_picture(LOGO_NAVY, MARGIN, Inches(3.0), width=Inches(2.2))
