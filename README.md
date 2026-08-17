@@ -21,7 +21,7 @@ Innholdet oppdateres i dette repoet etter hver økt. Kjør `/plugin update` for 
 
 Pluginen kobler deg automatisk til kursets åpne MCP-server (`req-bootcamp`), som alltid serverer siste versjon av timeplan, oppsummeringer og FAQ — ingenting å konfigurere. Serveren kjører på Vercel fra dette repoet (`api/mcp.ts`) og leser de samme markdown-filene som pluginen.
 
-Server-URL: `https://req-bootcamp-plugin.vercel.app/api/mcp`
+Server-URL: `https://req-bootcamp.vercel.app/api/mcp`
 
 ## Claude Desktop (uten Claude Code)
 
@@ -31,7 +31,7 @@ Bruker du Claude-appen på Mac/Windows eller claude.ai i nettleseren? Da kan du 
 2. Klikk **Add custom connector** (Legg til egendefinert kobling).
 3. Fyll inn:
    - **Name:** `REQ Bootcamp`
-   - **URL:** `https://req-bootcamp-plugin.vercel.app/api/mcp`
+   - **URL:** `https://req-bootcamp.vercel.app/api/mcp`
 4. Klikk **Add**. Ingen innlogging trengs — serveren er åpen.
 
 Deretter kan du spørre Claude direkte, f.eks. «hva er forarbeidet til neste økt?» eller «vis timeplanen for bootcampen».

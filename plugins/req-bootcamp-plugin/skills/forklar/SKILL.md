@@ -1,6 +1,6 @@
 ---
 name: forklar
-description: Use when the attendee wants something explained — «forklar X», «forklar meg X», «hva er X», «kan du forklare …», or any «/forklar <tema>». Explains any concept in natural Norwegian (bokmål), from AI and course terms to anything else.
+description: Use when the attendee wants something explained — «forklar X», «forklar meg X», «hva er X», «kan du forklare …», or any «/forklar [tema]». Explains any concept in natural Norwegian (bokmål), from AI and course terms to anything else.
 ---
 
 # Forklar
