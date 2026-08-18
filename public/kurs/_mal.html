@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+  MAL FOR EN UKESIDE — ikke lenket fra noe sted.
+  Slik legger du til en ny uke når den er klar:
+    1. I kurs.js: sett ukas WEEKS-oppføring til status: "live".
+    2. Kopier denne fila til uke-0N.html.
+    3. Fyll inn eyebrow, h1 og lead fra WEEKS-oppføringen.
+    4. Erstatt <main> med moduler (se uke-01.html som mønster):
+       hver modul er <section class="modul" id="…"> med kicker + h2 + lead
+       + et interaktivt element. Gjenbruk klassene i kurs.css og
+       expander-konvensjonen (.expander[data-target] + .expander-panel).
+    5. Trenger modulen ny oppførsel? Legg en liten init i kurs.js, styrt
+       av en id/data-attributt slik de andre modulene er.
+-->
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Uke N · TITTEL — REQ AI Bootcamp</title>
+<meta name="description" content="FYLL INN kort beskrivelse.">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="apple-touch-icon" href="/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="kurs.css">
+</head>
+<body>
+
+<header>
+  <div class="dots" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="topbar">
+      <img src="/req-logo.png" alt="REQ Capital" width="1280" height="533">
+      <a href="index.html">← Kartet</a>
+    </div>
+    <div class="hero">
+      <p class="eyebrow">Uke N · TITTEL</p>
+      <h1>FYLL INN temaet for uka</h1>
+      <p class="lead">FYLL INN en kort ingress som rammer inn hva man kan utforske her.</p>
+      <!-- <nav class="anchor-nav"> … lenker til modulene … </nav> -->
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- FYLL INN moduler her. Mønster fra uke-01.html. -->
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <img src="/varden-wordmark.svg" alt="Varden">
+    <p>Bygget av <a href="https://vardenlab.com">Varden</a> for REQ Capital</p>
+  </div>
+</footer>
+
+<script src="kurs.js"></script>
+</body>
+</html>
