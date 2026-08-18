@@ -1,12 +1,12 @@
-# Økt 10 — Wrap-up II (20. okt 2026)
+# Økt 10 - Leveranse & veien videre (20. okt 2026)
 
-Finalen: alle viser noe de faktisk bruker. Hver person/team demonstrerer minst én fungerende skill, MCP-kobling eller widget fra egen arbeidshverdag (2–3 min, ekte oppgave, før/etter) — og vi lander individuell og organisatorisk handlingsplan for veien videre.
+Share-and-tell: del det du har laget og faktisk bruker, vi kårer champions og roller, og blir enige om veien videre. Ingen tvang - deling oppmuntres, ikke karaktersettes.
 
 ## Forarbeid (sendes fredag 16. okt, under 10 min)
 
-- **Send inn:** én linje om hva du viser i demoen din (til kjøreplanen).
-- **Les:** utkastet til handlingsplan fra uke 9.
+- **Les:** utkast til handlingsplan og rollekart (fra uke 9).
+- **Ta med:** har du noe å vise (1-2 min, ekte oppgave, før/etter)? ellers: den ene tingen du vil ta i bruk fremover, + svar på hvilken rolle du vil ha i REQs AI-arbeid.
 
 ## Oppsummering
 
-*(kommer etter økten — kjør `/plugin update` for siste versjon)*
+*(kommer etter økten - kjør `/plugin update` for siste versjon)*

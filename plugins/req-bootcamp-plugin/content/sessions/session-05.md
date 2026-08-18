@@ -1,12 +1,12 @@
-# Økt 5 — Analyse (15. sep 2026)
+# Økt 5 - Skriving & kommunikasjon (15. sep 2026)
 
-Repeterbare analyser: trekk strukturerte data (JSON/Excel) ut av kvartalsrapporter og dokumenter, og gjør jobben re-kjørbar hvert kvartal med Claude Code eller API-skript. Pluss verktøy for ekte beregninger (sensitivitet, IRR) og enkle interaktive widgets.
+Claude i skrive- og Office-arbeidsflyten: utkast, omskriving og tonejustering for ulike mottakere, korrektur og NO-EN - og en gjenbrukbar mal-instruksjon bygget på en ekte REQ-mal.
 
 ## Forarbeid (sendes fredag 11. sep, under 10 min)
 
-- **Se/les:** 5 minutter om «hva er Claude Code / et API-skript» — avmystifisering for ikke-kodere.
-- **Ta med:** én analyse du gjentar hvert kvartal (regneark eller rapport).
+- **Les:** kort eksempel på en «mal-instruksjon» bygget på et dokumentformat.
+- **Ta med:** ett ekte REQ-dokument du skal skrive eller omskrive denne uken, og hvis mulig REQ-malen det skal inn i.
 
 ## Oppsummering
 
-*(kommer etter økten — kjør `/plugin update` for siste versjon)*
+*(kommer etter økten - kjør `/plugin update` for siste versjon)*
