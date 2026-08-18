@@ -18,7 +18,8 @@ const FASER = [
 
 const WEEKS = [
   { nr: 1,  fase: 1, status: "live",   href: "uke-01.html",
-    tittel: "Fundament I",        tema: "Introduksjon, landskapet og modellvalg" },
+    tittel: "Fundament I",        tema: "Introduksjon, landskapet og modellvalg",
+    slides: { file: "slides/REQ-bootcamp-uke01.pptx", format: "PowerPoint", storrelse: "4,3 MB" } },
   { nr: 2,  fase: 1, status: "kommer", href: "uke-02.html",
     tittel: "Skills",             tema: "Ekte skills i praksis, og bygg din egen" },
   { nr: 3,  fase: 1, status: "kommer", href: "uke-03.html",
@@ -150,6 +151,34 @@ function renderMap(mount) {
   });
 }
 
+// ── Lysbilder: nedlastbare presentasjoner ────────────────────────
+function renderSlides(mount) {
+  const table = el("table", "slides-table");
+  table.innerHTML =
+    "<thead><tr>" +
+    "<th class=\"st-num\">Uke</th>" +
+    "<th>Presentasjon</th>" +
+    "<th class=\"st-dl\">Lysbilder</th>" +
+    "</tr></thead>";
+  const tbody = el("tbody");
+  WEEKS.forEach(w => {
+    const tr = el("tr", w.slides ? null : "slides-row-kommer");
+    const handling = w.slides
+      ? `<a class="dl-btn" href="${w.slides.file}" download>` +
+        `<span class="dl-ico" aria-hidden="true">↓</span> Last ned</a>` +
+        `<div class="dl-meta">${esc(w.slides.format)} · ${esc(w.slides.storrelse)}</div>`
+      : `<span class="pill">Kommer</span>`;
+    tr.innerHTML =
+      `<td class="st-num">${w.nr}</td>` +
+      `<td><span class="st-title">${esc(w.tittel)}</span>` +
+      `<span class="st-tema">${esc(w.tema)}</span></td>` +
+      `<td class="st-dl">${handling}</td>`;
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  mount.appendChild(table);
+}
+
 // ── Begrepsbank ──────────────────────────────────────────────────
 function renderGlossary(listMount, searchInput) {
   const draw = (q = "") => {
@@ -276,6 +305,9 @@ ready(() => {
 
   const map = document.getElementById("kart-mount");
   if (map) renderMap(map);
+
+  const slides = document.getElementById("slides-mount");
+  if (slides) renderSlides(slides);
 
   const glossList = document.getElementById("gloss-list");
   if (glossList) renderGlossary(glossList, document.getElementById("gloss-search"));
