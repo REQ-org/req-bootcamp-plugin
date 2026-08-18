@@ -8,35 +8,35 @@
 
 // ── Uker og faser ────────────────────────────────────────────────
 const FASER = [
-  { nr: 1, kicker: "Fase 1 · Uke 1–4",  tittel: "Grunnlaget",
-    caption: "Fra null til trygg daglig bruk" },
-  { nr: 2, kicker: "Fase 2 · Uke 5–7",  tittel: "Bygge og automatisere",
-    caption: "Vendepunktet: fra bruk til bygging" },
-  { nr: 3, kicker: "Fase 3 · Uke 8–10", tittel: "Forankring og leveranse",
-    caption: "Alle har bygget noe eget" },
+  { nr: 1, kicker: "Fase 1 · Uke 1–3",  tittel: "Kom i gang og bygg de første delene",
+    caption: "Fra intro til din egen skill og MCP-kobling" },
+  { nr: 2, kicker: "Fase 2 · Uke 4–7",  tittel: "Bruk Claude i arbeidet",
+    caption: "Prompting, skriving, research og analyse på ekte oppgaver" },
+  { nr: 3, kicker: "Fase 3 · Uke 8–10", tittel: "Bygg videre og forankre",
+    caption: "Bygg en MCP, trygg bruk, og del det du har laget" },
 ];
 
 const WEEKS = [
   { nr: 1,  fase: 1, status: "live",   href: "uke-01.html",
     tittel: "Fundament I",        tema: "Introduksjon, landskapet og modellvalg" },
   { nr: 2,  fase: 1, status: "kommer", href: "uke-02.html",
-    tittel: "Fundament II",       tema: "Strukturert prompting, Projects, Artifacts og Memory" },
+    tittel: "Skills",             tema: "Ekte skills i praksis, og bygg din egen" },
   { nr: 3,  fase: 1, status: "kommer", href: "uke-03.html",
-    tittel: "Skriving & Office",  tema: "Claude i Word og PowerPoint, REQ-malen" },
-  { nr: 4,  fase: 1, status: "kommer", href: "uke-04.html",
-    tittel: "Research & kilder",  tema: "Websøk, dokumentverktøy, connectors og RAG" },
+    tittel: "MCP: koble til",     tema: "Hva en MCP er, hvordan den er bygd, koble til og teste en eksisterende" },
+  { nr: 4,  fase: 2, status: "kommer", href: "uke-04.html",
+    tittel: "Strukturert prompting", tema: "XML-tags, gjenbrukbare maler, Projects, Artifacts og Memory" },
   { nr: 5,  fase: 2, status: "kommer", href: "uke-05.html",
-    tittel: "Repeterbar analyse", tema: "Gjentakbare analyser, JSON/Excel, widgets" },
+    tittel: "Skriving & Office",  tema: "Claude i Word og PowerPoint, REQ-malen" },
   { nr: 6,  fase: 2, status: "kommer", href: "uke-06.html",
-    tittel: "Deres use-cases",    tema: "Egne bruksområder - alle leverer minst én skill" },
+    tittel: "Research & kilder",  tema: "Websøk, dokumentverktøy, connectors og RAG" },
   { nr: 7,  fase: 2, status: "kommer", href: "uke-07.html",
-    tittel: "MCP & agenter",      tema: "Slik bygges en server, intern kobling, ukas agent" },
+    tittel: "Repeterbar analyse", tema: "Gjentakbare analyser, JSON/Excel, widgets" },
   { nr: 8,  fase: 3, status: "kommer", href: "uke-08.html",
-    tittel: "Trygg bruk",         tema: "Egne MCP-er og skills, datatilgang, grenser for agenter" },
+    tittel: "Bygge en MCP",       tema: "Slik bygges en server, intern kobling, ukas agent" },
   { nr: 9,  fase: 3, status: "kommer", href: "uke-09.html",
-    tittel: "Forankring",         tema: "Champions og rollefordeling" },
+    tittel: "Trygg bruk",         tema: "Egne MCP-er og skills, datatilgang, grenser for agenter" },
   { nr: 10, fase: 3, status: "kommer", href: "uke-10.html",
-    tittel: "Leveranse",          tema: "Alle har levert en fungerende skill, MCP eller widget" },
+    tittel: "Leveranse & veien videre", tema: "Del det du har laget, champions og roller" },
 ];
 
 // ── Begrepsbank (vokser hver uke; «uke» = når begrepet dekkes) ────
@@ -58,9 +58,9 @@ const GLOSSARY = [
   { term: "Haiku", uke: 1, def: "Den raske og rimelige Claude-modellen. Bra til korte svar, klassifisering og førsteutkast." },
   { term: "Sonnet", uke: 1, def: "Arbeidshesten. Sterk på de fleste oppgaver til fornuftig pris - start alltid her." },
   { term: "Opus", uke: 1, def: "Den tyngste modellen. Løft hit når oppgaven faktisk krever mer resonnering." },
-  { term: "Projects", uke: 2, def: "Et arbeidsrom i Claude med fast kontekst - filer, instrukser og historikk samlet ett sted." },
-  { term: "Artifacts", uke: 2, def: "Egne dokumenter og småapper Claude lager ved siden av samtalen, som du kan redigere videre." },
-  { term: "Memory", uke: 2, def: "Det Claude husker på tvers av samtaler, så du slipper å gjenta konteksten hver gang." },
+  { term: "Projects", uke: 4, def: "Et arbeidsrom i Claude med fast kontekst - filer, instrukser og historikk samlet ett sted." },
+  { term: "Artifacts", uke: 4, def: "Egne dokumenter og småapper Claude lager ved siden av samtalen, som du kan redigere videre." },
+  { term: "Memory", uke: 4, def: "Det Claude husker på tvers av samtaler, så du slipper å gjenta konteksten hver gang." },
 ];
 
 // ── Prompt-oppskrifter (kopierbare «prøv selv») ──────────────────

@@ -1,12 +1,12 @@
-# Økt 8 — Risiko & governance (6. okt 2026)
+# Økt 8 - Bygge en MCP (6. okt 2026)
 
-Ansvarlig bruk i et regulert forvaltningsmiljø: MNPI/innsideinformasjon, MAR, taushetsplikt og GDPR — og risikovurdering av verktøyene dere nå har bygget selv: hvilken datatilgang har din skill/MCP/agent, og hvor går grensene for hva den får gjøre?
+Fra å koble til (uke 3) til å bygge selv: slik er en MCP-server bygd opp, bygg en enkel intern kobling, og sett opp en agent som lager en ukentlig oppsummering. Vi bruker Brreg-demoen.
 
 ## Forarbeid (sendes fredag 2. okt, under 10 min)
 
-- **Les:** utkastet «kjøreregler for AI-bruk i REQ» (1 side) — les med rød penn.
-- **Ta med:** din egen skill/MCP/agent fra uke 6–7.
+- **Les:** «USB-C for AI» - hva en MCP er, 5 min konseptuelt.
+- **Ta med:** logg fra skill-bruken din (skillen du bygde i uke 2) + én datakilde du skulle ønske Claude kunne nå.
 
 ## Oppsummering
 
-*(kommer etter økten — kjør `/plugin update` for siste versjon)*
+*(kommer etter økten - kjør `/plugin update` for siste versjon)*

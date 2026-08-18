@@ -1,12 +1,13 @@
-# Økt 3 — Skriving & kommunikasjon (1. sep 2026)
+# Økt 3 - MCP: koble til (1. sep 2026)
 
-Claude i skrive- og Office-arbeidsflyten: utkast, omskriving og tonejustering for ulike mottakere (interne notater, investorer/LP-er), korrektur og NO↔EN — og en gjenbrukbar mal-instruksjon bygget på en ekte REQ-mal, slik at formatet treffer hver gang.
+Hva en MCP er, hvordan den er bygd opp, og hvordan du kobler til og tester en eksisterende MCP - vi bruker Brreg-demoen på ekte data. Å bygge en egen MCP kommer i uke 8.
 
 ## Forarbeid (sendes fredag 28. aug, under 10 min)
 
-- **Les:** kort eksempel på en «mal-instruksjon» bygget på et dokumentformat (deles i kursets Project).
-- **Ta med:** ett ekte REQ-dokument du skal skrive eller omskrive denne uken — og, hvis mulig, REQ-malen det skal inn i.
+- **Les:** «Hva er en MCP?»-énsider (skill vs. MCP; server, tools, resources) - deles i kursets Project.
+- **Sjekk:** at Claude Code kjører og at du finner en `.mcp.json` fra uke 2-oppsettet.
+- **Ta med:** ett oppslag du gjør manuelt i dag (f.eks. slå opp et selskap) som et verktøy kunne gjort for deg.
 
 ## Oppsummering
 
-*(kommer etter økten — kjør `/plugin update` for siste versjon)*
+*(kommer etter økten - kjør `/plugin update` for siste versjon)*
