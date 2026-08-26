@@ -3,6 +3,10 @@
     "req-bootcamp": {
       "type": "http",
       "url": "https://req-bootcamp.vercel.app/api/mcp"
+    },
+    "req-norge": {
+      "type": "http",
+      "url": "https://req-bootcamp.vercel.app/api/norge/mcp"
     }
   }
 }
