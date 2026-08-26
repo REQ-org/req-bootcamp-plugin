@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>REQ AI Bootcamp — kursplugin for Claude</title>
-<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, oppsummeringer og FAQ — rett i Claude Desktop.">
+<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, oppsummeringer, FAQ og Varden MCP Garden (SSB, Brreg, Kartverket, MET, regnskap) — rett i Claude Desktop.">
 <meta property="og:title" content="REQ AI Bootcamp — kursplugin for Claude">
-<meta property="og:description" content="Timeplan, forarbeid, oppsummeringer og FAQ for alle ti øktene — alltid oppdatert, rett i Claude.">
+<meta property="og:description" content="Timeplan, forarbeid, oppsummeringer, FAQ og åpne norske data via Varden MCP Garden — alltid oppdatert, rett i Claude.">
 <meta property="og:image" content="https://req-bootcamp-plugin.vercel.app/req-logo.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
@@ -292,7 +292,7 @@
     <div class="hero">
       <p class="eyebrow">REQ AI Bootcamp · Høsten 2026</p>
       <h1>Kurset, rett i Claude.</h1>
-      <p>Kurspluginen gir deg timeplan, forarbeid, oppsummeringer og svar på vanlige spørsmål for alle ti øktene — alltid oppdatert, uten å lete i e-post eller dokumenter.</p>
+      <p>Kurspluginen gir deg timeplan, forarbeid, oppsummeringer og svar på vanlige spørsmål for alle ti øktene — og åpne norske data via Varden MCP Garden, uten innlogging.</p>
     </div>
   </div>
 </header>
@@ -333,6 +333,7 @@
           <span>«hva er forarbeidet til neste økt?»</span>
           <span>«hva skjedde i økt 3?»</span>
           <span>«vis timeplanen»</span>
+          <span>«hvor mange innbyggere har Oslo?»</span>
         </div>
       </div>
     </div>
@@ -343,7 +344,7 @@
     <div class="manifest">
       <div class="manifest-head">
         <span class="pkg">req-bootcamp-plugin</span>
-        <span class="pkg-meta">1 kommando · 6 skills · 12 innholdsfiler</span>
+        <span class="pkg-meta">1 kommando · 6 skills · 2 MCP-er · 12 innholdsfiler</span>
       </div>
       <div class="mgroup">
         <div class="mgroup-label">Kommando</div>
@@ -394,8 +395,32 @@
           <p>Én fil per økt: innhold, forarbeid og oppsummering i etterkant.</p>
         </div>
       </div>
+      <div class="mgroup">
+        <div class="mgroup-label">MCP-servere — kobles på automatisk, ingen nøkkel</div>
+        <div class="mrow">
+          <code>req-bootcamp</code>
+          <p>Kursserveren: timeplan, øktnotater og FAQ, alltid siste versjon.</p>
+        </div>
+        <div class="mrow">
+          <code>req-norge</code>
+          <p>Varden MCP Garden: SSB, Enhetsregisteret, Kartverket, MET og regnskap. Offentlig, uten innlogging.</p>
+        </div>
+      </div>
     </div>
     <p class="hint">Innholdet oppdateres etter hver økt — serveren gir deg alltid siste versjon, uten at du trenger å gjøre noe.</p>
+  </section>
+
+  <section id="norge">
+    <h2>Åpne norske data</h2>
+    <p>Pluginen peker på <strong>Varden MCP Garden</strong>, så dere kan øve på connectors uten intern tilgang: SSB, Enhetsregisteret, Kartverket, MET og Regnskapsregisteret. Ingen ekstra innlogging.</p>
+    <p style="margin-top:18px">Spør Claude på vanlig norsk, for eksempel:</p>
+    <div class="try">
+      <span>«hvor mange innbyggere har Oslo?»</span>
+      <span>«slå opp REQ AS i Enhetsregisteret»</span>
+      <span>«hva er adressen Sommerrogata 17?»</span>
+      <span>«hva er værvarselet for Oslo?»</span>
+    </div>
+    <p class="hint">«Hvor mange innbyggere har Oslo?» går mot SSB via Garden. Claude skal alltid oppgi kilden. Server: <code>https://varden-mcp-garden.vercel.app/api/mcp</code></p>
   </section>
 
   <section id="last-ned">

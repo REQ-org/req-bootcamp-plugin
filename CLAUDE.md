@@ -1,20 +1,26 @@
 # CLAUDE.md — REQ AI Bootcamp plugin
 
 This repo ships a **Claude plugin** for attendees of the REQ AI Bootcamp (a Varden
-course for REQ Capital). The plugin, an MCP server, and a public site all live here
-and all read the **same course markdown** as their single source of truth.
+course for REQ Capital). The plugin, the course MCP, and a public site all live here.
+Course tools read the **same course markdown** as their single source of truth.
+
+The plugin also points at **Varden MCP Garden** (hosted elsewhere, open, no token)
+for public Norwegian data. Do not host a second Norge MCP in this repo.
 
 Content is in Norwegian (bokmål). No sensitive information is stored in this repo.
 
-## The three deliverables
+## The deliverables
 
 | Part | Path | What it is |
 |------|------|-----------|
 | **Plugin** | `plugins/req-bootcamp-plugin/` | The shippable artifact: 1 command, 6 skills, course content, `.mcp.json`. |
-| **MCP server** | `api/mcp.ts` | Vercel HTTP function (`mcp-handler` + `zod`) exposing 3 read-only tools. |
+| **Course MCP** | `api/mcp.ts` | Vercel HTTP function (`mcp-handler` + `zod`) exposing 3 read-only course tools. |
 | **Public site** | `public/` | Landing page, interactive `/kurs` course pages, and the downloadable plugin zip. |
 
-Deployed on Vercel: site at `https://req-bootcamp.vercel.app`, MCP at `/api/mcp`.
+Deployed on Vercel: site at `https://req-bootcamp.vercel.app`, course MCP at `/api/mcp`.
+
+Public data: plugin `.mcp.json` entry `req-norge` → `https://varden-mcp-garden.vercel.app/api/mcp`
+(SSB, Brreg, Kartverket, MET, Regnskapsregisteret). No `/api/norge` in this repo.
 
 ## Single source of truth — course content
 
@@ -33,7 +39,7 @@ updated after each session; the plugin/server always serve the latest.
 `plugins/req-bootcamp-plugin/`
 
 - `.claude-plugin/plugin.json` — plugin manifest (`req-bootcamp`)
-- `.mcp.json` — connects attendees to the hosted MCP server (`req-bootcamp`, http)
+- `.mcp.json` — two hosted HTTP servers: `req-bootcamp` (this repo) and `req-norge` (Garden)
 - `commands/kurs.md` — `/kurs` — overview of the next session (or answers a question)
 - `skills/`
   - `prep-me-for-bootcamp` — prep for the next session (pre-work checklist)
@@ -43,13 +49,13 @@ updated after each session; the plugin/server always serve the latest.
   - `req-presentation` — generate an REQ-branded PowerPoint (`req_deck.py`, `req_charts.py`)
   - `visualiser-bootcamp` — self-contained HTML visual of the 10-week course
 
-## MCP server tools (`api/mcp.ts`)
+## Course MCP tools (`api/mcp.ts`)
 
 - `get_schedule` — full 10-session schedule
 - `get_session({ number: 1–10 })` — one session's pre-work + recap
 - `get_faq` — practical FAQ
 
-`vercel.json` bundles the `content/**` files into the function via `includeFiles`.
+`vercel.json` bundles the `content/**` files into the course function via `includeFiles`.
 
 ## Marketplace / install
 
@@ -60,8 +66,8 @@ downloadable `public/req-bootcamp-plugin.zip`. See `README.md` for the attendee 
 
 ## Working in this repo
 
-- **Local test:** `npm test` — `test/smoke.mts` drives the MCP handler directly with
-  Web Requests (no server), exercising `initialize` + the three tools.
+- **Local test:** `npm test` — `test/smoke.mts` drives the course MCP; `test/garden-pointer.mts`
+  asserts `.mcp.json` points at Garden and that the live Garden lists SSB/Brreg/Kartverket/MET/regnskap.
 - **Stack:** TypeScript ESM, `mcp-handler`, `zod`. Python (`python-pptx`, `matplotlib`)
   only for the `req-presentation` skill.
 - After editing content, the smoke test and skills pick it up automatically — no build step.

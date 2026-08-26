@@ -7,7 +7,7 @@
     {
       "name": "req-bootcamp",
       "source": "./plugins/req-bootcamp-plugin",
-      "description": "REQ AI Bootcamp — kursinformasjon, timeplan og oppsummeringer rett i Claude Code"
+      "description": "REQ AI Bootcamp — kursinformasjon og Varden MCP Garden (SSB, Brreg, Kartverket, MET, regnskap) rett i Claude"
     }
   ],
   "description": "Varden-kurs for REQ Capital: plugin med kursinformasjon for deltakerne på REQ AI Bootcamp"

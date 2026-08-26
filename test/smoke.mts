@@ -54,11 +54,12 @@ if (!s1.content[0].text.includes("Fundamentals I")) throw new Error("session 1 c
 console.log("get_session(1) ok");
 
 const s9 = await rpc("tools/call", { name: "get_session", arguments: { number: 9 } });
-if (!s9.content[0].text.includes("Ingen fil")) throw new Error("missing-session fallback wrong");
-console.log("get_session(9) fallback ok");
+if (!s9.content[0].text.includes("Trygg bruk")) throw new Error("session 9 content wrong");
+console.log("get_session(9) ok");
 
 const faq = await rpc("tools/call", { name: "get_faq", arguments: {} });
 if (!faq.content[0].text.includes("Sommerrogata")) throw new Error("faq content wrong");
 console.log("get_faq ok");
 
 console.log("SMOKE PASSED");
+process.exit(0);
