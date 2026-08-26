@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>REQ AI Bootcamp — kursplugin for Claude</title>
-<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, oppsummeringer og FAQ — rett i Claude Desktop.">
+<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, FAQ og åpne norske data (SSB, Brreg, Kartverket) rett i Claude.">
 <meta property="og:title" content="REQ AI Bootcamp — kursplugin for Claude">
-<meta property="og:description" content="Timeplan, forarbeid, oppsummeringer og FAQ for alle ti øktene — alltid oppdatert, rett i Claude.">
+<meta property="og:description" content="Timeplan, forarbeid, FAQ og åpne norske datakilder - alltid oppdatert, rett i Claude.">
 <meta property="og:image" content="https://req-bootcamp-plugin.vercel.app/req-logo.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
@@ -292,7 +292,7 @@
     <div class="hero">
       <p class="eyebrow">REQ AI Bootcamp · Høsten 2026</p>
       <h1>Kurset, rett i Claude.</h1>
-      <p>Kurspluginen gir deg timeplan, forarbeid, oppsummeringer og svar på vanlige spørsmål for alle ti øktene — alltid oppdatert, uten å lete i e-post eller dokumenter.</p>
+      <p>Kurspluginen gir deg timeplan, forarbeid, oppsummeringer og svar på vanlige spørsmål for alle ti øktene - og åpne norske datakilder som SSB, Enhetsregisteret og Kartverket. Alltid oppdatert, uten innlogging.</p>
     </div>
   </div>
 </header>
@@ -331,8 +331,8 @@
         <p>Bare spør:</p>
         <div class="try">
           <span>«hva er forarbeidet til neste økt?»</span>
-          <span>«hva skjedde i økt 3?»</span>
-          <span>«vis timeplanen»</span>
+          <span>«hvor mange innbyggere har Oslo?»</span>
+          <span>«slå opp REQ Capital i Enhetsregisteret»</span>
         </div>
       </div>
     </div>
@@ -343,7 +343,7 @@
     <div class="manifest">
       <div class="manifest-head">
         <span class="pkg">req-bootcamp-plugin</span>
-        <span class="pkg-meta">1 kommando · 6 skills · 12 innholdsfiler</span>
+        <span class="pkg-meta">1 kommando · 6 skills · 2 MCP-er · 12 innholdsfiler</span>
       </div>
       <div class="mgroup">
         <div class="mgroup-label">Kommando</div>
@@ -394,8 +394,60 @@
           <p>Én fil per økt: innhold, forarbeid og oppsummering i etterkant.</p>
         </div>
       </div>
+      <div class="mgroup">
+        <div class="mgroup-label">MCP-servere - åpne, uten innlogging</div>
+        <div class="mrow">
+          <code>req-bootcamp</code>
+          <p>Kursets timeplan, øktnotater og FAQ - alltid siste versjon.</p>
+        </div>
+        <div class="mrow">
+          <code>norge-open-data</code>
+          <p>Offentlige norske data: SSB, Enhetsregisteret og Kartverket. Ingen API-nøkkel.</p>
+        </div>
+      </div>
     </div>
-    <p class="hint">Innholdet oppdateres etter hver økt — serveren gir deg alltid siste versjon, uten at du trenger å gjøre noe.</p>
+    <p class="hint">Innholdet oppdateres etter hver økt - serveren gir deg alltid siste versjon, uten at du trenger å gjøre noe.</p>
+  </section>
+
+  <section id="offentlige-data">
+    <h2>Offentlige data i Claude</h2>
+    <p>Interne REQ-connectors venter på legal. I mellomtiden kan dere øve på ekte MCP-koblinger mot åpne kilder - de følger med pluginen.</p>
+
+    <div class="step" style="margin-top:36px">
+      <div class="step-num">01</div>
+      <div>
+        <h3>SSB - statistikkbanken</h3>
+        <p>Spør på vanlig norsk. Claude søker i tabeller, slår opp kommunenummer og henter tall. Kilde crediteres i svaret (CC BY 4.0).</p>
+        <div class="try">
+          <span>«hvor mange innbyggere har Oslo?»</span>
+          <span>«vis KPI-utviklingen de siste fem årene»</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div>
+        <h3>Enhetsregisteret</h3>
+        <p>Oppslag mot Brønnøysundregistrene - samme type øvelse som i økt 3.</p>
+        <div class="try">
+          <span>«slå opp REQ Capital i Enhetsregisteret»</span>
+          <span>«hva er orgnr til DNB Bank ASA?»</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div>
+        <h3>Kartverket</h3>
+        <p>Adresse, stedsnavn og åpent eiendomsoppslag (matrikkelnummer / punkt). Ingen innlogging.</p>
+        <div class="try">
+          <span>«hva er adressen Sommerrogata 17 i Oslo?»</span>
+        </div>
+      </div>
+    </div>
+    <p class="hint">Server: <code>https://req-bootcamp.vercel.app/api/norge</code> - allerede satt i pluginens <code>.mcp.json</code>.</p>
   </section>
 
   <section id="last-ned">
