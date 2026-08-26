@@ -176,3 +176,4 @@ if (!toolText(eiendom).includes("209") && !toolText(eiendom).includes("matrikkel
 console.log("kartverket_lookup_eiendom ok");
 
 console.log("NORGE SMOKE PASSED");
+process.exit(0);
