@@ -1,6 +1,6 @@
 # Økt 3 - MCP: koble til (1. sep 2026)
 
-Hva en MCP er, hvordan den er bygd opp, og hvordan du kobler til og tester en eksisterende MCP. Pluginen peker allerede på Varden MCP Garden (`req-norge`) — SSB, Enhetsregisteret, Kartverket, MET og regnskap, uten innlogging. Å bygge en egen MCP kommer i uke 8.
+Hva en MCP er, hvordan den er bygd opp, og hvordan du kobler til og tester en eksisterende MCP. Pluginen peker allerede på Varden MCP Garden som én server inne i kurspluginen (`varden-garden`) — SSB, Enhetsregisteret, Kartverket, MET og regnskap, uten innlogging. Skillene `ssb`, `brreg`, `regnskap`, `kartverket` og `met` sier når Claude skal bruke hvilken pakke. Å bygge en egen MCP kommer i uke 8.
 
 ## Forarbeid (sendes fredag 28. aug, under 10 min)
 

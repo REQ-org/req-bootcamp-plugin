@@ -1,25 +1,86 @@
-// Assert the plugin points at the live Varden MCP Garden — not a plugin-hosted /api/norge/mcp.
-import { readFile } from "node:fs/promises";
+// Garden is one MCP pack inside the REQ bootcamp plugin — not a second plugin,
+// and not a plugin-hosted /api/norge/mcp.
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 
 const GARDEN = "https://varden-mcp-garden.vercel.app/api/mcp";
 const COURSE = "https://req-bootcamp.vercel.app/api/mcp";
 const DEAD = "https://req-bootcamp.vercel.app/api/norge/mcp";
+const ROOT = process.cwd();
+const PLUGIN = path.join(ROOT, "plugins/req-bootcamp-plugin");
 
-const mcpPath = path.join(
-  process.cwd(),
-  "plugins/req-bootcamp-plugin/.mcp.json"
-);
-const mcp = JSON.parse(await readFile(mcpPath, "utf8"));
+const mcp = JSON.parse(
+  await readFile(path.join(PLUGIN, ".mcp.json"), "utf8")
+) as {
+  mcpServers?: Record<string, { url?: string }>;
+};
+const keys = Object.keys(mcp.mcpServers ?? {});
+if (keys.includes("req-norge")) {
+  throw new Error("rename req-norge — Garden is a pack key, not a sibling plugin");
+}
+if (JSON.stringify(keys.sort()) !== JSON.stringify(["req-bootcamp", "varden-garden"])) {
+  throw new Error(`expected req-bootcamp + varden-garden, got: ${keys.join(", ")}`);
+}
 const bootcamp = mcp.mcpServers?.["req-bootcamp"]?.url;
-const norge = mcp.mcpServers?.["req-norge"]?.url;
-
+const garden = mcp.mcpServers?.["varden-garden"]?.url;
 if (bootcamp !== COURSE) throw new Error(`req-bootcamp url wrong: ${bootcamp}`);
-if (norge !== GARDEN) throw new Error(`req-norge must point at Garden, got: ${norge}`);
-if (norge === DEAD || JSON.stringify(mcp).includes("/api/norge/mcp")) {
+if (garden !== GARDEN) throw new Error(`varden-garden must point at Garden, got: ${garden}`);
+if (JSON.stringify(mcp).includes("/api/norge/mcp") || garden === DEAD) {
   throw new Error("plugin still advertises plugin-hosted /api/norge/mcp");
 }
-console.log(".mcp.json ok: req-norge → Garden");
+console.log(".mcp.json ok: varden-garden → Garden");
+
+const marketplace = JSON.parse(
+  await readFile(path.join(ROOT, ".claude-plugin/marketplace.json"), "utf8")
+) as { plugins?: { name?: string }[] };
+if (marketplace.plugins?.length !== 1 || marketplace.plugins[0]?.name !== "req-bootcamp") {
+  throw new Error("marketplace must keep exactly one plugin: req-bootcamp");
+}
+try {
+  await access(path.join(ROOT, "plugins/varden-mcp-garden"));
+  throw new Error("do not ship plugins/varden-mcp-garden — Garden is not a standalone plugin");
+} catch (err) {
+  if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
+}
+console.log("marketplace ok: one plugin, no standalone Garden");
+
+const packs = [
+  {
+    name: "ssb",
+    needles: ["befolkning", "ssb_search_tables", "ssb_table_data", "400"],
+  },
+  {
+    name: "brreg",
+    needles: ["orgnr", "brreg_search_entities", "brreg_get_roles", "omsetning"],
+  },
+  {
+    name: "regnskap",
+    needles: ["omsetning", "brreg_get_accounts", "926931490", "3-år"],
+  },
+  {
+    name: "kartverket",
+    needles: ["adresse", "kartverket_search_addresses", "Sommerrogata", "Matrikkel"],
+  },
+  {
+    name: "met",
+    needles: ["vær", "met_locationforecast", "varden-garden"],
+  },
+] as const;
+
+for (const pack of packs) {
+  const raw = await readFile(path.join(PLUGIN, "skills", pack.name, "SKILL.md"), "utf8");
+  if (!raw.startsWith("---\n") || !raw.includes(`name: ${pack.name}`)) {
+    throw new Error(`${pack.name}: missing YAML name`);
+  }
+  const desc = raw.match(/^description:\s*(.+)$/m)?.[1] ?? "";
+  if (desc.length < 40) throw new Error(`${pack.name}: description too thin for routing`);
+  const missing = pack.needles.filter((n) => !raw.toLowerCase().includes(n.toLowerCase()));
+  if (missing.length) {
+    throw new Error(`${pack.name} skill missing: ${missing.join(", ")}`);
+  }
+  await access(path.join(PLUGIN, "commands", `${pack.name}.md`));
+}
+console.log("Garden pack skills + commands ok");
 
 let nextId = 1;
 let sessionId: string | undefined;

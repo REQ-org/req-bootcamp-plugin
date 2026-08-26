@@ -1,6 +1,6 @@
 {
   "name": "req-bootcamp",
-  "description": "REQ AI Bootcamp — kursinformasjon og Varden MCP Garden (SSB, Brreg, Kartverket, MET, regnskap) rett i Claude",
+  "description": "REQ AI Bootcamp — kursinformasjon, timeplan og oppsummeringer rett i Claude. Inneholder også en åpen MCP med norske data (Garden).",
   "author": {
     "name": "Varden"
   }
