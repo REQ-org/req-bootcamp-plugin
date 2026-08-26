@@ -28,13 +28,13 @@ Dukker ikke pluginen opp under organisasjonen din, eller henger installeringen? 
 
 Spør Claude om alt som gjelder kurset - prøv kommandoen `/kurs`, skillen `prep-me-for-bootcamp`, eller `/forklar <tema>` for en forklaring på hva som helst.
 
-Pluginen har også en åpen MCP mot offentlige norske data (`req-norge`) — SSB, Enhetsregisteret og Kartverket. Ingen innlogging. Prøv:
+Pluginen kobler også til **Varden MCP Garden** — åpne norske data uten innlogging: SSB, Enhetsregisteret, Kartverket, MET og Regnskapsregisteret (nøkkeltall). Prøv:
 
 - «hvor mange innbyggere har Oslo?»
 - «slå opp REQ AS i Enhetsregisteret»
 - «hva er adressen Sommerrogata 17?»
-
-Claude bruker SSB-verktøyene (`ssb_search` → `ssb_table_metadata` → `ssb_get_data`) og oppgir kilden. Oslo er regionkode `0301`; tabell `11342` eller `07459` gir folketallet.
+- «hva er værvarselet for Oslo?»
+- «hent nøkkeltall fra siste årsregnskap for REQ AS»
 
 ## Oppdateringer
 
@@ -47,9 +47,9 @@ Pluginen kobler deg automatisk til to åpne MCP-servere — ingenting å konfigu
 | Server | URL | Innhold |
 |---|---|---|
 | `req-bootcamp` | `https://req-bootcamp.vercel.app/api/mcp` | Timeplan, øktnotater og FAQ (`api/mcp.ts`) |
-| `req-norge` | `https://req-bootcamp.vercel.app/api/norge/mcp` | SSB, Enhetsregisteret og Kartverket (`api/norge/mcp.ts`, `lib/norge/`) |
+| `req-norge` | `https://varden-mcp-garden.vercel.app/api/mcp` | Varden MCP Garden: SSB, Brreg, Kartverket, MET, regnskap |
 
-Kursserveren leser de samme markdown-filene som pluginen. Dataserveren wrapper offisielle åpne API-er og krediterer kilden i hvert svar.
+Kursserveren leser de samme markdown-filene som pluginen. Garden er Vardens felles åpne MCP — ikke en ekstra server i dette repoet.
 
 > Merk: kommandoen `/kurs`, skillene og innholdet følger med selve pluginen. Installer den fra organisasjonen din (over) for å få alt.
 

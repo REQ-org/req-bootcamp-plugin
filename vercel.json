@@ -3,9 +3,6 @@
     "api/mcp.ts": {
       "includeFiles": "plugins/req-bootcamp-plugin/content/**",
       "maxDuration": 30
-    },
-    "api/norge/mcp.ts": {
-      "maxDuration": 30
     }
   }
 }

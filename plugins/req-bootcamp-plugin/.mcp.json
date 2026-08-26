@@ -6,7 +6,7 @@
     },
     "req-norge": {
       "type": "http",
-      "url": "https://req-bootcamp.vercel.app/api/norge/mcp"
+      "url": "https://varden-mcp-garden.vercel.app/api/mcp"
     }
   }
 }
