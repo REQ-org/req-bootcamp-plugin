@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>REQ AI Bootcamp — kursplugin for Claude</title>
-<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, oppsummeringer, FAQ og Varden MCP Garden (SSB, Brreg, Kartverket, MET, regnskap) — rett i Claude Desktop.">
+<meta name="description" content="Installer kurspluginen for REQ AI Bootcamp: timeplan, forarbeid, oppsummeringer og FAQ — rett i Claude Desktop. Inneholder også en åpen MCP med norske data (Garden).">
 <meta property="og:title" content="REQ AI Bootcamp — kursplugin for Claude">
-<meta property="og:description" content="Timeplan, forarbeid, oppsummeringer, FAQ og åpne norske data via Varden MCP Garden — alltid oppdatert, rett i Claude.">
+<meta property="og:description" content="Timeplan, forarbeid, oppsummeringer og FAQ — alltid oppdatert, rett i Claude. Inneholder også en åpen MCP med norske data (Garden).">
 <meta property="og:image" content="https://req-bootcamp-plugin.vercel.app/req-logo.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
@@ -292,7 +292,7 @@
     <div class="hero">
       <p class="eyebrow">REQ AI Bootcamp · Høsten 2026</p>
       <h1>Kurset, rett i Claude.</h1>
-      <p>Kurspluginen gir deg timeplan, forarbeid, oppsummeringer og svar på vanlige spørsmål for alle ti øktene — og åpne norske data via Varden MCP Garden, uten innlogging.</p>
+      <p>Kurspluginen gir deg timeplan, forarbeid, oppsummeringer og svar på vanlige spørsmål for alle ti øktene. Den inneholder også en åpen MCP med norske data (Garden), uten innlogging.</p>
     </div>
   </div>
 </header>
@@ -344,13 +344,17 @@
     <div class="manifest">
       <div class="manifest-head">
         <span class="pkg">req-bootcamp-plugin</span>
-        <span class="pkg-meta">1 kommando · 6 skills · 2 MCP-er · 12 innholdsfiler</span>
+        <span class="pkg-meta">6 kommandoer · 12 skills · 2 MCP-er · 12 innholdsfiler</span>
       </div>
       <div class="mgroup">
-        <div class="mgroup-label">Kommando</div>
+        <div class="mgroup-label">Kommandoer</div>
         <div class="mrow">
           <code>/kurs</code>
           <p>Neste økt på ti sekunder — dato, tema og forarbeidet du bør gjøre.</p>
+        </div>
+        <div class="mrow">
+          <code>/ssb</code> <code>/brreg</code> <code>/regnskap</code> <code>/kartverket</code> <code>/met</code>
+          <p>Valgfrie snarveier til hver Garden-pakke. Claude tar skillene i bruk selv når du spør på vanlig norsk.</p>
         </div>
       </div>
       <div class="mgroup">
@@ -379,6 +383,10 @@
           <code>forklar</code>
           <p>Forklarer hva som helst på naturlig bokmål — fra AI- og kursbegreper til alt annet.</p>
         </div>
+        <div class="mrow">
+          <code>ssb</code> <code>brreg</code> <code>regnskap</code> <code>kartverket</code> <code>met</code>
+          <p>Når Claude skal bruke Garden — statistikk, selskap, omsetning, adresse eller vær — og når hen skal la være.</p>
+        </div>
       </div>
       <div class="mgroup">
         <div class="mgroup-label">Innhold</div>
@@ -402,8 +410,8 @@
           <p>Kursserveren: timeplan, øktnotater og FAQ, alltid siste versjon.</p>
         </div>
         <div class="mrow">
-          <code>req-norge</code>
-          <p>Varden MCP Garden: SSB, Enhetsregisteret, Kartverket, MET og regnskap. Offentlig, uten innlogging.</p>
+          <code>varden-garden</code>
+          <p>Garden-pakke i denne pluginen: SSB, Enhetsregisteret, Kartverket, MET og regnskap. Offentlig, uten innlogging — ikke et eget plugin.</p>
         </div>
       </div>
     </div>
@@ -412,7 +420,7 @@
 
   <section id="norge">
     <h2>Åpne norske data</h2>
-    <p>Pluginen peker på <strong>Varden MCP Garden</strong>, så dere kan øve på connectors uten intern tilgang: SSB, Enhetsregisteret, Kartverket, MET og Regnskapsregisteret. Ingen ekstra innlogging.</p>
+    <p>Pluginen peker på <strong>Varden MCP Garden</strong> som én MCP-server inne i kurspluginen (<code>varden-garden</code>) — ikke som et eget plugin — så dere kan øve på connectors uten intern tilgang: SSB, Enhetsregisteret, Kartverket, MET og Regnskapsregisteret. Ingen ekstra innlogging.</p>
     <p style="margin-top:18px">Spør Claude på vanlig norsk, for eksempel:</p>
     <div class="try">
       <span>«hvor mange innbyggere har Oslo?»</span>

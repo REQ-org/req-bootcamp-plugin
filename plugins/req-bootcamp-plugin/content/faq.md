@@ -10,10 +10,10 @@
 
 - **Hva trenger jeg?** Claude-konto (dekkes av REQ) og fra økt 2: Claude Code med kurspluginen - installasjonsstegene står i README-en til dette repoet og i forarbeidet til økt 2.
 - **Hvordan oppdaterer jeg pluginen?** Kjør `/plugin update` i Claude Code (velg `req-bootcamp-plugin`), eller på kommandolinjen: `claude plugin update req-bootcamp-plugin@req-bootcamp-plugin`. Innholdet oppdateres etter hver økt.
-- **Hva er MCP-serverne?** Pluginen kobler Claude til to åpne servere, uten innlogging:
+- **Hva er MCP-serverne?** Pluginen kobler Claude til to åpne servere, uten innlogging — begge inne i **denne** kurspluginen, ikke som et eget Garden-plugin:
   - `req-bootcamp` — timeplan, oppsummeringer og FAQ (dette repoet)
-  - `req-norge` — [Varden MCP Garden](https://varden-mcp-garden.vercel.app/api/mcp): SSB, Enhetsregisteret, Kartverket, MET og Regnskapsregisteret (nøkkeltall)
-  Ingenting å konfigurere. Prøv f.eks. «hvor mange innbyggere har Oslo?» — det går mot SSB via Garden. I økt 3 kobler vi til en eksisterende MCP, og i økt 8 ser vi hvordan en slik server bygges.
+  - `varden-garden` — [Varden MCP Garden](https://varden-mcp-garden.vercel.app/api/mcp): SSB, Enhetsregisteret, Kartverket, MET og Regnskapsregisteret (nøkkeltall)
+  Skillene `ssb`, `brreg`, `regnskap`, `kartverket` og `met` styrer når Claude bruker hvilken pakke. Ingenting å konfigurere. Prøv f.eks. «hvor mange innbyggere har Oslo?» — det går mot SSB via Garden. I økt 3 kobler vi til en eksisterende MCP, og i økt 8 ser vi hvordan en slik server bygges.
 
 ## Kurset
 

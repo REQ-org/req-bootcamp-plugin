@@ -4,7 +4,7 @@
       "type": "http",
       "url": "https://req-bootcamp.vercel.app/api/mcp"
     },
-    "req-norge": {
+    "varden-garden": {
       "type": "http",
       "url": "https://varden-mcp-garden.vercel.app/api/mcp"
     }
