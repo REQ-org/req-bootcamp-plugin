@@ -1,6 +1,6 @@
 {
   "name": "req-bootcamp",
-  "description": "REQ AI Bootcamp — kursinformasjon, timeplan og oppsummeringer rett i Claude Code",
+  "description": "REQ AI Bootcamp - kursinformasjon pluss åpne norske data (SSB, Brreg, Kartverket) rett i Claude",
   "author": {
     "name": "Varden"
   }
