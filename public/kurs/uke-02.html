@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Uke 2 · Skills - REQ AI Bootcamp</title>
-<meta name="description" content="Ekte skills i praksis, og bygg din egen">
+<meta name="description" content="Utforsk konseptene fra økt 2: anatomien til en skill, samme stresstest tre ganger, god mot dårlig skill, og prioriteringsmatrisen.">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,17 +21,295 @@
       <img src="/req-logo.png" alt="REQ Capital" width="1280" height="533">
       <a href="index.html">← Kartet</a>
     </div>
+    <div class="hero">
+      <p class="eyebrow">Uke 2 · Skills</p>
+      <h1>Hva en skill er - og så skriver du din egen</h1>
+      <p class="lead">Dette er ikke lysbildene på nytt. Det er stedet å gå litt dypere etter økta: klikk gjennom anatomien, sammenlign de tre kjøringene, og plot oppgavene dine i matrisen.</p>
+      <div class="hero-dl">
+        <a class="dl-btn" href="slides/uke-02.html">
+          <span class="dl-ico" aria-hidden="true">→</span> Åpne lysbildene
+        </a>
+        <span class="dl-meta">HTML · som brukt i økta 25. aug</span>
+      </div>
+      <nav class="anchor-nav" aria-label="Moduler på siden">
+        <a href="#anatomi">Anatomi</a>
+        <a href="#trappen">Tre nivåer</a>
+        <a href="#stresstest">Stresstesten</a>
+        <a href="#matrise">Matrisen</a>
+        <a href="#begrepsbank">Begrepsbank</a>
+        <a href="#prompter">Prompter</a>
+      </nav>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
-  <section class="kommer-block">
-    <p class="kicker">Uke 2 · Kommer</p>
-    <h2>Skills</h2>
-    <p>Ekte skills i praksis, og bygg din egen.</p>
-    <p>Innholdet for denne uka legges ut etter økta - da får den sine egne interaktive moduler, akkurat som uke 1.</p>
-    <p style="margin-top:30px;"><a href="index.html">← Tilbake til kartet</a></p>
+
+  <!-- ── 1 · Anatomi ──────────────────────────────────────────── -->
+  <section class="modul" id="anatomi">
+    <p class="kicker">Anatomi</p>
+    <h2>Hva er en skill?</h2>
+    <p class="lead">En skill er markdown-filer i en mappe - ikke magi. Klikk i treet for å se rollen til hver fil. Eksempelet er stresstest-skillen fra økta.</p>
+
+    <div class="anatomy-split" id="skill-tree">
+      <div>
+        <div class="ft-root">stresstest-2/</div>
+        <button type="button" class="ft-item active" data-file="skill" aria-pressed="true">SKILL.md</button>
+        <button type="button" class="ft-item indent" data-file="mandat" aria-pressed="false">references/mandat.md</button>
+        <button type="button" class="ft-item indent" data-file="flagg" aria-pressed="false">references/rode-flagg.md</button>
+        <button type="button" class="ft-item indent" data-file="eksempel" aria-pressed="false">examples/stresstest-eksempel.md</button>
+        <p class="ft-hint">Klikk en fil. Poenget er rollene, ikke å lese alt.</p>
+      </div>
+      <div>
+        <div class="file-view active" data-file="skill">
+          <p class="file-role">Selve skillen - trigger + oppskrift</p>
+          <pre class="code"><span class="c">---</span>
+name: stresstest-2
+description: Stresstester et eiendomsprospekt
+             mot investeringsmandatet. Bruk når
+             noen ber om å stressteste, utfordre
+             eller vurdere et prospekt. Ikke når
+             oppgaven er å oppsummere.
+<span class="c">---</span>
+
+# Stresstest av eiendomsprospekt
+
+Prospektet er et salgsdokument. Jobben
+din er å være motparten, ikke referenten.
+
+## Arbeidsflyt
+1. Les references/mandat.md - målestokken.
+2. Skim references/rode-flagg.md - sjekklisten.
+3. Gå målrettet gjennom prospektet.
+4. Skriv etter strukturen - usikker på
+   formen? Se eksempelet.</pre>
+        </div>
+        <div class="file-view" data-file="mandat" hidden>
+          <p class="file-role">Målestokken - alt vurderes mot denne</p>
+          <pre class="code"># Investeringsmandat - eiendom
+
+1. Strategi: Kontantstrømmende næringseiendom
+   i Norge. Ikke utvikling, bolig eller utland.
+2. Avkastningskrav: Netto IRR på minst 10 %.
+3. Belåning: Maks 65 % LTV, rentesikring på
+   minst halvparten av gjelden.
+4. Leie: WAULT på minst 5 år, ingen leietaker
+   over 40 %.
+5. Kostnader: Samlede honorarer under 1 %.
+6. Likviditet: Exit-strategi beskrevet.
+7. Teknisk: DD og miljø med tallfestet capex.
+8. Forvalter: Track record fra minst tre
+   prosjekter, tallfestet egeninvestering.
+
+<span class="c">Eksempelmandat til kursbruk - ikke REQs eget.</span></pre>
+        </div>
+        <div class="file-view" data-file="flagg" hidden>
+          <p class="file-role">Sjekklisten - svakhetene folk overser</p>
+          <pre class="code"># Røde flagg i eiendomsprospekter
+
+## Avkastning og forutsetninger
+- Exit-yield satt lavere enn kjøpsyield
+  uten begrunnelse
+- «As if stabilized»-tall presentert som
+  dagens drift
+
+## Leie og kontantstrøm
+- Kort WAULT fremstilt som trygghet
+- Én leietaker dominerer, uten kredittvurdering
+
+## Finansiering og verdier
+- Verdivurdering bestilt av selger, eller
+  eldre enn seks måneder
+
+## Struktur og interessekonflikter
+- Tilrettelegger er også selger, forvalter
+  eller långiver</pre>
+        </div>
+        <div class="file-view" data-file="eksempel" hidden>
+          <p class="file-role">Forbildet - formen og tonen den skal treffe</p>
+          <pre class="code"># Stresstest: Lysaker Torg 8 Eiendomsinvest AS
+
+grønn 3 · gul 3 · rød 2 - Avstå i nåværende form
+
+## Hva prospektet tilbyr
+| Netto IRR (prognose) | 11,2 % | s. 9 |
+| LTV ved kjøp         | 64 %   | s. 14 |
+| WAULT                | 5,3 år | s. 11 |
+
+## Vurdering mot mandatet
+| Strategi   | grønn | Kontantstrømmende kontor i Norge |
+| Avkastning | gul   | IRR over kravet, men exit-yield
+             uten begrunnelse |
+
+## Svakheter · Styrker · Konklusjon
+
+<span class="c">Fiktivt prospekt - det er formen og tonen
+som er poenget.</span></pre>
+        </div>
+      </div>
+    </div>
+    <p class="takeaway"><b>Poenget:</b> <code>description</code> er triggeren - les den høyt. Mandatet er målestokken, røde flagg er sjekklisten, eksempelet er forbildet. En skill er bare filer i en mappe.</p>
   </section>
+
+  <!-- ── 2 · Trappen ──────────────────────────────────────────── -->
+  <section class="modul" id="trappen">
+    <p class="kicker">Kontekst</p>
+    <h2>Tre nivåer av instruksjon</h2>
+    <p class="lead">Ett minutt i økta. Tre trinn, ikke mer. Walkthroughen etterpå <em>er</em> eksempelet.</p>
+
+    <div class="ladder">
+      <div class="ladder-step">
+        <p class="step-num">Trinn 1</p>
+        <h3 class="step-title">Bare en prompt</h3>
+        <p class="step-desc">Du skriver alt hver gang. Claude vet ingenting fra før.</p>
+      </div>
+      <div class="ladder-step">
+        <p class="step-num">Trinn 2</p>
+        <h3 class="step-title">Prompt + filer i Project</h3>
+        <p class="step-desc">Faste dokumenter som ligger ved. Kontekst, men ingen oppskrift.</p>
+      </div>
+      <div class="ladder-step highlight">
+        <p class="step-num">Trinn 3</p>
+        <h3 class="step-title">Skill</h3>
+        <p class="step-desc">En fil som sier hva den skal gjøre, når, og viser et forbilde. Den trigger automatisk.</p>
+      </div>
+    </div>
+    <p class="takeaway"><b>Deretter:</b> samme oppgave tre ganger - uten skill, med en dårlig, med en god.</p>
+  </section>
+
+  <!-- ── 3 · Stresstesten ─────────────────────────────────────── -->
+  <section class="modul" id="stresstest">
+    <p class="kicker">Walkthrough</p>
+    <h2>Samme stresstest tre ganger</h2>
+    <p class="lead">Modelljobben: holder prospektet mot målene, og hvor er hullene? Samme prospekt og samme énlinjes prompt i alle tre kjøringene. Prospektet var Hermans egen fil - formen er poenget, ikke deres oppgave. Bytt mellom kjøringene.</p>
+
+    <div class="segmented" id="run-toggle" role="group" aria-label="Hvilken kjøring">
+      <button type="button" data-run="1" aria-pressed="true">Uten skill</button>
+      <button type="button" data-run="2" aria-pressed="false">Dårlig skill</button>
+      <button type="button" data-run="3" aria-pressed="false">God skill</button>
+    </div>
+
+    <div class="run-panel" data-run="1">
+      <p class="file-role">Kjøring 1 · prompten alene</p>
+      <p class="statement">«Stresstest dette prospektet.»</p>
+      <p>Last opp prospektet, lim inn den ene setningen. Typiske bom:</p>
+      <ul class="plain-list">
+        <li>En høflig oppsummering, ikke en stresstest</li>
+        <li>Tror på prospektets egne tall</li>
+        <li>Ingen målestokk å vurdere mot</li>
+        <li>Like mange styrker som svakheter - for balansens skyld</li>
+      </ul>
+    </div>
+    <div class="run-panel" data-run="2" hidden>
+      <p class="file-role">Kjøring 2 · hele den dårlige filen</p>
+      <pre class="code"><span class="c">---</span>
+name: stresstest-1
+description: Bruk når du skal stressteste et prospekt.
+<span class="c">---</span>
+
+# Stresstest
+
+Les prospektet og lag en profesjonell stresstest.
+Ikke bruk lang tid på dokumentet.
+
+- Start med en kort oppsummering av prospektet.
+- Vær balansert: like mange styrker som svakheter.
+- Hold en konstruktiv og positiv tone. Vi vil
+  ikke virke vanskelige.
+- Bruk prospektets egne tall og begreper. De
+  kjenner dokumentet best.</pre>
+      <p>Hver linje høres fornuftig ut - og hver linje gjør stresstesten dårligere.</p>
+    </div>
+    <div class="run-panel" data-run="3" hidden>
+      <p class="file-role">Kjøring 3 · mappen lastet opp som den er</p>
+      <pre class="code">stresstest-2/
+    SKILL.md
+    references/mandat.md
+    references/rode-flagg.md
+    examples/stresstest-eksempel.md</pre>
+      <ul class="plain-list">
+        <li>Leser målrettet - hopper over staffasjen</li>
+        <li>Rater prospektet mot mandatet, punkt for punkt</li>
+        <li>Skeptisk utgangspunkt - prospektet er et salgsdokument</li>
+        <li>Mandatmatrise med trafikklys - krav og virkelighet side om side</li>
+        <li>Har et eksempel å lene seg på</li>
+      </ul>
+    </div>
+
+    <div class="compare-cols">
+      <div class="compare-col good">
+        <span class="compare-badge">God skill</span>
+        <ul class="compare-list">
+          <li>Trigger som sier når - og når ikke</li>
+          <li>Struktur og rekkefølge for innholdet</li>
+          <li>En målestokk å vurdere mot (mandatet)</li>
+          <li>Regler som fanger typiske feil</li>
+          <li>Et eksempel den kan lene seg på</li>
+        </ul>
+      </div>
+      <div class="compare-col bad">
+        <span class="compare-badge">Dårlig skill</span>
+        <ul class="compare-list">
+          <li>Vag trigger - du må huske den selv</li>
+          <li>Krever balanse - like mange styrker som svakheter</li>
+          <li>Positiv tone - tror på salgsdokumentet</li>
+          <li>Ingenting å måle mot</li>
+          <li>Ikke noe eksempel</li>
+        </ul>
+      </div>
+    </div>
+    <p class="takeaway"><b>Forskjellen er ikke magi.</b> Det er instruksjon, en målestokk og et forbilde. Dette er sjekklisten til din egen skill.</p>
+  </section>
+
+  <!-- ── 4 · Matrisen ─────────────────────────────────────────── -->
+  <section class="modul" id="matrise">
+    <p class="kicker">Prioritering</p>
+    <h2>Hvor ligger oppgavene deres?</h2>
+    <p class="lead">Aksene: <b>verdi</b> = tiden oppgaven spiser i dag, <b>kompleksitet</b> = hvor vanskelig en skill er å få til. Klikk i ruten, skriv, Enter. Dra en lapp for å flytte den, klikk for å fjerne. Alle skal ut med <em>én</em> oppgave - helst et quick win.</p>
+
+    <div class="quad" id="matrix">
+      <div class="quad-y-label">verdi →</div>
+      <div class="quad-grid" id="matrix-grid">
+        <div class="quad-cell highlight">
+          <span class="quad-name">Quick wins</span>
+          <span class="quad-sub">Høy verdi · lav kompleksitet</span>
+        </div>
+        <div class="quad-cell">
+          <span class="quad-name">Store satsinger</span>
+          <span class="quad-sub">Høy verdi · høy kompleksitet</span>
+        </div>
+        <div class="quad-cell">
+          <span class="quad-name">Trivielt</span>
+          <span class="quad-sub">Lav verdi · lav kompleksitet</span>
+        </div>
+        <div class="quad-cell">
+          <span class="quad-name">Unngå</span>
+          <span class="quad-sub">Lav verdi · høy kompleksitet</span>
+        </div>
+      </div>
+      <div class="quad-x-label">kompleksitet →</div>
+    </div>
+    <p class="takeaway"><b>Deres tur i økta:</b> skriv en enkel skill for oppgaven dere valgte. Bruk stresstest-skillen som mal for <em>formen</em>, ikke for innholdet. Ferdig når filen har en trigger og en kort kropp - og dere har kjørt den på et eksempel den ikke ble skrevet for.</p>
+    <p class="takeaway"><b>Før 1. sep:</b> prøv skillen på to ekte oppgaver. Noter når triggeren traff, og når den ikke gjorde det. Neste uke er MCP: koble til noe som allerede finnes, og teste.</p>
+  </section>
+
+  <!-- ── 5 · Begrepsbank ──────────────────────────────────────── -->
+  <section class="modul" id="begrepsbank">
+    <p class="kicker">Begrepsbank</p>
+    <h2>Ordene vi bruker</h2>
+    <p class="lead">Begrepene fra kurset, forklart på naturlig bokmål. Den vokser for hver uke - søk for å finne det du er ute etter.</p>
+    <input type="search" id="gloss-search" class="gloss-search" placeholder="Søk i begrepene …" aria-label="Søk i begrepsbanken" autocomplete="off">
+    <div class="gloss-list" id="gloss-list"></div>
+  </section>
+
+  <!-- ── 6 · Prompt-oppskrifter ───────────────────────────────── -->
+  <section class="modul" id="prompter">
+    <p class="kicker">Prøv selv</p>
+    <h2>Prompt-oppskrifter</h2>
+    <p class="lead">Ferdige prompter knyttet til stoffet fra økta. Kopier én, lim inn i Claude og gjør den til din egen.</p>
+    <div class="prompt-list" id="prompt-list" data-uke="2"></div>
+  </section>
+
 </main>
 
 <footer>
@@ -40,5 +318,7 @@
     <p>Bygget av <a href="https://vardenlab.com">Varden</a> for REQ Capital</p>
   </div>
 </footer>
+
+<script src="kurs.js"></script>
 </body>
 </html>

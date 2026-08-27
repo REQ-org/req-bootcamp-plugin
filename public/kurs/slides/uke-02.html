@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bootcamp for REQ - Uke 2</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy: #001D6C;
+            --petrol: #005070;
+            --petrol-blue: #007C9D;
+            --teal: #82C0C7;
+            --mist: #C8D8DF;
+            --ink: #1A1A1A;
+            --grey: #666666;
+            --hairline: #E5E5E5;
+            --white: #FFFFFF;
+            --off-white: #FAFBFC;
+            --negative: #8C1D18;
+
+            --font-display: 'DM Serif Display', Georgia, serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+            --stage-bg: #0A0F1C;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --dur: 0.7s;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%; margin: 0;
+            overflow: hidden;
+            background: var(--stage-bg);
+        }
+
+        .deck-viewport {
+            position: fixed; inset: 0; overflow: hidden;
+            background: var(--stage-bg);
+        }
+
+        .deck-stage {
+            position: absolute; left: 0; top: 0;
+            width: 1920px; height: 1080px;
+            overflow: hidden; transform-origin: 0 0;
+        }
+
+        .slide {
+            position: absolute; inset: 0;
+            width: 1920px; height: 1080px;
+            overflow: hidden;
+            visibility: hidden; opacity: 0;
+            pointer-events: none;
+            background: var(--white);
+            color: var(--ink);
+            font-family: var(--font-body);
+        }
+
+        .slide.active, .slide.visible {
+            visibility: visible; opacity: 1;
+            pointer-events: auto; z-index: 1;
+        }
+
+        img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+
+        @media print {
+            html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+            .deck-viewport { position: static; overflow: visible; background: #fff; }
+            .deck-stage { position: static; width: auto; height: auto; transform: none !important; }
+            .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; }
+            .slide:last-child { break-after: auto; }
+            .deck-controls { display: none !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+        }
+
+        /* ---- SLIDE CHROME ---- */
+
+        .slide-inner {
+            position: absolute;
+            left: 100px; top: 80px;
+            width: 1720px; height: 920px;
+        }
+
+        .slide-number {
+            position: absolute;
+            right: 220px; bottom: 48px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            color: var(--grey);
+        }
+
+        .corner-logo {
+            position: absolute;
+            right: 100px; top: 56px;
+            height: 30px; width: auto;
+        }
+
+        .brand-logo {
+            position: absolute;
+            right: 100px; bottom: 44px;
+            height: 15px; width: auto;
+            opacity: 0.75;
+        }
+
+        .nav-rule {
+            position: absolute;
+            left: 100px; right: 100px;
+            bottom: 72px;
+            height: 1px;
+            background: var(--hairline);
+        }
+
+        .slide-footer {
+            position: absolute;
+            left: 100px; bottom: 48px;
+            font-size: 13px;
+            color: var(--grey);
+            letter-spacing: 0.02em;
+        }
+
+        /* ---- TYPOGRAPHY ---- */
+
+        .kicker {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--petrol-blue);
+            margin-bottom: 20px;
+        }
+
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: 72px;
+            font-weight: 400;
+            line-height: 1.0;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+
+        .lede {
+            margin-top: 24px;
+            font-size: 28px;
+            font-weight: 300;
+            line-height: 1.4;
+            color: var(--grey);
+            max-width: 1200px;
+        }
+
+        .divider {
+            width: 80px; height: 2px;
+            background: var(--navy);
+            margin: 36px 0 40px;
+        }
+
+        .statement {
+            font-family: var(--font-display);
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1.25;
+            max-width: 1300px;
+            color: var(--ink);
+        }
+
+        .statement-sub {
+            margin-top: 28px;
+            font-size: 26px;
+            font-weight: 300;
+            color: var(--grey);
+            line-height: 1.45;
+            max-width: 1200px;
+        }
+
+        /* ---- CLAUDE INPUT MOCK ---- */
+
+        .claude-input {
+            margin-top: 56px;
+            width: 900px;
+            background: var(--white);
+            border: 1px solid var(--hairline);
+            border-radius: 24px;
+            padding: 26px 28px 20px;
+            box-shadow: 0 18px 48px rgba(10, 15, 28, 0.10);
+        }
+
+        .claude-input-text {
+            font-family: var(--font-body);
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--ink);
+            line-height: 1.4;
+        }
+
+        .claude-input-text .caret {
+            display: inline-block;
+            width: 2px;
+            height: 30px;
+            background: var(--petrol-blue);
+            margin-left: 3px;
+            vertical-align: -5px;
+            animation: caretBlink 1.1s steps(1) infinite;
+        }
+
+        @keyframes caretBlink {
+            0%, 50% { opacity: 1; }
+            50.01%, 100% { opacity: 0; }
+        }
+
+        .claude-input-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 26px;
+        }
+
+        .claude-input-tools {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .claude-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 16px;
+            border: 1px solid var(--hairline);
+            border-radius: 20px;
+            font-family: var(--font-body);
+            font-size: 18px;
+            color: var(--grey);
+        }
+
+        .claude-chip.icon-only { width: 40px; padding: 0; justify-content: center; }
+
+        .claude-send {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: #D97757;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* ---- REVEAL ANIMATION ---- */
+
+        .rv {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+        }
+
+        .slide.visible .rv { opacity: 1; transform: translateY(0); }
+
+        .slide.visible .rv:nth-child(1) { transition-delay: 0.06s; }
+        .slide.visible .rv:nth-child(2) { transition-delay: 0.14s; }
+        .slide.visible .rv:nth-child(3) { transition-delay: 0.22s; }
+        .slide.visible .rv:nth-child(4) { transition-delay: 0.30s; }
+        .slide.visible .rv:nth-child(5) { transition-delay: 0.38s; }
+        .slide.visible .rv:nth-child(6) { transition-delay: 0.46s; }
+        .slide.visible .rv:nth-child(7) { transition-delay: 0.54s; }
+        .slide.visible .rv:nth-child(8) { transition-delay: 0.62s; }
+
+        .slide.visible .d1 { transition-delay: 0.06s; }
+        .slide.visible .d2 { transition-delay: 0.16s; }
+        .slide.visible .d3 { transition-delay: 0.26s; }
+        .slide.visible .d4 { transition-delay: 0.36s; }
+        .slide.visible .d5 { transition-delay: 0.46s; }
+        .slide.visible .d6 { transition-delay: 0.56s; }
+
+        /* ---- TITLE SLIDE ---- */
+
+        .title-slide {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .title-slide .slide-inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .title-slide .title-logo {
+            position: absolute;
+            left: 100px; top: 72px;
+            height: 38px;
+        }
+
+        .title-slide .brand-logo,
+        .closing-slide .brand-logo {
+            right: 100px; bottom: 48px;
+            height: 15px;
+            opacity: 0.85;
+        }
+
+        .title-slide .week-badge {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 24px;
+        }
+
+        .title-slide h1 {
+            font-family: var(--font-display);
+            font-size: 96px;
+            font-weight: 400;
+            line-height: 1.0;
+            color: var(--white);
+            letter-spacing: -0.01em;
+            max-width: 1400px;
+        }
+
+        .title-slide .title-sub {
+            margin-top: 32px;
+            font-size: 26px;
+            font-weight: 300;
+            line-height: 1.45;
+            color: var(--mist);
+            max-width: 1100px;
+        }
+
+        .title-slide .title-meta {
+            margin-top: 64px;
+            font-size: 16px;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 0.02em;
+        }
+
+        .title-slide .title-stripe {
+            position: absolute;
+            right: 0; top: 0;
+            width: 480px; height: 1080px;
+            background: linear-gradient(180deg, var(--petrol) 0%, var(--navy) 100%);
+            opacity: 0.35;
+        }
+
+        .title-slide .title-accent-line {
+            position: absolute;
+            left: 100px; bottom: 200px;
+            width: 80px; height: 3px;
+            background: var(--teal);
+        }
+
+        .title-slide .big-num {
+            position: absolute;
+            right: 140px; top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-display);
+            font-size: 340px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.04);
+            line-height: 0.85;
+            pointer-events: none;
+        }
+
+        /* ---- AGENDA LIST ---- */
+
+        .agenda-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 8px;
+        }
+
+        .agenda-item {
+            display: flex;
+            align-items: baseline;
+            gap: 28px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        .agenda-item:last-child { border-bottom: none; }
+
+        .agenda-num {
+            font-family: var(--font-display);
+            font-size: 36px;
+            color: var(--navy);
+            width: 52px;
+            flex-shrink: 0;
+        }
+
+        .agenda-text {
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--ink);
+        }
+
+        /* ---- QUADRANT MATRIX ---- */
+
+        .quad {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            grid-template-rows: 1fr 56px;
+            width: 1400px;
+            margin-top: 12px;
+        }
+
+        .quad-grid {
+            grid-column: 2; grid-row: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .quad-cell {
+            min-height: 270px;
+            border: 1px solid var(--hairline);
+            background: var(--off-white);
+            margin: -0.5px;
+            padding: 36px 40px;
+        }
+
+        .quad-cell.highlight {
+            background: rgba(0, 29, 108, 0.04);
+            border: 2px solid var(--navy);
+            position: relative;
+            z-index: 1;
+        }
+
+        .quad-name {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 34px;
+            color: var(--ink);
+            margin-bottom: 10px;
+        }
+
+        .quad-cell.highlight .quad-name { color: var(--navy); }
+
+        .quad-sub {
+            font-size: 20px;
+            color: var(--grey);
+        }
+
+        .quad-x-label {
+            grid-column: 2; grid-row: 2;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grey);
+        }
+
+        .quad-y-label {
+            grid-column: 1; grid-row: 1;
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--grey);
+        }
+
+        /* ---- SKILL FILE PANEL ---- */
+
+        .skill-panel {
+            width: 100%;
+            background: #0C1222;
+            color: #D6D9E0;
+            padding: 40px 48px;
+            font-family: var(--font-mono);
+            font-size: 19px;
+            line-height: 1.5;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .skill-panel .sk-key { color: var(--teal); }
+        .skill-panel .sk-val { color: #E8E4DA; }
+        .skill-panel .sk-heading { color: var(--white); font-weight: 500; }
+        .skill-panel .sk-comment { color: #6B7394; }
+        .skill-panel .sk-rule { color: #9AA3B8; }
+        .skill-panel .sk-sep { color: #3A4260; }
+
+        /* ---- SPLIT LAYOUT ---- */
+
+        .split-two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            width: 100%;
+        }
+
+        /* ---- FOLDER TREE ---- */
+
+        .folder-tree {
+            font-family: var(--font-mono);
+            font-size: 22px;
+            line-height: 1.8;
+            color: var(--grey);
+        }
+
+        .folder-tree .root {
+            font-family: var(--font-body);
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .folder-tree .dir { color: var(--petrol); }
+
+        /* ---- INTERACTIVE FILE TREE (anatomy) ---- */
+
+        .anatomy-split {
+            display: grid;
+            grid-template-columns: 520px 1fr;
+            gap: 56px;
+            width: 100%;
+        }
+
+        .ft-root {
+            font-family: var(--font-body);
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--ink);
+            margin-bottom: 12px;
+        }
+
+        .ft-item {
+            font-family: var(--font-mono);
+            font-size: 21px;
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            color: var(--grey);
+            border-left: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .ft-item:hover { background: var(--off-white); color: var(--ink); }
+
+        .ft-item.active {
+            background: rgba(0, 29, 108, 0.05);
+            border-left-color: var(--navy);
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .ft-item.indent { margin-left: 28px; }
+
+        .ft-hint {
+            margin-top: 24px;
+            font-size: 18px;
+            color: var(--grey);
+        }
+
+        .file-view { display: none; }
+        .file-view.active { display: block; }
+
+        .file-role {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--petrol-blue);
+            margin-bottom: 14px;
+        }
+
+        .file-view .skill-panel {
+            height: 600px;
+            font-size: 17px;
+            line-height: 1.6;
+            padding: 32px 40px;
+        }
+
+        /* ---- INTERACTIVE MATRIX ---- */
+
+        .quad-grid { position: relative; }
+
+        .quad-pin {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background: var(--navy);
+            color: var(--white);
+            font-size: 18px;
+            line-height: 1.2;
+            padding: 7px 14px;
+            border-radius: 2px;
+            cursor: grab;
+            white-space: nowrap;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 29, 108, 0.25);
+            user-select: none;
+            touch-action: none;
+        }
+
+        .quad-pin.dragging {
+            cursor: grabbing;
+            z-index: 4;
+            box-shadow: 0 6px 18px rgba(0, 29, 108, 0.35);
+        }
+
+        .quad-input {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            font-family: var(--font-body);
+            font-size: 18px;
+            padding: 7px 12px;
+            border: 2px solid var(--navy);
+            border-radius: 2px;
+            background: var(--white);
+            color: var(--ink);
+            outline: none;
+            z-index: 3;
+        }
+
+        /* ---- COMPARISON COLUMNS ---- */
+
+        .compare-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            width: 100%;
+        }
+
+        .compare-col {
+            padding: 36px 40px;
+            border-radius: 2px;
+        }
+
+        .compare-col.good {
+            background: var(--off-white);
+            border: 2px solid var(--navy);
+        }
+
+        .compare-col.bad {
+            background: var(--off-white);
+            border: 2px solid var(--negative);
+        }
+
+        .compare-badge {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            display: inline-block;
+            padding: 4px 12px;
+            margin-bottom: 20px;
+        }
+
+        .compare-col.good .compare-badge {
+            background: rgba(0, 29, 108, 0.08);
+            color: var(--navy);
+        }
+
+        .compare-col.bad .compare-badge {
+            background: rgba(140, 29, 24, 0.08);
+            color: var(--negative);
+        }
+
+        .compare-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .compare-list li {
+            font-size: 22px;
+            line-height: 1.4;
+            color: var(--ink);
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .compare-list li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 10px;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+        }
+
+        .compare-col.good .compare-list li::before { background: var(--navy); }
+        .compare-col.bad .compare-list li::before { background: var(--negative); }
+
+        /* ---- LADDER / STEPS ---- */
+
+        .ladder {
+            display: flex;
+            gap: 32px;
+            align-items: flex-end;
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .ladder-step {
+            flex: 1;
+            background: var(--off-white);
+            border: 1px solid var(--hairline);
+            padding: 32px;
+            transition: all 0.5s var(--ease);
+        }
+
+        .ladder-step:nth-child(1) { min-height: 200px; }
+        .ladder-step:nth-child(2) { min-height: 280px; }
+        .ladder-step:nth-child(3) { min-height: 360px; border: 2px solid var(--navy); background: rgba(0,29,108,0.03); }
+
+        .ladder-step .step-num {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--petrol-blue);
+            margin-bottom: 12px;
+        }
+
+        .ladder-step .step-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--ink);
+            margin-bottom: 10px;
+        }
+
+        .ladder-step .step-desc {
+            font-size: 18px;
+            color: var(--grey);
+            line-height: 1.45;
+        }
+
+        /* ---- CLOSING SLIDE ---- */
+
+        .closing-slide {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .closing-slide .slide-inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .closing-slide .closing-logo {
+            position: absolute;
+            left: 100px; top: 72px;
+            height: 38px;
+        }
+
+        .closing-slide .closing-week {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 20px;
+        }
+
+        .closing-slide h2 {
+            font-family: var(--font-display);
+            font-size: 64px;
+            font-weight: 400;
+            line-height: 1.05;
+            color: var(--white);
+            max-width: 1200px;
+        }
+
+        .closing-slide .closing-body {
+            margin-top: 32px;
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--mist);
+            max-width: 1000px;
+        }
+
+        .closing-slide .contacts {
+            position: absolute;
+            left: 100px; bottom: 80px;
+            font-size: 16px;
+            color: rgba(255,255,255,0.45);
+            line-height: 1.7;
+        }
+
+        .closing-slide .big-num {
+            position: absolute;
+            right: 140px; top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-display);
+            font-size: 340px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.04);
+            line-height: 0.85;
+            pointer-events: none;
+        }
+
+        /* ---- DECK CONTROLS ---- */
+
+        .deck-controls {
+            display: none;
+            position: fixed;
+            left: 50%; bottom: 20px;
+            transform: translateX(-50%);
+            z-index: 1000;
+            align-items: center;
+            gap: 14px;
+            padding: 7px 16px;
+            background: rgba(10, 15, 28, 0.7);
+            backdrop-filter: blur(8px);
+            color: rgba(255,255,255,0.7);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            border-radius: 2px;
+        }
+
+        .deck-controls.show { display: flex; }
+
+        .progress-track {
+            width: 140px; height: 2px;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .progress-fill { height: 2px; background: var(--teal); width: 0; }
+
+        /* ---- EDIT MODE ---- */
+
+        .edit-hotzone {
+            position: fixed; top: 0; left: 0;
+            width: 80px; height: 80px;
+            z-index: 10000; cursor: pointer;
+        }
+
+        .edit-toggle {
+            position: fixed; top: 16px; left: 16px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10001;
+            border: 0;
+            background: var(--navy);
+            color: var(--white);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 6px 14px;
+            cursor: pointer;
+            letter-spacing: 0.06em;
+        }
+
+        .edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+
+        body.editing [contenteditable="true"] {
+            outline: 1px dashed rgba(0, 29, 108, 0.3);
+            outline-offset: 3px;
+        }
+
+        /* ---- NOTES OVERLAY ---- */
+
+        .notes-panel {
+            position: fixed;
+            left: 24px; right: 24px; bottom: 56px;
+            max-width: 860px; margin: 0 auto;
+            background: rgba(12, 18, 34, 0.94);
+            backdrop-filter: blur(8px);
+            color: #D6D9E0;
+            padding: 18px 22px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            line-height: 1.45;
+            z-index: 2000;
+            display: none;
+            border-radius: 2px;
+        }
+
+        .notes-panel.open { display: block; }
+        .notes-panel strong { color: var(--teal); }
+    </style>
+</head>
+<body>
+    <div class="edit-hotzone"></div>
+    <button class="edit-toggle" id="editToggle" title="Edit mode (E)">EDIT</button>
+
+    <div class="deck-viewport">
+        <main class="deck-stage" id="deckStage">
+
+            <!-- ===== SLIDE 1 - COVER ===== -->
+            <section class="slide title-slide active" data-notes="Kaffe inn. Agendaen først, så anatomien, så stresstesten tre ganger, så matrisen - og så skriver de. Ikke start i Claude.">
+                <div class="title-stripe"></div>
+                <div class="big-num">02</div>
+                <img class="title-logo rv d1" src="slides-assets/req-logo-navy.svg" alt="REQ" style="filter: brightness(0) invert(1);">
+                <img class="brand-logo rv d1" src="slides-assets/varden-wordmark-light.svg" alt="Varden">
+                <div class="slide-inner">
+                    <p class="week-badge rv d2">Uke 2 av 10</p>
+                    <h1 class="rv d3">Skills</h1>
+                    <p class="title-sub rv d4">I dag ser dere hva en skill er, samme stresstest tre ganger - og så skriver dere deres egen.</p>
+                    <p class="title-meta rv d5">Tirsdag 25. august 2026 &middot; 08:30 - 09:30 &middot; Sommerrogata 17, Oslo</p>
+                    <div class="title-accent-line rv d3"></div>
+                </div>
+            </section>
+
+            <!-- ===== SLIDE 2 - AGENDA ===== -->
+            <section class="slide" data-notes="Tjue sekunder. Les listen. Si at mesteparten av timen er deres, ikke en gjennomgang av filformat. Stockholm og Bergen: de er med.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner">
+                    <p class="kicker rv">Agenda</p>
+                    <h2 class="slide-title rv">I dag</h2>
+                    <div class="divider rv"></div>
+                    <div class="agenda-list">
+                        <div class="agenda-item rv">
+                            <span class="agenda-num">1</span>
+                            <span class="agenda-text">Hva en skill er - anatomien</span>
+                        </div>
+                        <div class="agenda-item rv">
+                            <span class="agenda-num">2</span>
+                            <span class="agenda-text">Samme stresstest tre ganger - uten skill, dårlig skill, god skill</span>
+                        </div>
+                        <div class="agenda-item rv">
+                            <span class="agenda-num">3</span>
+                            <span class="agenda-text">Matrisen: plotte oppgavene deres og velge én</span>
+                        </div>
+                        <div class="agenda-item rv">
+                            <span class="agenda-num">4</span>
+                            <span class="agenda-text">Deres tur: skrive en skill</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">02</span>
+            </section>
+
+            <!-- ===== SLIDE 4 - SKILL ANATOMY (interactive) ===== -->
+            <section class="slide" data-notes="5 min. Klikk deg gjennom filene i treet. Les description i SKILL.md høyt - det er triggeren. Mandatet er målestokken, røde flagg er sjekklisten, eksempelet er forbildet. Ikke les alt - poenget er rollene, og at en skill bare er markdown-filer i en mappe.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner">
+                    <p class="kicker rv">Anatomi</p>
+                    <h2 class="slide-title rv">Hva er en skill?</h2>
+                    <div class="divider rv"></div>
+                    <div class="anatomy-split rv">
+                        <div>
+                            <div class="ft-root">stresstest-2/</div>
+                            <div class="ft-item active" data-file="skill">SKILL.md</div>
+                            <div class="ft-item indent" data-file="mandat">references/mandat.md</div>
+                            <div class="ft-item indent" data-file="flagg">references/rode-flagg.md</div>
+                            <div class="ft-item indent" data-file="eksempel">examples/stresstest-eksempel.md</div>
+                        </div>
+                        <div>
+                            <div class="file-view active" data-file="skill">
+                                <p class="file-role">Selve skillen - trigger + oppskrift</p>
+                                <div class="skill-panel">
+                                    <div><span class="sk-sep">---</span></div>
+                                    <div><span class="sk-key">name:</span> <span class="sk-val">stresstest-2</span></div>
+                                    <div><span class="sk-key">description:</span> <span class="sk-val">Stresstester et eiendomsprospekt mot investeringsmandatet. Bruk når noen ber om å stressteste, utfordre eller vurdere et prospekt. Ikke når oppgaven er å oppsummere.</span></div>
+                                    <div><span class="sk-sep">---</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading"># Stresstest av eiendomsprospekt</span></div>
+                                    <div>&nbsp;</div>
+                                    <div>Prospektet er et salgsdokument. Jobben din er å være motparten, ikke referenten.</div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Arbeidsflyt</span></div>
+                                    <div><span class="sk-rule">1. Les references/mandat.md - målestokken.</span></div>
+                                    <div><span class="sk-rule">2. Skim references/rode-flagg.md - sjekklisten.</span></div>
+                                    <div><span class="sk-rule">3. Gå målrettet gjennom prospektet.</span></div>
+                                    <div><span class="sk-rule">4. Skriv etter strukturen - usikker på formen? Se eksempelet.</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Holdning</span> <span class="sk-comment">- skeptisk, ikke sur</span></div>
+                                    <div><span class="sk-heading">## Strukturen (ikke bytt om)</span> <span class="sk-comment">- scorecard først</span></div>
+                                    <div><span class="sk-heading">## Sjekkliste før levering</span></div>
+                                </div>
+                            </div>
+                            <div class="file-view" data-file="mandat">
+                                <p class="file-role">Målestokken - alt vurderes mot denne</p>
+                                <div class="skill-panel">
+                                    <div><span class="sk-heading"># Investeringsmandat - eiendom</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-key">1. Strategi:</span> Kontantstrømmende næringseiendom i Norge. Ikke utvikling, bolig eller utland.</div>
+                                    <div><span class="sk-key">2. Avkastningskrav:</span> Netto IRR på minst 10 %, med dokumenterte forutsetninger.</div>
+                                    <div><span class="sk-key">3. Belåning:</span> Maks 65 % LTV, rentesikring på minst halvparten av gjelden.</div>
+                                    <div><span class="sk-key">4. Leie:</span> WAULT på minst 5 år, ingen leietaker over 40 %.</div>
+                                    <div><span class="sk-key">5. Kostnader:</span> Samlede honorarer under 1 % av brutto eiendomsverdi.</div>
+                                    <div><span class="sk-key">6. Likviditet:</span> Exit-strategi beskrevet. Bindingstid over 7 år krever begrunnelse.</div>
+                                    <div><span class="sk-key">7. Teknisk:</span> DD og miljøkartlegging med tallfestet capex-behov.</div>
+                                    <div><span class="sk-key">8. Forvalter:</span> Track record fra minst tre prosjekter, tallfestet egeninvestering.</div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-comment">Eksempelmandat til kursbruk - bytt ut med deres eget.</span></div>
+                                </div>
+                            </div>
+                            <div class="file-view" data-file="flagg">
+                                <p class="file-role">Sjekklisten - svakhetene folk overser</p>
+                                <div class="skill-panel">
+                                    <div><span class="sk-heading"># Røde flagg i eiendomsprospekter</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Avkastning og forutsetninger</span></div>
+                                    <div><span class="sk-rule">- Exit-yield satt lavere enn kjøpsyield uten begrunnelse</span></div>
+                                    <div><span class="sk-rule">- &laquo;As if stabilized&raquo;-tall presentert som dagens drift</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Leie og kontantstrøm</span></div>
+                                    <div><span class="sk-rule">- Kort WAULT fremstilt som trygghet (&laquo;solide leietakere&raquo;)</span></div>
+                                    <div><span class="sk-rule">- Én leietaker dominerer, uten kredittvurdering</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Finansiering og verdier</span></div>
+                                    <div><span class="sk-rule">- Verdivurdering bestilt av selger, eller eldre enn seks måneder</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Struktur og interessekonflikter</span></div>
+                                    <div><span class="sk-rule">- Tilrettelegger er også selger, forvalter eller långiver</span></div>
+                                </div>
+                            </div>
+                            <div class="file-view" data-file="eksempel">
+                                <p class="file-role">Forbildet - formen og tonen den skal treffe</p>
+                                <div class="skill-panel">
+                                    <div><span class="sk-heading"># Stresstest: Lysaker Torg 8 Eiendomsinvest AS</span></div>
+                                    <div>&nbsp;</div>
+                                    <div>🟢 3 &middot; 🟡 3 &middot; 🔴 2 - <span class="sk-heading">Avstå i nåværende form</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Hva prospektet tilbyr</span></div>
+                                    <div><span class="sk-rule">| Netto IRR (prognose) | 11,2 % | s. 9 |</span></div>
+                                    <div><span class="sk-rule">| LTV ved kjøp | 64 % | s. 14 |</span></div>
+                                    <div><span class="sk-rule">| WAULT | 5,3 år | s. 11 |</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Vurdering mot mandatet</span></div>
+                                    <div><span class="sk-rule">| Strategi | 🟢 | Kontantstrømmende kontor i Norge (s. 5) |</span></div>
+                                    <div><span class="sk-rule">| Avkastning | 🟡 | IRR over kravet, men exit-yield uten begrunnelse |</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-heading">## Svakheter &middot; ## Styrker &middot; ## Konklusjon</span></div>
+                                    <div>&nbsp;</div>
+                                    <div><span class="sk-comment">Fiktivt prospekt - det er formen og tonen som er poenget.</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">03</span>
+            </section>
+
+            <!-- ===== SLIDE 5 - THE LADDER ===== -->
+            <section class="slide" data-notes="Ett minutt. Tre trinn, ikke mer. De har nettopp sett anatomien - nå ser de effekten: samme oppgave uten skill, med en dårlig og med en god. Walkthrough ER eksempelet.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner">
+                    <p class="kicker rv">Kontekst</p>
+                    <h2 class="slide-title rv">Tre nivåer av instruksjon</h2>
+                    <div class="divider rv"></div>
+                    <div class="ladder">
+                        <div class="ladder-step rv d2">
+                            <div class="step-num">Trinn 1</div>
+                            <div class="step-title">Bare en prompt</div>
+                            <div class="step-desc">Du skriver alt hver gang. Claude vet ingenting fra før.</div>
+                        </div>
+                        <div class="ladder-step rv d3">
+                            <div class="step-num">Trinn 2</div>
+                            <div class="step-title">Prompt + filer i Project</div>
+                            <div class="step-desc">Faste dokumenter som ligger ved. Kontekst, men ingen oppskrift.</div>
+                        </div>
+                        <div class="ladder-step rv d4">
+                            <div class="step-num">Trinn 3</div>
+                            <div class="step-title">Skill</div>
+                            <div class="step-desc">En fil som sier hva den skal gjøre, når, og viser et forbilde. Den trigger automatisk.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">04</span>
+            </section>
+
+            <!-- ===== SLIDE 6 - RUN 1: WITHOUT SKILL ===== -->
+            <section class="slide" data-notes="Bli på sliden. Åpne Claude, last opp prospektet, lim inn prompten fra walkthrough/01-uten-skill/prompt.txt. Typiske bom: høflig oppsummering, tror på prospektets egne tall, ingen målestokk, styrker og svakheter i lik mengde for balansens skyld. Ikke fiks noe ennå.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner">
+                    <p class="kicker rv">Kjøring 1</p>
+                    <h2 class="slide-title rv">Uten skill</h2>
+                    <div class="divider rv"></div>
+                    <p class="statement rv">&laquo;Stresstest dette prospektet.&raquo;</p>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">05</span>
+            </section>
+
+            <!-- ===== SLIDE 7 - RUN 2: BAD SKILL ===== -->
+            <section class="slide" data-notes="3 min. Åpne walkthrough/02-stresstest-1/SKILL.md - dette er hele filen. Kjør samme prompt med den. Hver linje høres fornuftig ut, men gir balansert og positiv output uten målestokk. La svaret ligge fremme ved siden av kjøring 1.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner">
+                    <p class="kicker rv">Kjøring 2</p>
+                    <h2 class="slide-title rv" style="font-size: 52px; margin-bottom: 24px;">Med en dårlig skill</h2>
+                    <div class="skill-panel rv">
+                        <div><span class="sk-sep">---</span></div>
+                        <div><span class="sk-key">name:</span> <span class="sk-val">stresstest-1</span></div>
+                        <div><span class="sk-key">description:</span> <span class="sk-val">Bruk når du skal stressteste et prospekt.</span></div>
+                        <div><span class="sk-sep">---</span></div>
+                        <div>&nbsp;</div>
+                        <div><span class="sk-heading"># Stresstest</span></div>
+                        <div>&nbsp;</div>
+                        <div>Les prospektet og lag en profesjonell stresstest. Ikke bruk lang tid på dokumentet.</div>
+                        <div>&nbsp;</div>
+                        <div><span class="sk-rule">- Start med en kort oppsummering av prospektet.</span></div>
+                        <div><span class="sk-rule">- Vær balansert: like mange styrker som svakheter.</span></div>
+                        <div><span class="sk-rule">- Hold en konstruktiv og positiv tone. Vi vil ikke virke vanskelige.</span></div>
+                        <div><span class="sk-rule">- Bruk prospektets egne tall og begreper. De kjenner dokumentet best.</span></div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">06</span>
+            </section>
+
+            <!-- ===== SLIDE 8 - RUN 3: GOOD SKILL ===== -->
+            <section class="slide" data-notes="5 min. Åpne mappen walkthrough/03-stresstest-2/. Vis SKILL.md (ikke les alt), mandatet, de røde flaggene og eksempelet. Les description høyt. Kjør samme prompt med skillen lastet opp (zip eller mappe). Sammenlign alle tre svarene. Forskjellen er ikke magi - det er instruksjon, en målestokk og et forbilde.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner">
+                    <p class="kicker rv">Kjøring 3</p>
+                    <h2 class="slide-title rv" style="font-size: 52px;">Med en god skill</h2>
+                    <div class="divider rv"></div>
+                    <div class="split-two">
+                        <div class="folder-tree rv d2">
+                            <div class="root">stresstest-2/</div>
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="dir">SKILL.md</span></div>
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;references/mandat.md</div>
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;references/rode-flagg.md</div>
+                            <div>&nbsp;&nbsp;&nbsp;&nbsp;examples/stresstest-eksempel.md</div>
+                        </div>
+                        <div class="compare-col good rv d3">
+                            <span class="compare-badge">Det den gjør</span>
+                            <ul class="compare-list">
+                                <li>Leser målrettet - hopper over staffasjen</li>
+                                <li>Rater prospektet mot mandatet, punkt for punkt</li>
+                                <li>Skeptisk utgangspunkt - prospektet er et salgsdokument</li>
+                                <li>Mandatmatrise med trafikklys - krav og virkelighet side om side</li>
+                                <li>Har et eksempel å lene seg på</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">07</span>
+            </section>
+
+            <!-- ===== SLIDE 9 - GOOD VS BAD ===== -->
+            <section class="slide" data-notes="2 min. Oppsummeringen av det de nettopp så. Pek på kolonnene, ikke les dem ordrett. Dette er sjekklisten de skal bruke på sin egen skill om et øyeblikk.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner">
+                    <p class="kicker rv">Kontrast</p>
+                    <h2 class="slide-title rv" style="font-size: 52px;">God skill vs. dårlig skill</h2>
+                    <div class="divider rv"></div>
+                    <div class="compare-cols rv">
+                        <div class="compare-col good">
+                            <span class="compare-badge">God skill</span>
+                            <ul class="compare-list">
+                                <li>Trigger som sier når - og når ikke</li>
+                                <li>Struktur og rekkefølge for innholdet</li>
+                                <li>En målestokk å vurdere mot (mandatet)</li>
+                                <li>Regler som fanger typiske feil</li>
+                                <li>Et eksempel den kan lene seg på</li>
+                            </ul>
+                        </div>
+                        <div class="compare-col bad">
+                            <span class="compare-badge">Dårlig skill</span>
+                            <ul class="compare-list">
+                                <li>Vag trigger - du må huske den selv</li>
+                                <li>Krever balanse - like mange styrker som svakheter</li>
+                                <li>Positiv tone - tror på salgsdokumentet</li>
+                                <li>Ingenting å måle mot</li>
+                                <li>Ikke noe eksempel</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">08</span>
+            </section>
+
+            <!-- ===== SLIDE 10 - MATRIX (interactive) ===== -->
+            <section class="slide" id="matrixSlide" data-notes="8-10 min. De sier oppgavene sine, dere plotter dem rett i matrisen: klikk der den hører hjemme, skriv, Enter. Dra en lapp for å flytte den, klikk for å fjerne. Si aksene høyt én gang: verdi = tiden den spiser i dag, kompleksitet = hvor vanskelig den er å få til. Alle velger én til slutt, helst fra Quick wins. Store satsinger peker mot uke 3. Nicolay: Stockholm og Bergen sier hvilken rute, så plotter Herman.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner">
+                    <p class="kicker rv">Prioritering</p>
+                    <h2 class="slide-title rv">Hvor ligger oppgavene deres?</h2>
+                    <div class="quad rv">
+                        <div class="quad-y-label">verdi &rarr;</div>
+                        <div class="quad-grid">
+                            <div class="quad-cell highlight">
+                                <span class="quad-name">Quick wins</span>
+                                <span class="quad-sub">Høy verdi &middot; lav kompleksitet</span>
+                            </div>
+                            <div class="quad-cell">
+                                <span class="quad-name">Store satsinger</span>
+                                <span class="quad-sub">Høy verdi &middot; høy kompleksitet</span>
+                            </div>
+                            <div class="quad-cell">
+                                <span class="quad-name">Trivielt</span>
+                                <span class="quad-sub">Lav verdi &middot; lav kompleksitet</span>
+                            </div>
+                            <div class="quad-cell">
+                                <span class="quad-name">Unngå</span>
+                                <span class="quad-sub">Lav verdi &middot; høy kompleksitet</span>
+                            </div>
+                        </div>
+                        <div class="quad-x-label">kompleksitet &rarr;</div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">09</span>
+            </section>
+
+            <!-- ===== SLIDE 11 - HANDS ON ===== -->
+            <section class="slide" data-notes="Denne står i ~20 min. Pek på walkthrough/03-stresstest-2/SKILL.md. De skriver i Claude eller i et notat. Gå rundt. Nicolay eier Teams. Ikke la dem kopiere stresstesten ordrett. Ferdig når filen har en trigger og en kort kropp, og de har kjørt den på et eksempel den ikke ble skrevet for.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner" style="display: flex; flex-direction: column; justify-content: center;">
+                    <p class="kicker rv">Hands-on</p>
+                    <h2 class="slide-title rv" style="font-size: 80px;">Deres tur</h2>
+                    <div class="divider rv"></div>
+                    <p class="statement rv">Skriv en enkel skill for oppgaven dere nettopp valgte.</p>
+                    <p class="statement-sub rv">Bruk stresstest-skillen som mal for formen, ikke for innholdet.</p>
+                    <div class="claude-input rv">
+                        <div class="claude-input-text">Lag en skill som ...<span class="caret"></span></div>
+                        <div class="claude-input-bar">
+                            <div class="claude-input-tools">
+                                <span class="claude-chip icon-only">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                </span>
+                                <span class="claude-chip">Claude Opus 4.8</span>
+                            </div>
+                            <div class="claude-send">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ &middot; Uke 2</span>
+                <span class="slide-number">10</span>
+            </section>
+
+            <!-- ===== SLIDE 12 - CLOSING ===== -->
+            <section class="slide closing-slide" data-notes="Pulse-survey etterpå. Samle SKILL.md-utkastene i det delte prosjektet. Ingen Claude Code-lekse.">
+                <div class="big-num">03</div>
+                <img class="closing-logo rv d1" src="slides-assets/req-logo-navy.svg" alt="REQ" style="filter: brightness(0) invert(1);">
+                <img class="brand-logo rv d1" src="slides-assets/varden-wordmark-light.svg" alt="Varden">
+                <div class="slide-inner">
+                    <p class="closing-week rv d2">Uke 3</p>
+                    <h2 class="rv d3">Før neste gang</h2>
+                    <p class="closing-body rv d4">
+                        Prøv skillen på to ekte oppgaver, og noter når den traff og når den ikke gjorde det.<br><br>
+                        Neste uke er MCP: koble til noe som allerede finnes, og teste.
+                    </p>
+                    <div class="contacts rv d5">
+                        Herman Holmøy &middot; herman@vardenlab.com<br>
+                        Nicolay Liaaen Hagen &middot; nicolay@vardenlab.com
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div class="deck-controls" aria-label="Fremdrift">
+        <span id="slideLabel">1 / 12</span>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="notes-panel" id="notesPanel"></div>
+
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.stage = document.getElementById('deckStage');
+                this.label = document.getElementById('slideLabel');
+                this.progress = document.getElementById('progressFill');
+                this.notesPanel = document.getElementById('notesPanel');
+                this.notesOpen = false;
+                this.setupStageScale();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.setupWheelNav();
+                this.showSlide(0);
+            }
+
+            setupStageScale() {
+                const chrome = document.querySelector('.deck-controls');
+                const scale = () => {
+                    const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+                    const x = (window.innerWidth - 1920 * factor) / 2;
+                    const y = (window.innerHeight - 1080 * factor) / 2;
+                    this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+                    chrome.classList.toggle('show', y > 28);
+                };
+                scale();
+                window.addEventListener('resize', scale);
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.target && e.target.getAttribute('contenteditable') === 'true') return;
+                    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+                    const next = ['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'];
+                    const prev = ['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'];
+                    if (next.includes(e.key)) {
+                        e.preventDefault();
+                        this.showSlide(this.currentSlide + 1);
+                    } else if (prev.includes(e.key)) {
+                        e.preventDefault();
+                        this.showSlide(this.currentSlide - 1);
+                    } else if (e.key === 'Home') {
+                        this.showSlide(0);
+                    } else if (e.key === 'End') {
+                        this.showSlide(this.slides.length - 1);
+                    } else if (e.key === 'n' || e.key === 'N') {
+                        this.toggleNotes();
+                    }
+                });
+            }
+
+            setupTouchNav() {
+                let startX = 0;
+                this.stage.addEventListener('touchstart', (e) => {
+                    startX = e.changedTouches[0].screenX;
+                }, { passive: true });
+                this.stage.addEventListener('touchend', (e) => {
+                    const dx = e.changedTouches[0].screenX - startX;
+                    if (Math.abs(dx) < 40) {
+                        this.showSlide(this.currentSlide + 1);
+                        return;
+                    }
+                    this.showSlide(this.currentSlide + (dx < 0 ? 1 : -1));
+                }, { passive: true });
+            }
+
+            setupWheelNav() {
+                let locked = false;
+                window.addEventListener('wheel', (e) => {
+                    if (locked) return;
+                    if (Math.abs(e.deltaY) < 20) return;
+                    locked = true;
+                    this.showSlide(this.currentSlide + (e.deltaY > 0 ? 1 : -1));
+                    setTimeout(() => { locked = false; }, 420);
+                }, { passive: true });
+            }
+
+            toggleNotes() {
+                this.notesOpen = !this.notesOpen;
+                this.notesPanel.classList.toggle('open', this.notesOpen);
+                this.refreshNotes();
+            }
+
+            refreshNotes() {
+                const slide = this.slides[this.currentSlide];
+                const text = slide ? (slide.dataset.notes || '') : '';
+                this.notesPanel.innerHTML = '<strong>Notater</strong><br>' + text;
+            }
+
+            showSlide(index) {
+                this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
+                this.slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === this.currentSlide);
+                    slide.classList.toggle('visible', i === this.currentSlide);
+                });
+                this.label.textContent = (this.currentSlide + 1) + ' / ' + this.slides.length;
+                this.progress.style.width = ((this.currentSlide + 1) / this.slides.length * 100) + '%';
+                if (this.notesOpen) this.refreshNotes();
+            }
+        }
+
+        const deck = new SlidePresentation();
+
+        class InlineEditor {
+            constructor() {
+                this.isActive = false;
+                this.storageKey = 'req-bootcamp-uke02-edits-v4';
+                this.toggle = document.getElementById('editToggle');
+                this.restore();
+            }
+
+            editableNodes() {
+                return document.querySelectorAll('h1, h2, p, li, .statement, .statement-sub, .skill-panel, .folder-tree, .quad-name, .quad-sub, .contacts, .agenda-text, .step-title, .step-desc');
+            }
+
+            toggleEditMode() {
+                this.isActive = !this.isActive;
+                document.body.classList.toggle('editing', this.isActive);
+                this.toggle.classList.toggle('active', this.isActive);
+                this.toggle.textContent = this.isActive ? 'EDITING' : 'EDIT';
+                this.editableNodes().forEach((el) => {
+                    el.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+                });
+                if (!this.isActive) this.persist();
+            }
+
+            persist() {
+                const data = {};
+                this.editableNodes().forEach((el, i) => { data[i] = el.innerHTML; });
+                localStorage.setItem(this.storageKey, JSON.stringify(data));
+            }
+
+            restore() {
+                const raw = localStorage.getItem(this.storageKey);
+                if (!raw) return;
+                try {
+                    const data = JSON.parse(raw);
+                    this.editableNodes().forEach((el, i) => {
+                        if (data[i]) el.innerHTML = data[i];
+                    });
+                } catch (err) { /* ignore */ }
+            }
+
+            exportFile() {
+                this.persist();
+                const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'REQ-bootcamp-uke02.html';
+                a.click();
+                URL.revokeObjectURL(a.href);
+            }
+        }
+
+        const editor = new InlineEditor();
+        const editToggle = document.getElementById('editToggle');
+        const hotzone = document.querySelector('.edit-hotzone');
+        let hideTimeout = null;
+
+        editToggle.addEventListener('click', () => editor.toggleEditMode());
+        hotzone.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+            editToggle.classList.add('show');
+        });
+        hotzone.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                if (!editor.isActive) editToggle.classList.remove('show');
+            }, 400);
+        });
+        editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+        editToggle.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                if (!editor.isActive) editToggle.classList.remove('show');
+            }, 400);
+        });
+        hotzone.addEventListener('click', () => editor.toggleEditMode());
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+                editor.toggleEditMode();
+            }
+            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                e.preventDefault();
+                editor.exportFile();
+            }
+        });
+
+        // ---- Interaktivt filtre (Hva er en skill?) ----
+        document.querySelectorAll('.ft-item').forEach((item) => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.ft-item').forEach((i) => i.classList.remove('active'));
+                item.classList.add('active');
+                document.querySelectorAll('.file-view').forEach((v) => {
+                    v.classList.toggle('active', v.dataset.file === item.dataset.file);
+                });
+            });
+        });
+
+        // ---- Interaktiv matrise ----
+        const quadGrid = document.querySelector('#matrixSlide .quad-grid');
+        if (quadGrid) {
+            const makeDraggable = (label) => {
+                label.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    const rect = quadGrid.getBoundingClientRect();
+                    const scaleX = quadGrid.offsetWidth / rect.width;
+                    const scaleY = quadGrid.offsetHeight / rect.height;
+                    const startClientX = e.clientX;
+                    const startClientY = e.clientY;
+                    const startLeft = parseFloat(label.style.left);
+                    const startTop = parseFloat(label.style.top);
+                    let moved = false;
+                    const onMove = (ev) => {
+                        const dx = (ev.clientX - startClientX) * scaleX;
+                        const dy = (ev.clientY - startClientY) * scaleY;
+                        if (!moved && Math.hypot(dx, dy) < 5) return;
+                        moved = true;
+                        label.classList.add('dragging');
+                        label.style.left = Math.max(0, Math.min(quadGrid.offsetWidth, startLeft + dx)) + 'px';
+                        label.style.top = Math.max(0, Math.min(quadGrid.offsetHeight, startTop + dy)) + 'px';
+                    };
+                    const onUp = () => {
+                        label.releasePointerCapture(e.pointerId);
+                        label.removeEventListener('pointermove', onMove);
+                        label.removeEventListener('pointerup', onUp);
+                        label.classList.remove('dragging');
+                        if (moved) label.dataset.dragged = '1';
+                    };
+                    label.setPointerCapture(e.pointerId);
+                    label.addEventListener('pointermove', onMove);
+                    label.addEventListener('pointerup', onUp);
+                });
+            };
+            quadGrid.addEventListener('click', (e) => {
+                const pin = e.target.closest('.quad-pin');
+                if (pin) {
+                    if (pin.dataset.dragged === '1') { delete pin.dataset.dragged; return; }
+                    pin.remove();
+                    return;
+                }
+                if (e.target.closest('.quad-input')) return;
+                if (document.body.classList.contains('editing')) return;
+                const rect = quadGrid.getBoundingClientRect();
+                const x = (e.clientX - rect.left) * (quadGrid.offsetWidth / rect.width);
+                const y = (e.clientY - rect.top) * (quadGrid.offsetHeight / rect.height);
+                const input = document.createElement('input');
+                input.className = 'quad-input';
+                input.placeholder = 'Skriv, så Enter';
+                input.style.left = x + 'px';
+                input.style.top = y + 'px';
+                quadGrid.appendChild(input);
+                input.focus();
+                let done = false;
+                const commit = () => {
+                    if (done) return;
+                    done = true;
+                    const text = input.value.trim();
+                    if (text) {
+                        const label = document.createElement('span');
+                        label.className = 'quad-pin';
+                        label.textContent = text;
+                        label.title = 'Dra for å flytte, klikk for å fjerne';
+                        label.style.left = x + 'px';
+                        label.style.top = y + 'px';
+                        makeDraggable(label);
+                        quadGrid.appendChild(label);
+                    }
+                    input.remove();
+                };
+                input.addEventListener('keydown', (ev) => {
+                    ev.stopPropagation();
+                    if (ev.key === 'Enter') commit();
+                    if (ev.key === 'Escape') { done = true; input.remove(); }
+                });
+                input.addEventListener('blur', commit);
+            });
+        }
+    </script>
+</body>
+</html>

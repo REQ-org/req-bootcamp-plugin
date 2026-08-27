@@ -20,8 +20,9 @@ const WEEKS = [
   { nr: 1,  fase: 1, status: "live",   href: "uke-01.html",
     tittel: "Fundament I",        tema: "Introduksjon, landskapet og modellvalg",
     slides: { file: "slides/REQ-bootcamp-uke01.pptx", format: "PowerPoint", storrelse: "4,3 MB" } },
-  { nr: 2,  fase: 1, status: "kommer", href: "uke-02.html",
-    tittel: "Skills",             tema: "Ekte skills i praksis, og bygg din egen" },
+  { nr: 2,  fase: 1, status: "live",   href: "uke-02.html",
+    tittel: "Skills",             tema: "Ekte skills i praksis, og bygg din egen",
+    slides: { file: "slides/uke-02.html", format: "HTML", storrelse: "som brukt i økta", open: true } },
   { nr: 3,  fase: 1, status: "kommer", href: "uke-03.html",
     tittel: "MCP: koble til",     tema: "Hva en MCP er, hvordan den er bygd, koble til og teste en eksisterende" },
   { nr: 4,  fase: 2, status: "kommer", href: "uke-04.html",
@@ -59,6 +60,12 @@ const GLOSSARY = [
   { term: "Haiku", uke: 1, def: "Den raske og rimelige Claude-modellen. Bra til korte svar, klassifisering og førsteutkast." },
   { term: "Sonnet", uke: 1, def: "Arbeidshesten. Sterk på de fleste oppgaver til fornuftig pris - start alltid her." },
   { term: "Opus", uke: 1, def: "Den tyngste modellen. Løft hit når oppgaven faktisk krever mer resonnering." },
+  { term: "Trigger", uke: 2, def: "Description-feltet i SKILL.md: når skillen skal slå inn, og når den ikke skal. Les den høyt - det er det Claude bruker til å velge." },
+  { term: "SKILL.md", uke: 2, def: "Selve skill-filen: en kort YAML-topp (navn og trigger) og en kropp som er oppskriften. Markdown i en mappe, ikke et eget format." },
+  { term: "Målestokk", uke: 2, def: "Det skillen vurderer mot - i økta et eksempelmandat i references/. Uten målestokk blir svaret en høflig oppsummering." },
+  { term: "Røde flagg", uke: 2, def: "Sjekklisten for svakheter folk overser. Ligger i references/ ved siden av målestokken." },
+  { term: "Quick wins", uke: 2, def: "Høy verdi og lav kompleksitet i prioriteringsmatrisen. Disse går først når du velger hva du skal lage en skill for." },
+  { term: "Store satsinger", uke: 2, def: "Høy verdi og høy kompleksitet. Ofte fordi data mangler - en bit til uke 3, ikke hele oppgaven i uke 2." },
   { term: "Projects", uke: 4, def: "Et arbeidsrom i Claude med fast kontekst - filer, instrukser og historikk samlet ett sted." },
   { term: "Artifacts", uke: 4, def: "Egne dokumenter og småapper Claude lager ved siden av samtalen, som du kan redigere videre." },
   { term: "Memory", uke: 4, def: "Det Claude husker på tvers av samtaler, så du slipper å gjenta konteksten hver gang." },
@@ -80,6 +87,14 @@ const PROMPTS = [
     prompt: "Hva er forarbeidet til neste økt i REQ AI Bootcamp?" },
   { tittel: "Kildekritikk på et svar", konsept: "Verifisering", uke: 1,
     prompt: "Gå gjennom svaret ditt over og marker hvert tall, sitat og kildehenvisning jeg bør dobbeltsjekke mot originalkilden." },
+  { tittel: "Stresstest uten skill", konsept: "Prompt alene", uke: 2,
+    prompt: "Stresstest dette prospektet." },
+  { tittel: "Skriv en enkel skill", konsept: "SKILL.md", uke: 2,
+    prompt: "Lag en enkel skill for denne oppgaven: [beskriv den du satte ring rundt]. Filen skal hete SKILL.md. description skal si når den slår inn og når den ikke skal. Kroppen skal være kort: holdning, rekkefølge, og hva den ikke skal gjøre. Ikke kopier stresstest-innholdet - bare formen." },
+  { tittel: "Test triggeren", konsept: "Mikrooppgave", uke: 2,
+    prompt: "Jeg har denne skillen:\n\n[lim inn SKILL.md]\n\nHer er to ekte oppgaver:\n1. [oppgave A]\n2. [oppgave B]\n\nFor hver: ville triggeren slått inn? Si hvorfor, og hva du ville endret i description hvis den bommet." },
+  { tittel: "God mot dårlig skill", konsept: "Kontrast", uke: 2,
+    prompt: "Her er et utkast til skill:\n\n[lim inn SKILL.md]\n\nMarker det som gjør den god (trigger med når-ikke, struktur, målestokk, regler, eksempel) og det som gjør den dårlig (vag trigger, tvungen balanse, positiv tone, ingen målestokk)." },
 ];
 
 // ── Modellvelger ─────────────────────────────────────────────────
@@ -163,9 +178,10 @@ function renderSlides(mount) {
   const tbody = el("tbody");
   WEEKS.forEach(w => {
     const tr = el("tr", w.slides ? null : "slides-row-kommer");
+    const open = w.slides && w.slides.open;
     const handling = w.slides
-      ? `<a class="dl-btn" href="${w.slides.file}" download>` +
-        `<span class="dl-ico" aria-hidden="true">↓</span> Last ned</a>` +
+      ? `<a class="dl-btn" href="${w.slides.file}"${open ? ' target="_blank" rel="noopener"' : " download"}>` +
+        `<span class="dl-ico" aria-hidden="true">${open ? "→" : "↓"}</span> ${open ? "Åpne" : "Last ned"}</a>` +
         `<div class="dl-meta">${esc(w.slides.format)} · ${esc(w.slides.storrelse)}</div>`
       : `<span class="pill">Kommer</span>`;
     tr.innerHTML =
@@ -206,7 +222,9 @@ function renderGlossary(listMount, searchInput) {
 
 // ── Prompt-oppskrifter ───────────────────────────────────────────
 function renderPrompts(mount) {
-  PROMPTS.forEach(p => {
+  const uke = Number(mount.dataset.uke);
+  const items = Number.isFinite(uke) ? PROMPTS.filter(p => p.uke === uke) : PROMPTS;
+  items.forEach(p => {
     const card = el("div", "card prompt-card");
     card.innerHTML =
       `<div class="pc-head"><h3>${esc(p.tittel)}</h3><span class="pill">${esc(p.konsept)}</span></div>` +
@@ -299,6 +317,112 @@ function wireContext(section) {
   });
 }
 
+// ── Skill-anatomi: klikk i fil-treet ─────────────────────────────
+function wireFileTree(root) {
+  const items = root.querySelectorAll(".ft-item[data-file]");
+  const views = root.querySelectorAll(".file-view[data-file]");
+  items.forEach(item => {
+    item.addEventListener("click", () => {
+      items.forEach(i => {
+        i.classList.toggle("active", i === item);
+        i.setAttribute("aria-pressed", String(i === item));
+      });
+      views.forEach(v => {
+        const on = v.dataset.file === item.dataset.file;
+        v.classList.toggle("active", on);
+        v.hidden = !on;
+      });
+    });
+  });
+}
+
+// ── Stresstest: bytt mellom de tre kjøringene ────────────────────
+function wireRunToggle(control) {
+  const panels = document.querySelectorAll(".run-panel[data-run]");
+  control.querySelectorAll("button[data-run]").forEach(b => {
+    b.addEventListener("click", () => {
+      control.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      panels.forEach(p => { p.hidden = p.dataset.run !== b.dataset.run; });
+    });
+  });
+}
+
+// ── Prioriteringsmatrise: klikk, skriv, dra ──────────────────────
+function wireMatrix(grid) {
+  const makeDraggable = label => {
+    label.addEventListener("pointerdown", e => {
+      e.preventDefault();
+      const rect = grid.getBoundingClientRect();
+      const scaleX = grid.offsetWidth / rect.width;
+      const scaleY = grid.offsetHeight / rect.height;
+      const startLeft = parseFloat(label.style.left);
+      const startTop = parseFloat(label.style.top);
+      let moved = false;
+      const onMove = ev => {
+        const dx = (ev.clientX - e.clientX) * scaleX;
+        const dy = (ev.clientY - e.clientY) * scaleY;
+        if (!moved && Math.hypot(dx, dy) < 5) return;
+        moved = true;
+        label.classList.add("dragging");
+        label.style.left = Math.max(0, Math.min(grid.offsetWidth, startLeft + dx)) + "px";
+        label.style.top = Math.max(0, Math.min(grid.offsetHeight, startTop + dy)) + "px";
+      };
+      const onUp = () => {
+        label.releasePointerCapture(e.pointerId);
+        label.removeEventListener("pointermove", onMove);
+        label.removeEventListener("pointerup", onUp);
+        label.classList.remove("dragging");
+        if (moved) label.dataset.dragged = "1";
+      };
+      label.setPointerCapture(e.pointerId);
+      label.addEventListener("pointermove", onMove);
+      label.addEventListener("pointerup", onUp);
+    });
+  };
+
+  grid.addEventListener("click", e => {
+    const pin = e.target.closest(".quad-pin");
+    if (pin) {
+      if (pin.dataset.dragged === "1") { delete pin.dataset.dragged; return; }
+      pin.remove();
+      return;
+    }
+    if (e.target.closest(".quad-input")) return;
+    const rect = grid.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (grid.offsetWidth / rect.width);
+    const y = (e.clientY - rect.top) * (grid.offsetHeight / rect.height);
+    const input = el("input", "quad-input");
+    input.type = "text";
+    input.placeholder = "Skriv, så Enter";
+    input.style.left = x + "px";
+    input.style.top = y + "px";
+    grid.appendChild(input);
+    input.focus();
+    let done = false;
+    const commit = () => {
+      if (done) return;
+      done = true;
+      const text = input.value.trim();
+      if (text) {
+        const label = el("span", "quad-pin", esc(text));
+        label.title = "Dra for å flytte, klikk for å fjerne";
+        label.style.left = x + "px";
+        label.style.top = y + "px";
+        makeDraggable(label);
+        grid.appendChild(label);
+      }
+      input.remove();
+    };
+    input.addEventListener("keydown", ev => {
+      ev.stopPropagation();
+      if (ev.key === "Enter") commit();
+      if (ev.key === "Escape") { done = true; input.remove(); }
+    });
+    input.addEventListener("blur", commit);
+  });
+}
+
 // ── Init ─────────────────────────────────────────────────────────
 ready(() => {
   wireExpanders(document);
@@ -326,4 +450,13 @@ ready(() => {
 
   const ctx = document.getElementById("kontekst");
   if (ctx) wireContext(ctx);
+
+  const tree = document.getElementById("skill-tree");
+  if (tree) wireFileTree(tree);
+
+  const runs = document.getElementById("run-toggle");
+  if (runs) wireRunToggle(runs);
+
+  const matrix = document.getElementById("matrix-grid");
+  if (matrix) wireMatrix(matrix);
 });

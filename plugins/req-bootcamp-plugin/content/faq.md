@@ -8,7 +8,7 @@
 
 ## Verktøy
 
-- **Hva trenger jeg?** Claude-konto (dekkes av REQ) og fra økt 2: Claude Code med kurspluginen - installasjonsstegene står i README-en til dette repoet og i forarbeidet til økt 2.
+- **Hva trenger jeg?** Claude-konto (dekkes av REQ). I økt 2 skrev dere en skill i Claude - uten installering. Claude Code tar vi senere. Kurspluginen installerer du fra organisasjonen; stegene står i README-en.
 - **Hvordan oppdaterer jeg pluginen?** Kjør `/plugin update` i Claude Code (velg `req-bootcamp-plugin`), eller på kommandolinjen: `claude plugin update req-bootcamp-plugin@req-bootcamp-plugin`. Innholdet oppdateres etter hver økt.
 - **Hva er MCP-serverne?** Pluginen kobler Claude til to åpne servere, uten innlogging — begge inne i **denne** kurspluginen, ikke som et eget Garden-plugin:
   - `req-bootcamp` — timeplan, oppsummeringer og FAQ (dette repoet)
