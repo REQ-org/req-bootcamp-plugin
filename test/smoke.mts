@@ -53,6 +53,13 @@ const s1 = await rpc("tools/call", { name: "get_session", arguments: { number: 1
 if (!s1.content[0].text.includes("Fundamentals I")) throw new Error("session 1 content wrong");
 console.log("get_session(1) ok");
 
+const s2 = await rpc("tools/call", { name: "get_session", arguments: { number: 2 } });
+const s2text = s2.content[0].text as string;
+if (s2text.includes("kommer etter økten")) throw new Error("session 2 recap still stub");
+if (!s2text.includes("stresstest")) throw new Error("session 2 missing walkthrough recap");
+if (!s2text.includes("Quick wins")) throw new Error("session 2 missing matrix recap");
+console.log("get_session(2) ok");
+
 const s9 = await rpc("tools/call", { name: "get_session", arguments: { number: 9 } });
 if (!s9.content[0].text.includes("Trygg bruk")) throw new Error("session 9 content wrong");
 console.log("get_session(9) ok");

@@ -486,7 +486,245 @@ a.week-node .wn-num { background: var(--navy); color: var(--paper); }
 
 .map-note { margin-top: 30px; font-size: 14px; color: var(--navy-soft); }
 
-/* ── Kommer-tilstand (uke 2-10) ────────────────────────────────── */
+/* ── Uke 2: skill-anatomi ──────────────────────────────────────── */
+.anatomy-split {
+  display: grid;
+  grid-template-columns: minmax(200px, 240px) 1fr;
+  gap: 28px;
+  margin-top: 28px;
+  align-items: start;
+}
+.ft-root {
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: -.01em;
+  margin-bottom: 8px;
+}
+.ft-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--navy-soft);
+  background: transparent;
+  border: 0;
+  border-left: 3px solid transparent;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-radius: 0 8px 8px 0;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.ft-item:hover { background: var(--navy-ghost); color: var(--navy); }
+.ft-item.active {
+  background: var(--navy-ghost);
+  border-left-color: var(--navy);
+  color: var(--navy);
+  font-weight: 500;
+}
+.ft-item.indent { margin-left: 16px; width: calc(100% - 16px); }
+.ft-hint {
+  margin-top: 16px;
+  font-size: 13.5px;
+  color: var(--navy-soft);
+}
+.file-role {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--navy-soft);
+  margin-bottom: 10px;
+}
+.file-view[hidden] { display: none; }
+
+/* ── Uke 2: trappen ────────────────────────────────────────────── */
+.ladder {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 28px;
+  align-items: stretch;
+}
+.ladder-step {
+  background: #fff;
+  border: 1px solid var(--navy-faint);
+  border-radius: 12px;
+  padding: 18px 18px 20px;
+}
+.ladder-step.highlight {
+  border-color: var(--navy);
+  background: var(--navy-ghost);
+}
+.ladder-step .step-num {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--navy-soft);
+  margin-bottom: 8px;
+}
+.ladder-step .step-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--navy);
+}
+.ladder-step .step-desc {
+  margin-top: 8px;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+/* ── Uke 2: stresstest-kjøringer ───────────────────────────────── */
+.run-panel { margin-top: 22px; }
+.run-panel[hidden] { display: none; }
+.statement {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--navy);
+  line-height: 1.2;
+  margin: 8px 0 16px;
+}
+.plain-list {
+  margin: 12px 0 0;
+  padding-left: 1.15em;
+  max-width: 40em;
+}
+.plain-list li { margin-top: 8px; }
+.plain-list li::marker { color: var(--navy); }
+
+.compare-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 28px;
+}
+.compare-col {
+  background: #fff;
+  border: 1px solid var(--navy-faint);
+  border-radius: 12px;
+  padding: 18px 20px 20px;
+}
+.compare-col.good { border-color: var(--navy); background: var(--navy-ghost); }
+.compare-col.bad { border-style: dashed; }
+.compare-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+.compare-col.good .compare-badge { background: var(--navy); color: var(--paper); }
+.compare-col.bad .compare-badge { background: var(--navy-ghost); color: var(--navy-soft); border: 1px solid var(--navy-faint); }
+.compare-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.compare-list li {
+  font-size: 15.5px;
+  padding-left: 16px;
+  position: relative;
+}
+.compare-list li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 9px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--navy);
+}
+.compare-col.bad .compare-list li::before { background: var(--navy-soft); }
+
+/* ── Uke 2: prioriteringsmatrise ───────────────────────────────── */
+.quad {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  grid-template-rows: 1fr 28px;
+  margin-top: 24px;
+}
+.quad-grid {
+  grid-column: 2; grid-row: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  position: relative;
+  min-height: 320px;
+}
+.quad-cell {
+  min-height: 150px;
+  border: 1px solid var(--navy-faint);
+  background: #fff;
+  padding: 16px 18px;
+}
+.quad-cell.highlight {
+  background: var(--navy-ghost);
+  border: 2px solid var(--navy);
+  position: relative;
+  z-index: 1;
+}
+.quad-name {
+  display: block;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  color: var(--navy);
+  font-size: 18px;
+}
+.quad-sub { font-size: 13.5px; color: var(--navy-soft); }
+.quad-x-label, .quad-y-label {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--navy-soft);
+}
+.quad-x-label {
+  grid-column: 2; grid-row: 2;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.quad-y-label {
+  grid-column: 1; grid-row: 1;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  display: flex; align-items: center; justify-content: center;
+}
+.quad-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: var(--navy);
+  color: var(--paper);
+  font-size: 13.5px;
+  line-height: 1.2;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: grab;
+  white-space: nowrap;
+  z-index: 2;
+  user-select: none;
+  touch-action: none;
+  max-width: 46%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.quad-pin.dragging { cursor: grabbing; z-index: 4; }
+.quad-input {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: min(220px, 70%);
+  font-family: inherit;
+  font-size: 15px;
+  padding: 6px 10px;
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  outline: none;
+  z-index: 3;
+}
+
+/* ── Kommer-tilstand (uke 3-10) ────────────────────────────────── */
 .kommer-block { padding: 80px 0 90px; text-align: center; }
 .kommer-block .kicker { color: var(--navy); }
 .kommer-block h2 { font-size: clamp(30px, 5vw, 44px); font-weight: 800; letter-spacing: -.025em; color: var(--navy); }
@@ -575,6 +813,7 @@ footer { border-top: 1px solid var(--navy-faint); padding: 40px 0 56px; margin-t
 @media (max-width: 860px) {
   .map { grid-template-columns: 1fr; }
   .prompt-list { grid-template-columns: 1fr; }
+  .anatomy-split, .ladder, .compare-cols { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   body { font-size: 16px; }
