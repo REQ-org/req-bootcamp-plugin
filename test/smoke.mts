@@ -46,7 +46,10 @@ if (JSON.stringify(names) !== JSON.stringify(["get_faq", "get_schedule", "get_se
   throw new Error("unexpected tool set");
 
 const sched = await rpc("tools/call", { name: "get_schedule", arguments: {} });
-if (!sched.content[0].text.includes("18. august 2026")) throw new Error("schedule content wrong");
+const schedText = sched.content[0].text as string;
+if (!schedText.includes("18. august 2026")) throw new Error("schedule content wrong");
+if (!schedText.includes("4. sep 2026")) throw new Error("schedule missing Friday 4 Sep session 3");
+if (schedText.includes("MCP: koble til")) throw new Error("schedule still has stale økt 3 topic");
 console.log("get_schedule ok");
 
 const s1 = await rpc("tools/call", { name: "get_session", arguments: { number: 1 } });
@@ -59,6 +62,15 @@ if (s2text.includes("kommer etter økten")) throw new Error("session 2 recap sti
 if (!s2text.includes("stresstest")) throw new Error("session 2 missing walkthrough recap");
 if (!s2text.includes("Quick wins")) throw new Error("session 2 missing matrix recap");
 console.log("get_session(2) ok");
+
+const s3 = await rpc("tools/call", { name: "get_session", arguments: { number: 3 } });
+const s3text = s3.content[0].text as string;
+if (!s3text.includes("Projects, dokumenter og offentlige data")) {
+  throw new Error("session 3 missing Friday agenda title");
+}
+if (!s3text.includes("4. sep 2026")) throw new Error("session 3 date wrong");
+if (s3text.includes("1. sep 2026")) throw new Error("session 3 still dated 1. sep");
+console.log("get_session(3) ok");
 
 const s9 = await rpc("tools/call", { name: "get_session", arguments: { number: 9 } });
 if (!s9.content[0].text.includes("Trygg bruk")) throw new Error("session 9 content wrong");

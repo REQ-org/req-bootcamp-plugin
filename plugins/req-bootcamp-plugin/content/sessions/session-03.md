@@ -1,13 +1,27 @@
-# Økt 3 - MCP: koble til (1. sep 2026)
+# Økt 3 - Projects, dokumenter og offentlige data (4. sep 2026)
 
-Hva en MCP er, hvordan den er bygd opp, og hvordan du kobler til og tester en eksisterende MCP. Pluginen peker allerede på Varden MCP Garden som én server inne i kurspluginen (`varden-garden`) — SSB, Enhetsregisteret, Kartverket, MET og regnskap, uten innlogging. Skillene `ssb`, `brreg`, `regnskap`, `kartverket` og `met` sier når Claude skal bruke hvilken pakke. Å bygge en egen MCP kommer i uke 8.
+Vedvarende kontekst, Word, PPT og Excel rett fra Claude, og SSB, Brreg og Kartverket som live datakilder. Fredag 4. september 2026, 08:30–09:30, Teams. Du slipper å lime inn dokumentene hver gang, Claude lager filer du kan sende videre, og de offentlige MCP-ene ligger allerede i pluginen.
 
-## Forarbeid (sendes fredag 28. aug, under 10 min)
+## Dette gjør vi (60 min)
 
-- **Les:** «Hva er en MCP?»-énsider (skill vs. MCP; server, tools, resources) - deles i kursets Project.
-- **Sjekk:** at Claude Code kjører og at du finner en `.mcp.json` fra uke 2-oppsettet.
-- **Prøv:** «hvor mange innbyggere har Oslo?» — pluginen henter svaret fra SSB via Garden.
-- **Ta med:** ett oppslag du gjør manuelt i dag (f.eks. slå opp et selskap) som et verktøy kunne gjort for deg.
+- **Projects** - vedvarende kunnskapsbase. Instruksjoner (tone, rolle, format) og dokumenter som følger med i alle samtaler. Hands-on: lag et Project med instruksjoner og minst ett dokument. Eksempler: selskapsdossier, kandidat-scanner, skriving i REQ-stil, eiendoms-DD.
+- **Claude lager dokumenter** - Word, PowerPoint og Excel rett fra Claude. Investeringsnotat for Aker BP, porteføljegjennomgang, nøkkeltallsmodeller.
+- **Offentlige MCP-er** - pluginen peker allerede på SSB, Brreg og Kartverket. Deretter egne connectors: Drive, SharePoint, OneDrive, Gmail, Slack, Notion. Live demo: «Hent befolkningsutviklingen i Oslo de siste 10 årene fra SSB», «Vis nøkkeltall fra siste årsregnskap for Aker BP», «Slå opp adressen Sommerrogata 17, Oslo».
+
+## Forarbeid
+
+Ingen installering. De offentlige kildene er allerede inne i pluginen.
+
+1. **Tenk på noe du faktisk jobber med** som kan bli et Project - et selskap, en eiendom, en skriveoppgave eller en kandidatvurdering.
+2. **Ha minst ett dokument klart** du kan legge inn (rapport, notat, prospekt eller mal).
+
+Sitter du fast? Ta det med ro - vi løser det sammen i starten av økten.
+
+## Før neste gang
+
+Tenk på noe det gir mening å bygge et prosjekt rundt - og sett opp det prosjektet i Claude.
+
+Spørsmål: Herman Holmøy (herman@vardenlab.com) eller Nicolay Liaaen Hagen (nicolay@vardenlab.com).
 
 ## Oppsummering
 
