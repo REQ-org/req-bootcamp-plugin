@@ -13,10 +13,10 @@ MCP-serveren `varden-garden`. Åpen Enhetsregisteret-API, ingen nøkkel.
 
 ## Verktøy
 
-- `brreg_search_entities` — søk på navn eller orgnr.
+- `brreg_search_entities` — søk med `name` (firmanavn) eller `organisasjonsnummer` (ikke et generisk `query`-felt).
 - `brreg_get_entity` — én enhet (`organisasjonsnummer`, 9 siffer).
-- `brreg_get_roles` — styre og roller. Fødselsnummer kommer aldri med.
-- `brreg_search_subunits` — underenheter.
+- `brreg_get_roles` — styre og roller (`organisasjonsnummer`). Fødselsnummer kommer aldri med.
+- `brreg_search_subunits` — underenheter (`name` eller `overordnetEnhet`).
 
 Svar på bokmål, kort. Nevn orgnr og kilde (Brønnøysundregistrene).
 

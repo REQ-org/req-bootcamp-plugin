@@ -13,10 +13,12 @@ MCP-serveren `varden-garden` (Varden MCP Garden — åpen, ingen nøkkel). Ikke 
 
 ## Verktøy
 
-1. `ssb_search_tables` — finn tabell (f.eks. «befolkning Oslo»).
-2. `ssb_table_metadata` — se dimensjoner og gyldige koder.
-3. `ssb_table_data` — hent tall. `valueCodes` må være offisielle koder fra metadata (f.eks. `Region: ['0301']`). Feil Selection gir ofte **HTTP 400** — da: les metadata på nytt og prøv de oppgitte kodene, ikke finn på egne.
-4. `ssb_klass_search` / `ssb_klass_codes` — kommune-, fylke- og næringskoder.
+Parameternavnene er **camelCase** — bruk dem nøyaktig (ikke `table_id`, men `tableId`).
+
+1. `ssb_search_tables` — finn tabell. Param: `query` (f.eks. `"befolkning Oslo"`).
+2. `ssb_table_metadata` — se dimensjoner og gyldige koder. Param: `tableId` (f.eks. `"11342"`).
+3. `ssb_table_data` — hent tall. Param: `tableId` + `valueCodes`. `valueCodes` må være offisielle koder fra metadata, som et objekt `{ "Region": ["0301"], "ContentsCode": ["Folkemengde"] }`. Feil Selection gir ofte **HTTP 400** — da: les metadata på nytt og prøv de oppgitte kodene, ikke finn på egne.
+4. `ssb_klass_search` (param `query`) / `ssb_klass_codes` (param `classificationId`) — kommune-, fylke- og næringskoder.
 
 Svar på bokmål, kort, og oppgi kilden (SSB-tabell-id).
 
