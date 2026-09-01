@@ -24,7 +24,8 @@ const WEEKS = [
     tittel: "Skills",             tema: "Ekte skills i praksis, og bygg din egen",
     slides: { file: "slides/uke-02.html", format: "HTML", storrelse: "som brukt i økta", open: true } },
   { nr: 3,  fase: 1, status: "kommer", href: "uke-03.html",
-    tittel: "MCP: koble til",     tema: "Hva en MCP er, hvordan den er bygd, koble til og teste en eksisterende" },
+    tittel: "Projects, dokumenter og offentlige data",
+    tema: "Vedvarende kontekst, Word, PPT og Excel, og SSB, Brreg og Kartverket" },
   { nr: 4,  fase: 2, status: "kommer", href: "uke-04.html",
     tittel: "Strukturert prompting", tema: "XML-tags, gjenbrukbare maler, Projects, Artifacts og Memory" },
   { nr: 5,  fase: 2, status: "kommer", href: "uke-05.html",
@@ -148,9 +149,10 @@ function renderMap(mount) {
     col.appendChild(el("div", "ph-caption", esc(f.caption)));
     const wks = el("div", "phase-weeks");
     WEEKS.filter(w => w.fase === f.nr).forEach(w => {
-      const live = w.status === "live";
-      const node = el(live ? "a" : "div", "week-node" + (live ? "" : " kommer"));
-      if (live) { node.href = w.href; }
+    const live = w.status === "live";
+    const clickable = live || w.nr === 3;
+    const node = el(clickable ? "a" : "div", "week-node" + (live ? "" : " kommer"));
+    if (clickable) { node.href = w.href; }
       node.setAttribute("title", w.tema);
       node.innerHTML =
         `<span class="wn-num">${w.nr}</span>` +
