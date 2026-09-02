@@ -65,6 +65,19 @@ const packs = [
     name: "met",
     needles: ["vær", "met_locationforecast", "varden-garden"],
   },
+  {
+    name: "oslo-pbe",
+    needles: [
+      "reguleringsplan",
+      "oslo_list_layers",
+      "oslo_plans_for_parcel",
+      "oslo_planbestemmelser",
+      "oslo_search_cases",
+      "oslo_case",
+      "saksinnsyn",
+      "504",
+    ],
+  },
 ] as const;
 
 for (const pack of packs) {
@@ -135,6 +148,8 @@ const required = [
   "kartverket_search_addresses",
   "met_locationforecast",
   "brreg_get_accounts",
+  "oslo_plans_for_parcel",
+  "oslo_planbestemmelser",
 ];
 const missing = required.filter((n) => !names.includes(n));
 if (missing.length) throw new Error(`Garden missing packs: ${missing.join(", ")}`);

@@ -6,7 +6,7 @@
 |---|---|---|
 | 01 | 18. aug 2026 | Fundament + plugin - intro, landskap/terminologi, modellvalg, tokens/latens |
 | 02 | 25. aug 2026 | Skills - ekte skills i praksis, og bygg din egen |
-| 03 | 4. sep 2026 | Projects, dokumenter og offentlige data - vedvarende kontekst, Word/PPT/Excel, SSB, Brreg og Kartverket |
+| 03 | 4. sep 2026 | Projects, dokumenter og offentlige data - vedvarende kontekst, Word/PPT/Excel, SSB, Brreg, Kartverket og Oslo Planinnsyn |
 | 04 | 11. sep 2026 | Strukturert prompting - XML-tags, gjenbrukbare maler, Projects, Artifacts, Memory |
 | 05 | 18. sep 2026 | Skriving & kommunikasjon - Claude i Word/PowerPoint, REQ-malen |
 | 06 | 25. sep 2026 | Research - websøk, dokumentverktøy, connectors/RAG-intro |
