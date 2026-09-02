@@ -70,6 +70,15 @@ if (!s3text.includes("Projects, dokumenter og offentlige data")) {
 }
 if (!s3text.includes("4. sep 2026")) throw new Error("session 3 date wrong");
 if (s3text.includes("1. sep 2026")) throw new Error("session 3 still dated 1. sep");
+if (!s3text.includes("Planinnsyn") || !s3text.includes("oslo-pbe")) {
+  throw new Error("session 3 missing live oslo-pbe / Planinnsyn");
+}
+if (!s3text.includes("Hvilke reguleringsplaner gjelder Sommerrogata 17")) {
+  throw new Error("session 3 missing tested Planinnsyn demo prompt");
+}
+if (s3text.includes("Norges Bank")) {
+  throw new Error("session 3 must not invent Norges Bank");
+}
 console.log("get_session(3) ok");
 
 const s9 = await rpc("tools/call", { name: "get_session", arguments: { number: 9 } });

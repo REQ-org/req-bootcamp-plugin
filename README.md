@@ -28,11 +28,12 @@ Dukker ikke pluginen opp under organisasjonen din, eller henger installeringen? 
 
 Spør Claude om alt som gjelder kurset - prøv kommandoen `/kurs`, skillen `prep-me-for-bootcamp`, eller `/forklar <tema>` for en forklaring på hva som helst.
 
-Pluginen kobler også til **Varden MCP Garden** som én MCP-server inne i denne pluginen (`varden-garden`) — ikke en egen plugin. Åpne norske data uten innlogging. Skillene `ssb`, `brreg`, `regnskap`, `kartverket` og `met` sier når Claude skal bruke hvilken pakke. Prøv:
+Pluginen kobler også til **Varden MCP Garden** som én MCP-server inne i denne pluginen (`varden-garden`) — ikke en egen plugin. Åpne norske data uten innlogging. Skillene `ssb`, `brreg`, `regnskap`, `kartverket`, `met` og `oslo-pbe` sier når Claude skal bruke hvilken pakke. Prøv:
 
 - «hvor mange innbyggere har Oslo?»
 - «slå opp REQ AS i Enhetsregisteret»
 - «hva er adressen Sommerrogata 17?»
+- «hvilke reguleringsplaner gjelder Sommerrogata 17?»
 - «hva er værvarselet for Oslo?»
 - «hent nøkkeltall fra siste årsregnskap for REQ AS»
 
@@ -47,7 +48,7 @@ Pluginen kobler deg automatisk til to åpne MCP-servere — ingenting å konfigu
 | Server | URL | Innhold |
 |---|---|---|
 | `req-bootcamp` | `https://req-bootcamp.vercel.app/api/mcp` | Timeplan, øktnotater og FAQ (`api/mcp.ts`) |
-| `varden-garden` | `https://varden-mcp-garden.vercel.app/api/mcp` | Garden-pakke i denne pluginen: SSB, Brreg, Kartverket, MET, regnskap |
+| `varden-garden` | `https://varden-mcp-garden.vercel.app/api/mcp` | Garden-pakke i denne pluginen: SSB, Brreg, Kartverket, MET, regnskap, Oslo Planinnsyn/Saksinnsyn |
 
 Kursserveren leser de samme markdown-filene som pluginen. Garden er Vardens felles åpne MCP — én server-URL i `.mcp.json`, ikke et eget marketplace-plugin og ikke en ekstra server i dette repoet.
 

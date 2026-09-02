@@ -5,7 +5,7 @@ description: Use when they ask about a Norwegian address, gnr/bnr, stedsnavn, h�
 
 # Kartverket — adresse, sted og teig
 
-Spørsmål om **hvor noe er** går hit: gateadresse, gnr/bnr, stedsnavn, høyde, teig i et punkt. Selskapsnavn går til `brreg`. Vær går til `met`.
+Spørsmål om **hvor noe er** går hit: gateadresse, gnr/bnr, stedsnavn, høyde, teig i et punkt. Selskapsnavn går til `brreg`. Vær går til `met`. Reguleringsplan, planbestemmelser eller saksinnsyn i Oslo går til `oslo-pbe`.
 
 ## Server
 

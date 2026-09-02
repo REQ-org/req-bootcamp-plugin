@@ -25,7 +25,7 @@ const WEEKS = [
     slides: { file: "slides/uke-02.html", format: "HTML", storrelse: "som brukt i økta", open: true } },
   { nr: 3,  fase: 1, status: "kommer", href: "uke-03.html",
     tittel: "Projects, dokumenter og offentlige data",
-    tema: "Vedvarende kontekst, Word, PPT og Excel, og SSB, Brreg og Kartverket" },
+    tema: "Vedvarende kontekst, Word, PPT og Excel, og SSB, Brreg, Kartverket og Oslo Planinnsyn" },
   { nr: 4,  fase: 2, status: "kommer", href: "uke-04.html",
     tittel: "Strukturert prompting", tema: "XML-tags, gjenbrukbare maler, Projects, Artifacts og Memory" },
   { nr: 5,  fase: 2, status: "kommer", href: "uke-05.html",

@@ -344,7 +344,7 @@
     <div class="manifest">
       <div class="manifest-head">
         <span class="pkg">req-bootcamp-plugin</span>
-        <span class="pkg-meta">6 kommandoer · 12 skills · 2 MCP-er · 12 innholdsfiler</span>
+        <span class="pkg-meta">7 kommandoer · 13 skills · 2 MCP-er · 12 innholdsfiler</span>
       </div>
       <div class="mgroup">
         <div class="mgroup-label">Kommandoer</div>
@@ -371,6 +371,10 @@
         <div class="mrow">
           <code>/met</code>
           <p>Værvarsel fra Meteorologisk institutt.</p>
+        </div>
+        <div class="mrow">
+          <code>/oslo-pbe</code>
+          <p>Oslo Planinnsyn og Saksinnsyn — reguleringsplan, planbestemmelser, byggesak. Offentlig NLOD.</p>
         </div>
       </div>
       <div class="mgroup">
@@ -419,6 +423,10 @@
           <code>met</code>
           <p>Når du spør om vær eller forecast. Krediter MET.</p>
         </div>
+        <div class="mrow">
+          <code>oslo-pbe</code>
+          <p>Når du spør om reguleringsplan, planbestemmelser, saksinnsyn eller byggesak i Oslo.</p>
+        </div>
       </div>
       <div class="mgroup">
         <div class="mgroup-label">Innhold</div>
@@ -443,7 +451,7 @@
         </div>
         <div class="mrow">
           <code>varden-garden</code>
-          <p>Garden-pakke i denne pluginen: SSB, Enhetsregisteret, Kartverket, MET og regnskap. Offentlig, uten innlogging — ikke et eget plugin.</p>
+          <p>Garden-pakke i denne pluginen: SSB, Enhetsregisteret, Kartverket, MET, regnskap og Oslo Planinnsyn/Saksinnsyn. Offentlig, uten innlogging — ikke et eget plugin.</p>
         </div>
       </div>
     </div>
@@ -452,12 +460,13 @@
 
   <section id="norge">
     <h2>Åpne norske data</h2>
-    <p>Pluginen peker på <strong>Varden MCP Garden</strong> som én MCP-server inne i kurspluginen (<code>varden-garden</code>) — ikke som et eget plugin — så dere kan øve på connectors uten intern tilgang: SSB, Enhetsregisteret, Kartverket, MET og Regnskapsregisteret. Ingen ekstra innlogging.</p>
+    <p>Pluginen peker på <strong>Varden MCP Garden</strong> som én MCP-server inne i kurspluginen (<code>varden-garden</code>) — ikke som et eget plugin — så dere kan øve på connectors uten intern tilgang: SSB, Enhetsregisteret, Kartverket, MET, Regnskapsregisteret og Oslo Planinnsyn/Saksinnsyn. Ingen ekstra innlogging.</p>
     <p style="margin-top:18px">Spør Claude på vanlig norsk, for eksempel:</p>
     <div class="try">
       <span>«hvor mange innbyggere har Oslo?»</span>
       <span>«slå opp REQ AS i Enhetsregisteret»</span>
       <span>«hva er adressen Sommerrogata 17?»</span>
+      <span>«hvilke reguleringsplaner gjelder Sommerrogata 17?»</span>
       <span>«hva er værvarselet for Oslo?»</span>
     </div>
     <p class="hint">«Hvor mange innbyggere har Oslo?» går mot SSB via Garden. Claude skal alltid oppgi kilden. Server: <code>https://varden-mcp-garden.vercel.app/api/mcp</code></p>
