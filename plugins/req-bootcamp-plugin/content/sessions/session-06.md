@@ -1,11 +1,12 @@
-# Økt 6 - Research & kilder (22. sep 2026)
+# Økt 6 - Repeterbar analyse (2. okt 2026)
 
-Research med Claude: websøk, dokument- og filverktøy, og en intro til connectors/RAG - med kildekritikk på svarene.
+Gjør en analyse én gang, kjør den igjen hver måned: repeterbare analyser (Claude Code / API-skript), strukturert uttrekk til JSON/Excel, og interaktive widgets.
 
-## Forarbeid (sendes fredag 18. sep, under 10 min)
+## Forarbeid (sendes fredag 25. sep, under 10 min)
 
-- **Les:** kort om websøk og kildekritikk i Claude.
-- **Ta med:** ett reelt researchspørsmål eller et par kilder du jobber med denne uken.
+- **Les:** kort eksempel på en repeterbar analyse (skript eller mal).
+- **Les:** verifikasjons-sjekklisten - be om kilder, klikk på dem, kryssjekk primærkilden.
+- **Ta med:** en tilbakevendende analyse- eller talloppgave du gjør ofte.
 
 ## Oppsummering
 

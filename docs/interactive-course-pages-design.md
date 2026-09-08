@@ -4,6 +4,8 @@ Dato: 2026-08-17
 Repo: `req-bootcamp-plugin` (samme Vercel-side som landingssiden)
 Status: til gjennomgang
 
+> **Superseded 2026-09-08:** kurset er kuttet fra ti til ni økter (research-økta er tatt ut, 11. sep flyttet til 18. sep). Nettstedet har nå uke 1-9, og `public/kurs/uke-10.html` finnes ikke lenger. Dokumentet under beskriver den opprinnelige leveransen - «uke 2-10» og «10-ukerskartet» skal leses som uke 2-9 og ni-ukerskartet.
+
 ## Hva dette er
 
 Et interaktivt nettsted som utfyller REQ AI Bootcamp, nådd fra landingssiden.

@@ -1,11 +1,19 @@
-# Økt 4 - Strukturert prompting (8. sep 2026)
+# Økt 4 - Arbeidsøkt (18. sep 2026)
 
-Løft prompts fra naive til strukturerte: XML-tags, rolleinstruksjoner og gjenbrukbare maler - og Claude Projects, Artifacts og Memory.
+Ingen ny undervisning: du bygger én ting du faktisk får bruk for, på ditt eget materiale -
+en skill, et Claude-prosjekt eller en kunnskaps-wiki. Vi starter med å løse to av de
+innsendte casene i plenum, så jobber alle videre med hjelp fra Herman og Nicolay underveis
+- også for dere på Teams.
 
-## Forarbeid (sendes fredag 4. sep, under 10 min)
+## Forarbeid (sendes uken før, under 10 min)
 
-- **Les:** kort «Anatomi av en god prompt» (kontekst, mål, format + XML-tags), deles i kursets Project.
-- **Ta med:** en kvartalsrapport eller et notat du faktisk skal behandle denne uken.
+- **Velg oppgaven din:** én konkret ting du vil ha bygget i løpet av timen - ikke et tema, en oppgave.
+- **Send oss to setninger:** hva oppgaven er, og hva du vil sitte igjen med. Vi plukker ut to og løser dem i plenum.
+- **Ta med:** dokumentene, tallene eller notatene du trenger, klart på maskinen.
+
+Står du fast, er det tre retninger å velge mellom: en **skill** for noe du gjør igjen og
+igjen, et **Project** for et selskap eller en case, eller en **kunnskaps-wiki** bygget fra
+offentlige rapporter.
 
 ## Oppsummering
 

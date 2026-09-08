@@ -2,6 +2,8 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+> **Superseded 2026-09-08:** the course was cut from ten sessions to nine (the research session was dropped and 11 Sep moved to 18 Sep). The site now has weeks 1-9; `public/kurs/uke-10.html` no longer exists and the week titles in `kurs.js` have changed. The steps below are the record of the original build - read them as history, not as the current shape of `public/kurs/`.
+
 **Goal:** Build an interactive, participant-facing exploration companion for the REQ AI Bootcamp - week 1 fully built, weeks 2-10 scaffolded - reached from the existing landing page.
 
 **Architecture:** Static, no-build vanilla HTML/CSS/JS served from `public/` on the existing Vercel site. A shared `kurs.css` (design tokens lifted from the landing page) and `kurs.js` (data model + behaviour) back a `/kurs/` hub (interactive 10-week map) and per-week pages. Content that grows across the course (glossary, prompts, weeks) lives as JS data, so adding a week = adding entries + copying a template.
@@ -45,7 +47,7 @@ const WEEKS = [
   { nr: 1, tittel: "Fundament I", fase: 1, status: "live",   href: "uke-01.html",
     tema: "Introduksjon, landskapet og modellvalg" },
   { nr: 2, tittel: "Fundament II", fase: 1, status: "kommer", href: "uke-02.html",
-    tema: "Strukturert prompting, Projects, Artifacts, Memory" },
+    tema: "Ekte skills i praksis, og bygg din egen" },
   // … nr 3-10, status "kommer"
 ];
 const FASER = [

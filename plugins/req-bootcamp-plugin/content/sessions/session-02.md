@@ -76,10 +76,10 @@ Alle skulle forlate matrisen med *én* oppgave, helst fra quick wins.
 
 Én fil, `SKILL.md`, for use-casen dere satte ring rundt. Malen var formen i `stresstest-2/SKILL.md` - ikke innholdet. Ferdig når filen har en trigger og en kort kropp, og dere har kjørt den på et eksempel den ikke ble skrevet for.
 
-### Mikrooppgave (før 1. sep)
+### Mikrooppgave (før 4. sep)
 
 Prøv skillen på to ekte oppgaver. Noter når triggeren traff, og når den ikke gjorde det.
 
 ### Neste uke
 
-Økt 3 (1. sep): MCP - koble til noe som allerede finnes, og teste. Skillene dere skrev denne uka tar dere med videre.
+Økt 3 (4. sep): Projects, dokumenter og offentlige data - koble til noe som allerede finnes, og teste. Skillene dere skrev denne uka tar dere med videre.

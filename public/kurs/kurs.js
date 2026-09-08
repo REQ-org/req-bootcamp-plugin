@@ -10,9 +10,9 @@
 const FASER = [
   { nr: 1, kicker: "Fase 1 · Uke 1–3",  tittel: "Kom i gang og bygg de første delene",
     caption: "Fra intro til din egen skill og MCP-kobling" },
-  { nr: 2, kicker: "Fase 2 · Uke 4–7",  tittel: "Bruk Claude i arbeidet",
-    caption: "Prompting, skriving, research og analyse på ekte oppgaver" },
-  { nr: 3, kicker: "Fase 3 · Uke 8–10", tittel: "Bygg videre og forankre",
+  { nr: 2, kicker: "Fase 2 · Uke 4–6",  tittel: "Bruk Claude i arbeidet",
+    caption: "Egen arbeidsøkt, skriving og analyse på ekte oppgaver" },
+  { nr: 3, kicker: "Fase 3 · Uke 7–9",  tittel: "Bygg videre og forankre",
     caption: "Bygg en MCP, trygg bruk, og del det du har laget" },
 ];
 
@@ -27,19 +27,17 @@ const WEEKS = [
     tittel: "Projects, dokumenter og offentlige data",
     tema: "Vedvarende kontekst, Word, PPT og Excel, og SSB, Brreg, Kartverket og Oslo Planinnsyn" },
   { nr: 4,  fase: 2, status: "kommer", href: "uke-04.html",
-    tittel: "Strukturert prompting", tema: "XML-tags, gjenbrukbare maler, Projects, Artifacts og Memory" },
+    tittel: "Arbeidsøkt",         tema: "Du bygger din egen ting; to innsendte caser løses i plenum" },
   { nr: 5,  fase: 2, status: "kommer", href: "uke-05.html",
-    tittel: "Skriving & Office",  tema: "Claude i Word og PowerPoint, REQ-malen" },
+    tittel: "Skriving og REQ-malen", tema: "Utkast, omskriving, tone, korrektur og en gjenbrukbar mal-instruksjon" },
   { nr: 6,  fase: 2, status: "kommer", href: "uke-06.html",
-    tittel: "Research & kilder",  tema: "Websøk, dokumentverktøy, connectors og RAG" },
-  { nr: 7,  fase: 2, status: "kommer", href: "uke-07.html",
     tittel: "Repeterbar analyse", tema: "Gjentakbare analyser, JSON/Excel, widgets" },
-  { nr: 8,  fase: 3, status: "kommer", href: "uke-08.html",
+  { nr: 7,  fase: 3, status: "kommer", href: "uke-07.html",
     tittel: "Bygge en MCP",       tema: "Slik bygges en server, intern kobling, ukas agent" },
-  { nr: 9,  fase: 3, status: "kommer", href: "uke-09.html",
+  { nr: 8,  fase: 3, status: "kommer", href: "uke-08.html",
     tittel: "Trygg bruk",         tema: "Egne MCP-er og skills, datatilgang, grenser for agenter" },
-  { nr: 10, fase: 3, status: "kommer", href: "uke-10.html",
-    tittel: "Leveranse & veien videre", tema: "Del det du har laget, champions og roller" },
+  { nr: 9,  fase: 3, status: "kommer", href: "uke-09.html",
+    tittel: "Oppsummering og veien videre", tema: "Del det du har laget, champions og roller" },
 ];
 
 // ── Begrepsbank (vokser hver uke; «uke» = når begrepet dekkes) ────
@@ -67,9 +65,9 @@ const GLOSSARY = [
   { term: "Røde flagg", uke: 2, def: "Sjekklisten for svakheter folk overser. Ligger i references/ ved siden av målestokken." },
   { term: "Quick wins", uke: 2, def: "Høy verdi og lav kompleksitet i prioriteringsmatrisen. Disse går først når du velger hva du skal lage en skill for." },
   { term: "Store satsinger", uke: 2, def: "Høy verdi og høy kompleksitet. Ofte fordi data mangler - en bit til uke 3, ikke hele oppgaven i uke 2." },
-  { term: "Projects", uke: 4, def: "Et arbeidsrom i Claude med fast kontekst - filer, instrukser og historikk samlet ett sted." },
-  { term: "Artifacts", uke: 4, def: "Egne dokumenter og småapper Claude lager ved siden av samtalen, som du kan redigere videre." },
-  { term: "Memory", uke: 4, def: "Det Claude husker på tvers av samtaler, så du slipper å gjenta konteksten hver gang." },
+  { term: "Projects", uke: 3, def: "Et arbeidsrom i Claude med fast kontekst - filer, instrukser og historikk samlet ett sted." },
+  { term: "Artifacts", uke: 3, def: "Egne dokumenter og småapper Claude lager ved siden av samtalen, som du kan redigere videre." },
+  { term: "Memory", uke: 3, def: "Det Claude husker på tvers av samtaler, så du slipper å gjenta konteksten hver gang." },
 ];
 
 // ── Prompt-oppskrifter (kopierbare «prøv selv») ──────────────────
@@ -140,7 +138,7 @@ function wireExpanders(root) {
   });
 }
 
-// ── Hub: 10-ukerskartet ──────────────────────────────────────────
+// ── Hub: 9-ukerskartet ───────────────────────────────────────────
 function renderMap(mount) {
   FASER.forEach(f => {
     const col = el("div", `phase phase-${f.nr}`);

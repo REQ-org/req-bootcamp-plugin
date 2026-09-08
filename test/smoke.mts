@@ -81,8 +81,22 @@ if (s3text.includes("Norges Bank")) {
 }
 console.log("get_session(3) ok");
 
+const s4 = await rpc("tools/call", { name: "get_session", arguments: { number: 4 } });
+const s4text = s4.content[0].text as string;
+if (!s4text.includes("Arbeidsøkt") || !s4text.includes("18. sep 2026")) {
+  throw new Error("session 4 is not the 18 Sep arbeidsøkt");
+}
+if (!s4text.includes("Send oss to setninger")) throw new Error("session 4 missing case pre-work");
+console.log("get_session(4) ok");
+
+const s8 = await rpc("tools/call", { name: "get_session", arguments: { number: 8 } });
+if (!s8.content[0].text.includes("Trygg bruk")) throw new Error("session 8 content wrong");
+console.log("get_session(8) ok");
+
 const s9 = await rpc("tools/call", { name: "get_session", arguments: { number: 9 } });
-if (!s9.content[0].text.includes("Trygg bruk")) throw new Error("session 9 content wrong");
+if (!s9.content[0].text.includes("Oppsummering og veien videre")) {
+  throw new Error("session 9 content wrong");
+}
 console.log("get_session(9) ok");
 
 const faq = await rpc("tools/call", { name: "get_faq", arguments: {} });
