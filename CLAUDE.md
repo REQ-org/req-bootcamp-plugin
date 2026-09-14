@@ -20,7 +20,7 @@ Content is in Norwegian (bokmål). No sensitive information is stored in this re
 Deployed on Vercel: site at `https://req-bootcamp.vercel.app`, course MCP at `/api/mcp`.
 
 Public data: plugin `.mcp.json` entry `varden-garden` → `https://varden-mcp-garden.vercel.app/api/mcp`
-(SSB, Brreg, Kartverket, MET, Regnskapsregisteret, Oslo Planinnsyn/Saksinnsyn). One server inside this plugin — not a
+(SSB, Brreg, Kartverket, MET, Regnskapsregisteret, Oslo Planinnsyn/Saksinnsyn, Norges Bank). One server inside this plugin — not a
 second marketplace plugin, and no `/api/norge` in this repo.
 
 ## Single source of truth — course content
@@ -42,7 +42,7 @@ updated after each session; the plugin/server always serve the latest.
 - `.claude-plugin/plugin.json` — plugin manifest (`req-bootcamp`)
 - `.mcp.json` — two hosted HTTP servers: `req-bootcamp` (this repo) and `varden-garden` (Garden)
 - `commands/kurs.md` — `/kurs` — overview of the next session (or answers a question)
-- `commands/{ssb,brreg,regnskap,kartverket,met,oslo-pbe}.md` — optional slash entry points for each Garden pack
+- `commands/{ssb,brreg,regnskap,kartverket,met,oslo-pbe,nb}.md` — optional slash entry points for each Garden pack
 - `skills/`
   - `prep-me-for-bootcamp` — prep for the next session (pre-work checklist)
   - `bootcamp-recap` — catch up on past sessions
@@ -50,7 +50,7 @@ updated after each session; the plugin/server always serve the latest.
   - `forklar` — `/forklar <tema>` — explain any concept in plain Norwegian
   - `req-presentation` — generate an REQ-branded PowerPoint (`req_deck.py`, `req_charts.py`)
   - `visualiser-bootcamp` — self-contained HTML visual of the 9-session course
-  - `ssb` / `brreg` / `regnskap` / `kartverket` / `met` / `oslo-pbe` — when to use each Garden pack (not course skills)
+  - `ssb` / `brreg` / `regnskap` / `kartverket` / `met` / `oslo-pbe` / `nb` — when to use each Garden pack (not course skills)
 
 ## Course MCP tools (`api/mcp.ts`)
 
@@ -71,7 +71,7 @@ downloadable `public/req-bootcamp-plugin.zip`. See `README.md` for the attendee 
 
 - **Local test:** `npm test` — `test/smoke.mts` drives the course MCP; `test/garden-pointer.mts`
   asserts `.mcp.json` has `varden-garden` → Garden (not a second plugin, not `/api/norge/mcp`),
-  that the six pack skills exist, and that the live Garden lists SSB/Brreg/Kartverket/MET/regnskap/oslo-pbe.
+  that the seven pack skills exist, and that the live Garden lists SSB/Brreg/Kartverket/MET/regnskap/oslo-pbe/nb.
 - **Stack:** TypeScript ESM, `mcp-handler`, `zod`. Python (`python-pptx`, `matplotlib`)
   only for the `req-presentation` skill.
 - After editing content, the smoke test and skills pick it up automatically — no build step.
