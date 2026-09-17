@@ -1,12 +1,11 @@
-# Økt 6 - Repeterbar analyse (2. okt 2026)
+# Økt 6 - Research & kilder (2. okt 2026)
 
-Gjør en analyse én gang, kjør den igjen hver måned: repeterbare analyser (Claude Code / API-skript), strukturert uttrekk til JSON/Excel, og interaktive widgets.
+Research med Claude: websøk, dokument- og filverktøy, og en intro til connectors/RAG - med kildekritikk på svarene. Du får verifikasjons-sjekklisten (be om kilder, klikk på dem, kryssjekk primærkilden), og vi introduserer case-selskapet som økt 7 og 8 bygger videre på.
 
 ## Forarbeid (sendes fredag 25. sep, under 10 min)
 
-- **Les:** kort eksempel på en repeterbar analyse (skript eller mal).
 - **Les:** verifikasjons-sjekklisten - be om kilder, klikk på dem, kryssjekk primærkilden.
-- **Ta med:** en tilbakevendende analyse- eller talloppgave du gjør ofte.
+- **Ta med:** ett selskap eller én eiendom du faktisk gjør research på nå (ellers: kursets case-selskap).
 
 ## Oppsummering
 

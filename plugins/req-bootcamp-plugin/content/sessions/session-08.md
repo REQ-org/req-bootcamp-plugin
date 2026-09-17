@@ -1,11 +1,11 @@
-# Økt 8 - Trygg bruk (16. okt 2026)
+# Økt 8 - Bygge en MCP (16. okt 2026)
 
-Ansvarlig bruk av egenbygde skills og MCP-er: datatilgang, grenser for hva agenter får gjøre, og kjøreregler som passer REQs compliance-rammeverk (MNPI, MAR, GDPR).
+Fra å koble til (uke 3) til å bygge selv: slik er en MCP-server bygd opp, bygg en enkel intern kobling, og sett opp en agent som lager en ukentlig oppsummering. Vi bruker Brreg-demoen.
 
 ## Forarbeid (sendes fredag 9. okt, under 10 min)
 
-- **Les:** kort om datatilgang og agentgrenser.
-- **Ta med:** ev. compliance-føringer for hva som kan limes inn i Claude, og en tanke om hva verktøyene dine faktisk har tilgang til.
+- **Les:** «USB-C for AI» - hva en MCP er, 5 min konseptuelt.
+- **Ta med:** logg fra skill-bruken din (skillen du bygde i uke 2) + én datakilde du skulle ønske Claude kunne nå.
 
 ## Oppsummering
 

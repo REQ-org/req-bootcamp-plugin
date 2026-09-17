@@ -14,15 +14,15 @@ const handler = createMcpHandler(
   (server) => {
     server.tool(
       "get_schedule",
-      "Full schedule for the REQ AI Bootcamp: all 9 sessions with dates and topics (Norwegian).",
+      "Full schedule for the REQ AI Bootcamp: all 10 sessions with dates and topics (Norwegian).",
       {},
       async () => text(await readFile(path.join(CONTENT_DIR, "schedule.md"), "utf8"))
     );
 
     server.tool(
       "get_session",
-      "Details for one bootcamp session: pre-work and, once held, the recap (Norwegian). Sessions are numbered 1-9.",
-      { number: z.number().int().min(1).max(9).describe("Session number, 1-9") },
+      "Details for one bootcamp session: pre-work and, once held, the recap (Norwegian). Sessions are numbered 1-10.",
+      { number: z.number().int().min(1).max(10).describe("Session number, 1-10") },
       async ({ number }) => {
         const file = `session-${String(number).padStart(2, "0")}.md`;
         try {

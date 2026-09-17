@@ -90,14 +90,18 @@ if (!s4text.includes("Send oss to setninger")) throw new Error("session 4 missin
 console.log("get_session(4) ok");
 
 const s8 = await rpc("tools/call", { name: "get_session", arguments: { number: 8 } });
-if (!s8.content[0].text.includes("Trygg bruk")) throw new Error("session 8 content wrong");
+if (!s8.content[0].text.includes("Bygge en MCP")) throw new Error("session 8 content wrong");
 console.log("get_session(8) ok");
 
 const s9 = await rpc("tools/call", { name: "get_session", arguments: { number: 9 } });
-if (!s9.content[0].text.includes("Oppsummering og veien videre")) {
-  throw new Error("session 9 content wrong");
-}
+if (!s9.content[0].text.includes("Trygg bruk")) throw new Error("session 9 content wrong");
 console.log("get_session(9) ok");
+
+const s10 = await rpc("tools/call", { name: "get_session", arguments: { number: 10 } });
+if (!s10.content[0].text.includes("Oppsummering og veien videre")) {
+  throw new Error("session 10 content wrong");
+}
+console.log("get_session(10) ok");
 
 const faq = await rpc("tools/call", { name: "get_faq", arguments: {} });
 if (!faq.content[0].text.includes("Sommerrogata")) throw new Error("faq content wrong");

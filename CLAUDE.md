@@ -27,8 +27,8 @@ second marketplace plugin, and no `/api/norge` in this repo.
 
 `plugins/req-bootcamp-plugin/content/`
 
-- `schedule.md` — all 9 sessions (dates + topics)
-- `sessions/session-01.md` … `session-09.md` — per-session pre-work and, once held, recap
+- `schedule.md` — all 10 sessions (dates + topics)
+- `sessions/session-01.md` … `session-10.md` — per-session pre-work and, once held, recap
 - `faq.md` — practical logistics (when, where, contacts, tools, access)
 
 Both the plugin skills (via relative `../../content/...` paths) and the MCP server
@@ -49,13 +49,13 @@ updated after each session; the plugin/server always serve the latest.
   - `bootcamp-faq` — practical/logistical answers
   - `forklar` — `/forklar <tema>` — explain any concept in plain Norwegian
   - `req-presentation` — generate an REQ-branded PowerPoint (`req_deck.py`, `req_charts.py`)
-  - `visualiser-bootcamp` — self-contained HTML visual of the 9-session course
+  - `visualiser-bootcamp` — self-contained HTML visual of the 10-session course
   - `ssb` / `brreg` / `regnskap` / `kartverket` / `met` / `oslo-pbe` / `nb` — when to use each Garden pack (not course skills)
 
 ## Course MCP tools (`api/mcp.ts`)
 
-- `get_schedule` — full 9-session schedule
-- `get_session({ number: 1–9 })` — one session's pre-work + recap
+- `get_schedule` — full 10-session schedule
+- `get_session({ number: 1–10 })` — one session's pre-work + recap
 - `get_faq` — practical FAQ
 
 `vercel.json` bundles the `content/**` files into the course function via `includeFiles`.
