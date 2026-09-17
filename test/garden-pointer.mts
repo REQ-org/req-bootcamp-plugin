@@ -78,6 +78,10 @@ const packs = [
       "504",
     ],
   },
+  {
+    name: "nb",
+    needles: ["styringsrente", "nb_policy_rate", "nb_exchange_rates", "valutakurs", "varden-garden"],
+  },
 ] as const;
 
 for (const pack of packs) {
@@ -150,6 +154,7 @@ const required = [
   "brreg_get_accounts",
   "oslo_plans_for_parcel",
   "oslo_planbestemmelser",
+  "nb_policy_rate",
 ];
 const missing = required.filter((n) => !names.includes(n));
 if (missing.length) throw new Error(`Garden missing packs: ${missing.join(", ")}`);
