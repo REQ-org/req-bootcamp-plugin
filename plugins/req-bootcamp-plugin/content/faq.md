@@ -2,7 +2,7 @@
 
 ## Praktisk
 
-- **Når og hvor?** Kl. 08:30 - ni økter fra 18. august til 23. oktober 2026. Økt 1–2 var tirsdager, fra økt 3 er det fredager. Sommerrogata 17, Oslo - hybrid på Teams. Første økt (18. aug) er fysisk.
+- **Når og hvor?** Kl. 08:30 - ti økter fra 18. august til 30. oktober 2026. Økt 1–2 var tirsdager, fra økt 3 er det fredager. Sommerrogata 17, Oslo - hybrid på Teams. Første økt (18. aug) er fysisk.
 - **Hvor lang er hver økt?** Ca. 60 minutter, minst 70 % hands-on. Kom med PC.
 - **Jeg gikk glipp av en økt - hva nå?** Spør Claude: «hva skjedde i økt N?» (skillen `bootcamp-recap` henter oppsummeringen). Forarbeidet til neste økt finner du med `prep-me-for-bootcamp` eller `/kurs`.
 
@@ -13,7 +13,7 @@
 - **Hva er MCP-serverne?** Pluginen kobler Claude til to åpne servere, uten innlogging — begge inne i **denne** kurspluginen, ikke som et eget Garden-plugin:
   - `req-bootcamp` — timeplan, oppsummeringer og FAQ (dette repoet)
   - `varden-garden` — [Varden MCP Garden](https://varden-mcp-garden.vercel.app/api/mcp): SSB, Enhetsregisteret, Kartverket, MET, Regnskapsregisteret (nøkkeltall) og Oslo Planinnsyn/Saksinnsyn
-  Skillene `ssb`, `brreg`, `regnskap`, `kartverket`, `met` og `oslo-pbe` styrer når Claude bruker hvilken pakke. Ingenting å konfigurere. Prøv f.eks. «hvor mange innbyggere har Oslo?» — det går mot SSB via Garden. I økt 3 kobler vi til en eksisterende MCP, og i økt 7 ser vi hvordan en slik server bygges.
+  Skillene `ssb`, `brreg`, `regnskap`, `kartverket`, `met` og `oslo-pbe` styrer når Claude bruker hvilken pakke. Ingenting å konfigurere. Prøv f.eks. «hvor mange innbyggere har Oslo?» — det går mot SSB via Garden. I økt 3 kobler vi til en eksisterende MCP, og i økt 8 ser vi hvordan en slik server bygges.
 
 ## Kurset
 

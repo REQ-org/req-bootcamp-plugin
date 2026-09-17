@@ -1,11 +1,11 @@
-# Økt 9 - Oppsummering og veien videre (23. okt 2026)
+# Økt 9 - Trygg bruk (23. okt 2026)
 
-Share-and-tell: del det du har laget og faktisk bruker, vi kårer champions og roller, og blir enige om veien videre. Ingen tvang - deling oppmuntres, ikke karaktersettes.
+Ansvarlig bruk av egenbygde skills og MCP-er: datatilgang, grenser for hva agenter får gjøre, og kjøreregler som passer REQs compliance-rammeverk (MNPI, MAR, GDPR).
 
 ## Forarbeid (sendes fredag 16. okt, under 10 min)
 
-- **Les:** utkast til handlingsplan og rollekart (fra uke 8).
-- **Ta med:** har du noe å vise (1-2 min, ekte oppgave, før/etter)? ellers: den ene tingen du vil ta i bruk fremover, + svar på hvilken rolle du vil ha i REQs AI-arbeid.
+- **Les:** kort om datatilgang og agentgrenser.
+- **Ta med:** ev. compliance-føringer for hva som kan limes inn i Claude, og en tanke om hva verktøyene dine faktisk har tilgang til.
 
 ## Oppsummering
 

@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-> **Superseded 2026-09-08:** the course was cut from ten sessions to nine (the research session was dropped and 11 Sep moved to 18 Sep). The site now has weeks 1-9; `public/kurs/uke-10.html` no longer exists and the week titles in `kurs.js` have changed. The steps below are the record of the original build - read them as history, not as the current shape of `public/kurs/`.
+> **Updated 2026-09-17:** the course is ten sessions again (research was cut 2026-09-08 and reinstated 2026-09-17; 11 Sep moved to 18 Sep, so the last session is 30 Oct). The week titles in `kurs.js` differ from the original build below (week 4 is the arbeidsøkt, week 5 skriving/REQ-mal). The steps below are the record of the original build.
 
 **Goal:** Build an interactive, participant-facing exploration companion for the REQ AI Bootcamp - week 1 fully built, weeks 2-10 scaffolded - reached from the existing landing page.
 
