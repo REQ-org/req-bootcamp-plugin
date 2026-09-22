@@ -1,6 +1,6 @@
-# Økt 5 - Avansert Claude Code-flow (25. sep 2026)
+# Økt 5 - Claude Code – Intro (25. sep 2026)
 
-En mer avansert gjennomgang av Claude Code («flow of code»), med
+Gjennomgang av Claude Code, med
 **markedsføringsmateriale som hostes på en nettside** som gjennomgående eksempel.
 Herman går gjennom de første ~20 minuttene live; resten av timen bygger dere
 videre i *deres* Claude Code. GitHub og deploy er nyttig på sikt, men **ikke et

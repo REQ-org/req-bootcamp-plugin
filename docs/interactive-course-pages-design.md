@@ -4,7 +4,7 @@ Dato: 2026-08-17
 Repo: `req-bootcamp-plugin` (samme Vercel-side som landingssiden)
 Status: til gjennomgang
 
-> **Oppdatert 2026-09-22:** uke 5 i `kurs.js` er avansert Claude Code-flow (markedsføringsside), ikke skriving/REQ-mal. Ti økter, siste 30. okt; uke 4 er arbeidsøkt.
+> **Oppdatert 2026-09-22:** uke 5 i `kurs.js` er Claude Code – Intro (markedsføringsside), ikke skriving/REQ-mal. Ti økter, siste 30. okt; uke 4 er arbeidsøkt.
 
 ## Hva dette er
 

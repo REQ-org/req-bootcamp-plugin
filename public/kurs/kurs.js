@@ -29,7 +29,7 @@ const WEEKS = [
   { nr: 4,  fase: 2, status: "kommer", href: "uke-04.html",
     tittel: "Arbeidsøkt",         tema: "Du bygger din egen ting; to innsendte caser løses i plenum" },
   { nr: 5,  fase: 2, status: "kommer", href: "uke-05.html",
-    tittel: "Avansert Claude Code-flow", tema: "Live ~20 min på et markedsføringsside-eksempel, deretter arbeidsøkt i din Claude Code" },
+    tittel: "Claude Code – Intro", tema: "Live ~20 min på et markedsføringsside-eksempel, deretter arbeidsøkt i din Claude Code" },
   { nr: 6,  fase: 2, status: "kommer", href: "uke-06.html",
     tittel: "Research & kilder",  tema: "Websøk, dokumentverktøy, verifikasjon, connectors og RAG" },
   { nr: 7,  fase: 2, status: "kommer", href: "uke-07.html",
