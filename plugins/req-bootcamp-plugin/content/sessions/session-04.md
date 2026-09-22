@@ -17,4 +17,30 @@ offentlige rapporter.
 
 ## Oppsummering
 
-*(kommer etter økten - kjør `/plugin update` for siste versjon)*
+Økta 18. september var arbeidsøkt, ikke ny undervisning. Byggeklossene fra økt 2–3 (skills, Projects, dokumenter, offentlige MCP-er) skulle brukes på *én* ekte oppgave.
+
+### Slik timen gikk
+
+Dere startet med rundebord, så ble innsendte caser løst live i plenum før alle jobbet videre - også dere på Teams. Målet var én ting ferdig nok til å vises: en skill, et Project/wiki eller en MCP-kobling på eget materiale.
+
+### Det dere jobbet med
+
+Herman kjørte arbeidsflyten use-case → datakilde → MCP → skill → test. Poenget var å gå fra ustrukturert informasjon til noe Claude faktisk kan slå opp i, uten at alt lastes opp manuelt hver gang.
+
+Blant casene som ble jobbet med:
+
+- **Egne skills** - skreddersydde oppskrifter for daglige oppgaver (rapportering, dataekstraksjon).
+- **TFAC-analyse** - trekke nøkkelinnsikt ut av en konkret dokumenttype/et prosjekt.
+- **Kunnskapsbase for Viking** - strukturere kilder for ett selskap/prosjekt så Claude har noe å stå på.
+
+Offentlige MCP-er fra pluginen (Garden: SSB, Brreg, Kartverket, Norges Bank, Oslo PBE, …) var tilgjengelige. Interne REQ-kilder venter fortsatt på legal.
+
+Har du en wiki i gang: etter `/plugin update` finnes skillen `init-knowledge-base` (Karpathy-stil: `raw/` + `wiki/`). Den stiller noen spørsmål og setter opp mappene - den spiser ikke kildene for deg.
+
+### Mikrooppgave (før 25. sep)
+
+Bruk det du bygde 18. september på én ekte oppgave denne uken, og ta med resultatet - også hvis det ikke fungerte.
+
+### Neste uke
+
+Økt 5 (25. sep): skriving og REQ-malen. Word/PPT-mekanikken fra økt 3 forutsettes kjent. Timen går på stemme, mottaker og en gjenbrukbar mal-instruksjon. Ta med ett ekte dokument - og gjerne skillen eller wikien fra arbeidsøkta hvis den skal skrive for deg.

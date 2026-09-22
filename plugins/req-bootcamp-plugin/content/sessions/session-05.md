@@ -4,10 +4,11 @@ Utkast, omskriving og tonejustering for ulike mottakere, korrektur og NO-EN - og
 gjenbrukbar mal-instruksjon bygget på en ekte REQ-mal, så formatet treffer hver gang.
 Claude i Word og PowerPoint tok vi i økt 3; her går timen til stemmen og malen.
 
-## Forarbeid (sendes fredag 18. sep, under 10 min)
+## Forarbeid (før 25. sep, under 10 min)
 
 - **Les:** kort eksempel på en «mal-instruksjon» bygget på et dokumentformat.
 - **Ta med:** ett ekte REQ-dokument du skal skrive eller omskrive denne uken, og hvis mulig REQ-malen det skal inn i.
+- **Ta med fra arbeidsøkta:** skillen, Projectet eller wikien du bygde 18. sep, hvis den skal skrive eller holde stemmen. Ta også med resultatet av mikrooppgaven - også hvis det ikke fungerte.
 
 ## Oppsummering
 
