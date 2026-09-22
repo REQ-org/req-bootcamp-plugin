@@ -1,14 +1,17 @@
-# Økt 5 - Skriving og REQ-malen (25. sep 2026)
+# Økt 5 - Avansert Claude Code-flow (25. sep 2026)
 
-Utkast, omskriving og tonejustering for ulike mottakere, korrektur og NO-EN - og en
-gjenbrukbar mal-instruksjon bygget på en ekte REQ-mal, så formatet treffer hver gang.
-Claude i Word og PowerPoint tok vi i økt 3; her går timen til stemmen og malen.
+En mer avansert gjennomgang av Claude Code («flow of code»), med
+**markedsføringsmateriale som hostes på en nettside** som gjennomgående eksempel.
+Herman går gjennom de første ~20 minuttene live; resten av timen bygger dere
+videre i *deres* Claude Code. GitHub og deploy er nyttig på sikt, men **ikke et
+krav** denne økta.
 
 ## Forarbeid (før 25. sep, under 10 min)
 
-- **Les:** kort eksempel på en «mal-instruksjon» bygget på et dokumentformat.
-- **Ta med:** ett ekte REQ-dokument du skal skrive eller omskrive denne uken, og hvis mulig REQ-malen det skal inn i.
-- **Ta med fra arbeidsøkta:** skillen, Projectet eller wikien du bygde 18. sep, hvis den skal skrive eller holde stemmen. Ta også med resultatet av mikrooppgaven - også hvis det ikke fungerte.
+- **Åpne Claude Code** (Desktop eller CLI) og sjekk at du kommer inn med REQ-kontoen.
+- **Kjør `/plugin update`** så du har siste kursinnhold.
+- **Ta med:** markedsføringsmateriale eller en side du faktisk vil jobbe med. Har du ikke det, følger du live-eksempelet.
+- **Fra arbeidsøkta 18. sep:** ta med det du bygde hvis det kan brukes inn i sidearbeidet.
 
 ## Oppsummering
 

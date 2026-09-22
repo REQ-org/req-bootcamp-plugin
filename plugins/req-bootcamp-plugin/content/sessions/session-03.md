@@ -35,7 +35,7 @@ Wiki-idéen ble så vidt nevnt: strukturert markdown Claude kan lese og skrive v
 
 ### Claude lager dokumenter
 
-Word, PowerPoint og Excel rett fra Claude - investeringsnotat, porteføljegjennomgang, nøkkeltallsmodell, eller «gjør dette om til en styrepresentasjon» fra et opplastet dokument. En skill kan holde *formatet*; et Project holder *malene og konteksten*. Mekanikken her er forutsatt kjent i økt 5 (skriving og REQ-malen).
+Word, PowerPoint og Excel rett fra Claude - investeringsnotat, porteføljegjennomgang, nøkkeltallsmodell, eller «gjør dette om til en styrepresentasjon» fra et opplastet dokument. En skill kan holde *formatet*; et Project holder *malene og konteksten*.
 
 ### Offentlige MCP-er
 

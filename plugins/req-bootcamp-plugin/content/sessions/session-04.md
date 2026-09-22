@@ -43,4 +43,4 @@ Bruk det du bygde 18. september på én ekte oppgave denne uken, og ta med resul
 
 ### Neste uke
 
-Økt 5 (25. sep): skriving og REQ-malen. Word/PPT-mekanikken fra økt 3 forutsettes kjent. Timen går på stemme, mottaker og en gjenbrukbar mal-instruksjon. Ta med ett ekte dokument - og gjerne skillen eller wikien fra arbeidsøkta hvis den skal skrive for deg.
+Økt 5 (25. sep): avansert Claude Code-flow. Herman viser ~20 min på et markedsføringsside-eksempel; deretter bygger dere videre i egen Claude Code. GitHub/deploy er ikke et krav. Ta med markedsmateriell eller en side du vil jobbe med - og gjerne det du bygde 18. sep hvis det kan mates inn.

@@ -11,7 +11,7 @@ const FASER = [
   { nr: 1, kicker: "Fase 1 · Uke 1–3",  tittel: "Kom i gang og bygg de første delene",
     caption: "Fra intro til din egen skill og MCP-kobling" },
   { nr: 2, kicker: "Fase 2 · Uke 4–7",  tittel: "Bruk Claude i arbeidet",
-    caption: "Egen arbeidsøkt, skriving, research og analyse på ekte oppgaver" },
+    caption: "Egen arbeidsøkt, Claude Code, research og analyse på ekte oppgaver" },
   { nr: 3, kicker: "Fase 3 · Uke 8–10",  tittel: "Bygg videre og forankre",
     caption: "Bygg en MCP, trygg bruk, og del det du har laget" },
 ];
@@ -29,7 +29,7 @@ const WEEKS = [
   { nr: 4,  fase: 2, status: "kommer", href: "uke-04.html",
     tittel: "Arbeidsøkt",         tema: "Du bygger din egen ting; to innsendte caser løses i plenum" },
   { nr: 5,  fase: 2, status: "kommer", href: "uke-05.html",
-    tittel: "Skriving og REQ-malen", tema: "Utkast, omskriving, tone, korrektur og en gjenbrukbar mal-instruksjon" },
+    tittel: "Avansert Claude Code-flow", tema: "Live ~20 min på et markedsføringsside-eksempel, deretter arbeidsøkt i din Claude Code" },
   { nr: 6,  fase: 2, status: "kommer", href: "uke-06.html",
     tittel: "Research & kilder",  tema: "Websøk, dokumentverktøy, verifikasjon, connectors og RAG" },
   { nr: 7,  fase: 2, status: "kommer", href: "uke-07.html",

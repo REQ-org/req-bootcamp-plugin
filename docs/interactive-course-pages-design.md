@@ -4,7 +4,7 @@ Dato: 2026-08-17
 Repo: `req-bootcamp-plugin` (samme Vercel-side som landingssiden)
 Status: til gjennomgang
 
-> **Oppdatert 2026-09-17:** kurset er ti økter igjen (research-økta ble kuttet 2026-09-08 og gjeninnført 2026-09-17; 11. sep ble flyttet til 18. sep, så siste økt er 30. okt). Uketitlene i `kurs.js` avviker fra den opprinnelige leveransen under: uke 4 er arbeidsøkt og uke 5 skriving/REQ-mal.
+> **Oppdatert 2026-09-22:** uke 5 i `kurs.js` er avansert Claude Code-flow (markedsføringsside), ikke skriving/REQ-mal. Ti økter, siste 30. okt; uke 4 er arbeidsøkt.
 
 ## Hva dette er
 
