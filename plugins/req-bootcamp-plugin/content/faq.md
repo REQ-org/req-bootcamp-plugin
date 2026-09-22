@@ -8,12 +8,12 @@
 
 ## Verktøy
 
-- **Hva trenger jeg?** Claude-konto (dekkes av REQ). I økt 2 skrev dere en skill i Claude - uten installering. Claude Code tar vi senere. Kurspluginen installerer du fra organisasjonen; stegene står i README-en.
+- **Hva trenger jeg?** Claude-konto (dekkes av REQ). I økt 2 skrev dere en skill i Claude - uten installering. Claude Code er økt 5 (25. sep): åpne den før økta. GitHub-konto og deploy er *ikke* et krav. Kurspluginen installerer du fra organisasjonen; stegene står i README-en.
 - **Hvordan oppdaterer jeg pluginen?** Kjør `/plugin update` i Claude Code (velg `req-bootcamp-plugin`), eller på kommandolinjen: `claude plugin update req-bootcamp-plugin@req-bootcamp-plugin`. Innholdet oppdateres etter hver økt.
 - **Hva er MCP-serverne?** Pluginen kobler Claude til to åpne servere, uten innlogging — begge inne i **denne** kurspluginen, ikke som et eget Garden-plugin:
   - `req-bootcamp` — timeplan, oppsummeringer og FAQ (dette repoet)
-  - `varden-garden` — [Varden MCP Garden](https://varden-mcp-garden.vercel.app/api/mcp): SSB, Enhetsregisteret, Kartverket, MET, Regnskapsregisteret (nøkkeltall) og Oslo Planinnsyn/Saksinnsyn
-  Skillene `ssb`, `brreg`, `regnskap`, `kartverket`, `met` og `oslo-pbe` styrer når Claude bruker hvilken pakke. Ingenting å konfigurere. Prøv f.eks. «hvor mange innbyggere har Oslo?» — det går mot SSB via Garden. I økt 3 kobler vi til en eksisterende MCP, og i økt 8 ser vi hvordan en slik server bygges.
+  - `varden-garden` — [Varden MCP Garden](https://varden-mcp-garden.vercel.app/api/mcp): SSB, Enhetsregisteret, Kartverket, MET, Regnskapsregisteret (nøkkeltall), Oslo Planinnsyn/Saksinnsyn og Norges Bank (renter, fx)
+  Skillene `ssb`, `brreg`, `regnskap`, `kartverket`, `met`, `oslo-pbe` og `nb` styrer når Claude bruker hvilken pakke. Ingenting å konfigurere. Prøv f.eks. «hvor mange innbyggere har Oslo?» — det går mot SSB via Garden. I økt 3 koblet dere til en eksisterende offentlig MCP; i økt 8 ser vi hvordan en slik server bygges. Interne REQ-kilder venter på juridisk avklaring.
 
 ## Kurset
 
