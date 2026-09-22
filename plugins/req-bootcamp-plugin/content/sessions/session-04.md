@@ -43,4 +43,4 @@ Bruk det du bygde 18. september på én ekte oppgave denne uken, og ta med resul
 
 ### Neste uke
 
-Økt 5 (25. sep): Claude Code – Intro. Herman viser ~20 min på et markedsføringsside-eksempel; deretter bygger dere videre i egen Claude Code. GitHub/deploy er ikke et krav. Ta med markedsmateriell eller en side du vil jobbe med - og gjerne det du bygde 18. sep hvis det kan mates inn.
+Økt 5 (25. sep): Claude Code – Intro. Herman starter en oppgave på et markedsføringsside-eksempel, går rundt og hjelper, og gjør det igjen. GitHub/deploy er ikke et krav. Ta med markedsmateriell eller en side du vil jobbe med - og gjerne det du bygde 18. sep hvis det kan mates inn.
