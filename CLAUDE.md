@@ -45,7 +45,7 @@ updated after each session; the plugin/server always serve the latest.
 - `commands/{ssb,brreg,regnskap,kartverket,met,oslo-pbe,nb}.md` — optional slash entry points for each Garden pack
 - `skills/`
   - `prep-me-for-bootcamp` — prep for the next session (pre-work checklist)
-  - `setup-claude-code` — Økt 5 preflight: Claude Code, plugin update, evergreen zip on Desktop, python http.server
+  - `setup-claude-code` — Økt 5 preflight: Desktop Code tab, plugin update, evergreen zip on Desktop, python http.server
   - `bootcamp-recap` — catch up on past sessions
   - `bootcamp-faq` — practical/logistical answers
   - `forklar` — `/forklar <tema>` — explain any concept in plain Norwegian

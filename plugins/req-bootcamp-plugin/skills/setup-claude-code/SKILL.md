@@ -2,93 +2,75 @@
 name: setup-claude-code
 description: >-
   Prepares a REQ bootcamp attendee for Økt 5 (Claude Code – Intro, Fri 25 Sep
-  2026): install or open Claude Code with the REQ account, update the course
-  plugin, download the evergreen investor site zip to Desktop, and start the
-  local python preview. Use when they ask to set up Claude Code, «sett opp
-  Claude Code», «økt 5 forarbeid», «forbered økt 5», «evergreen-fund», or how
-  to get the local codebase / preview ready. Windows first; do not git clone.
+  2026) inside Claude Desktop: Code tab with the REQ account, plugin update,
+  download the evergreen investor site zip to Desktop, open that folder, and
+  python-preview when site/ exists. Use when they ask to set up Claude Code,
+  «sett opp Claude Code», «økt 5 forarbeid», «forbered økt 5»,
+  «evergreen-fund», or how to get the local codebase / preview ready. Windows
+  first; Desktop already installed; do not git clone.
 ---
 
 # Sett opp Claude Code til økt 5
 
-Forarbeid til **økt 5 (25. sep 2026): Claude Code – Intro**. Publikum er REQ på
-**Windows først**, Mac som nummer to. Svar på **norsk (bokmål)**, varmt og
-kort. Kjør stegene selv når du er i Claude Code; vis kommandoene hvis du
-bare kan veilede.
+Forarbeid til **økt 5 (25. sep 2026): Claude Code – Intro**. Alle har allerede
+**Claude Desktop**. I morgen bruker de **Code-fanen** der — ikke en separat
+CLI-installasjon. Publikum er REQ på **Windows først**, Mac som nummer to.
 
-Ikke krev GitHub-push eller Vercel-deploy. Ikke `git clone`. Ikke finn på
-`npm install`, `package.json` eller `vercel dev` for denne siden — det er en
-**statisk investor-side** under `site/`.
+Svar på **norsk (bokmål)**, varmt og kort. Følg stegene, men vær fleksibel
+når noe feiler: feil sti, OneDrive-skrivebord, ingen `py`, port opptatt,
+ingen `site/` ennå, plugin mangler, Git for Windows påkrevd for Code-fanen.
+Diagnostiser og tilpass. Ikke stopp rigid. Ikke finn på `npm install`,
+`package.json` eller `vercel dev`. Ikke `git clone`. Ikke krev GitHub-push
+eller Vercel-deploy.
 
-## 1. Claude Code åpen med REQ-kontoen
+Kjør kommandoene selv når du er i Code-fanen; vis dem hvis du bare kan
+veilede.
 
-Hvis Claude Code allerede kjører og deltakeren er inne: hopp til steg 2.
+## 1. Code-fanen, REQ-konto
 
-Hvis den **ikke** er installert, eller Code-fanen ikke åpner:
+Anta at **Claude Desktop allerede er åpen**.
 
-**Windows (primær)**
+1. De skal være i **Code**-fanen (øverst), ikke bare Chat/Cowork.
+2. Innlogget med **REQ-kontoen**, ikke privat Anthropic-konto.
 
-1. Last ned Claude Desktop (Code-fanen er Claude Code, uten egen Node/CLI):
-   [claude.com/download](https://claude.com/download) — Windows x64. ARM64:
-   bruk ARM64-installeren. Steg-for-steg:
-   [Desktop quickstart](https://code.claude.com/docs/en/desktop-quickstart).
-2. Installer, åpne **Claude** fra Start-menyen, logg inn med **REQ-kontoen**
-   (ikke privat Anthropic-konto).
-3. Klikk **Code** øverst. Første gang på Windows trenger Code-fanen
-   [Git for Windows](https://git-scm.com/download/win) — installer og
-   **start Claude på nytt**.
-4. CLI i stedet (PowerShell, ikke CMD):
-
-```powershell
-irm https://claude.ai/install.ps1 | iex
-claude --version
-```
-
-CMD: `curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd`  
-WinGet: `winget install Anthropic.ClaudeCode`  
-Docs: [Advanced setup](https://code.claude.com/docs/en/installation).
-
-**Mac**
-
-- Samme nedlasting: [claude.com/download](https://claude.com/download), eller
-  CLI: `curl -fsSL https://claude.ai/install.sh | bash` og `claude --version`.
-
-Bekreft: de ser Code-fanen (Desktop) eller `claude` svarer i terminalen, logget
-inn med REQ.
+Mangler Code-fanen likevel: de har Desktop — be dem klikke **Code** øverst.
+På Windows, hvis fanen ber om Git: [Git for Windows](https://git-scm.com/download/win),
+så start Claude på nytt. Ikke last ned Desktop på nytt, ikke `winget` /
+`install.ps1` / CLI-install som hovedspor.
 
 ## 2. Oppdater kurspluginen
 
-Siste kursinnhold, inkludert denne skillen.
+I Code-fanen: `/plugin update` — velg `req-bootcamp-plugin`.
 
-- I Claude Code: `/plugin update` — velg `req-bootcamp-plugin`.
-- CLI-ekvivalent:
-
-```powershell
-claude plugin update req-bootcamp-plugin@req-bootcamp-plugin
-```
-
-Si fra hvis pluginen mangler: installer fra REQ-organisasjonen, eller
-`/plugin marketplace add mainquest-labs/req-bootcamp-plugin` og
+Mangler pluginen: installer fra REQ-organisasjonen (Settings → Plugins),
+eller `/plugin marketplace add mainquest-labs/req-bootcamp-plugin` og
 `/plugin install req-bootcamp@req-bootcamp-plugin`.
 
 ## 3. Evergreen-koden på skrivebordet (zip, ikke git)
 
-Kilde: offentlig [REQ-org/req-evergreen-site](https://github.com/REQ-org/req-evergreen-site).
-Herman vil ha **zip → Desktop**, ikke clone.
+Kilde: offentlig [REQ-org/req-evergreen-site](https://github.com/REQ-org/req-evergreen-site),
+**zip av main**. Herman vil ha **zip → Desktop**, ikke clone.
 
-Målmappe:
+Målmappe: `evergreen-fund` på skrivebordet. GitHub-zip pakker ut som
+`req-evergreen-site-main` — gi den navnet `evergreen-fund`. Finnes mappen
+allerede med `README.md` og `data/` / `theme/`: ikke last ned på nytt.
 
-- Windows: `%USERPROFILE%\Desktop\evergreen-fund`
-- Mac: `~/Desktop/evergreen-fund`
-
-GitHub-zip pakker ut som `req-evergreen-site-main`. Gi den navnet
-`evergreen-fund` så stien stemmer. Finnes mappen allerede med `README.md`
-og `data/` / `theme/`: ikke last ned på nytt.
-
-**Windows (PowerShell) — kjør dette:**
+**Windows (PowerShell) — kjør dette.** Finn skrivebordet via
+`GetFolderPath` (treffer også OneDrive-skrivebord). Finnes ikke den:
+prøv `$env:USERPROFILE\Desktop`, deretter `OneDrive\Desktop` og
+`OneDrive*\Desktop`.
 
 ```powershell
-$desktop = Join-Path $env:USERPROFILE "Desktop"
+$desktop = [Environment]::GetFolderPath('Desktop')
+if (-not $desktop -or -not (Test-Path $desktop)) {
+  $candidates = @(
+    (Join-Path $env:USERPROFILE "Desktop"),
+    (Join-Path $env:USERPROFILE "OneDrive\Desktop")
+  ) + @(Get-ChildItem (Join-Path $env:USERPROFILE "OneDrive*") -Directory -ErrorAction SilentlyContinue |
+      ForEach-Object { Join-Path $_.FullName "Desktop" })
+  $desktop = $candidates | Where-Object { $_ -and (Test-Path $_) } | Select-Object -First 1
+}
+if (-not $desktop) { throw "Fant ikke skrivebordet. Spør hvor Desktop ligger (ofte OneDrive)." }
 $root = Join-Path $desktop "evergreen-fund"
 if (Test-Path (Join-Path $root "README.md")) {
   Write-Host "Allerede på plass: $root"
@@ -101,10 +83,9 @@ if (Test-Path (Join-Path $root "README.md")) {
   Write-Host "Klar: $root"
 }
 Get-ChildItem $root | Select-Object Name
-if (Test-Path (Join-Path $root "package.json")) { Write-Host "Uventet package.json — ikke kjør npm." }
 ```
 
-**Mac / Git Bash:**
+**Mac:**
 
 ```bash
 DESKTOP="$HOME/Desktop"
@@ -121,24 +102,30 @@ ls "$ROOT"
 ```
 
 Dette er **ikke** en npm-app. Du skal se `data/`, `theme/` og `README.md`.
-`site/` kommer når Herman (eller dere) bygger investor-siden — finn ikke på
-en `package.json`.
+Ingen `package.json` å kjøre.
 
-## 4. Lokal forhåndsvisning (python, ikke npm)
+**`site/` mangler? Det er greit i forarbeidet.** Mappen er klar likevel.
+Forhåndsvisning skjer i økta, når Herman (eller dere) bygger investor-siden.
+Ikke bygg en dummy-`site/` nå. Ikke finn på `package.json`.
 
-Offisiell kommando fra repoets README. Bare når `site/` finnes. Port opptatt:
-bruk **8766**.
+## 4. Åpne mappen i Code
+
+I Code-fanen: **Local** → velg mappen `evergreen-fund` på skrivebordet
+(den faktiske stien fra steg 3). Da jobber økta i riktig prosjekt.
+
+## 5. Lokal forhåndsvisning — bare når `site/` finnes
+
+Offisiell kommando fra repoets README. **Hopp over dette steget** hvis
+`site/` ikke er der ennå — det er forventet før økta.
+
+Port 8765 opptatt → prøv **8766**. `py` mangler → `python`, så `python3`.
 
 **Windows (primær):**
 
 ```powershell
-cd $env:USERPROFILE\Desktop\evergreen-fund\site
+cd <skrivebord>\evergreen-fund\site
 py -m http.server 8765
 ```
-
-`py` mangler: `python -m http.server 8765`.  
-Mangler Python: [python.org](https://www.python.org/downloads/windows/) eller
-`winget install Python.Python.3.12`, så prøv `py` igjen.
 
 **Mac:**
 
@@ -147,36 +134,26 @@ cd ~/Desktop/evergreen-fund/site && python3 -m http.server 8765
 ```
 
 Åpne [http://127.0.0.1:8765](http://127.0.0.1:8765). Ikke `npm install`,
-ikke `npx`, ikke `vercel dev`.
+ikke `npx`, ikke `vercel dev`. Mangler Python på Windows: pek til
+[python.org](https://www.python.org/downloads/windows/) eller
+`winget install Python.Python.3.12`, så prøv `py` igjen.
 
-Finnes ikke `site/` ennå: mappen er likevel klar. Si at forhåndsvisning
-venter til `site/` er der — ikke bygg en dummy-side nå.
+## 6. Vercel CLI (stretch, ikke krav)
 
-## 5. Vercel CLI (stretch, ikke krav)
-
-Valgfritt til senere deploy. **Ikke** logg inn eller deploy i dette
-forarbeidet. Mangler den, og `npm` finnes:
-
-```powershell
-npm i -g vercel
-vercel --version
-```
-
-Ingen Node/npm: hopp over. Økta krever ikke hosting.
+Valgfritt til senere deploy. **Ikke** logg inn eller deploy i forarbeidet.
+Mangler den, og `npm` finnes: `npm i -g vercel` og `vercel --version`.
+Ingen Node: hopp over. Økta krever ikke hosting.
 
 ## Du er klar
 
 Kort sjekkliste til deltakeren:
 
-1. **Mappe:** `%USERPROFILE%\Desktop\evergreen-fund` (Windows) eller
-   `~/Desktop/evergreen-fund` (Mac).
-2. **Forhåndsvisning** når `site/` finnes: `cd` inn i `site`, så
-   `py -m http.server 8765` (Windows) / `python3 -m http.server 8765` (Mac),
-   og åpne http://127.0.0.1:8765.
-3. **Åpne mappen i Claude Code:** Desktop → Code → Local → velg
-   `evergreen-fund` på skrivebordet. CLI:
-   `cd %USERPROFILE%\Desktop\evergreen-fund` (Windows) eller
-   `cd ~/Desktop/evergreen-fund` (Mac), deretter `claude`.
+1. **Code-fanen** i Claude Desktop, innlogget med **REQ-kontoen**.
+2. **Mappe:** `evergreen-fund` på skrivebordet (vanlig eller OneDrive),
+   åpnet som prosjekt i Code.
+3. **`site/` kan mangle** — helt OK før økta. Når den finnes:
+   `py -m http.server 8765` (Windows) / `python3 -m http.server 8765` (Mac)
+   inne i `site/`, så http://127.0.0.1:8765 (8766 hvis opptatt).
 
 Ta med markedsmateriell eller en side du vil jobbe med. GitHub og deploy
 kan vente.
