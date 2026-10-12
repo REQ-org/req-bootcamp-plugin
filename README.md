@@ -20,7 +20,7 @@ Dukker ikke pluginen opp under organisasjonen din, eller henger installeringen? 
 ### Alternativt: Claude Code via offentlig marketplace
 
 ```
-/plugin marketplace add mainquest-labs/req-bootcamp-plugin
+/plugin marketplace add REQ-org/req-bootcamp-plugin
 /plugin install req-bootcamp@req-bootcamp-plugin
 ```
 

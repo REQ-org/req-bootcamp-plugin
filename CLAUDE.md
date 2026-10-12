@@ -64,7 +64,7 @@ updated after each session; the plugin/server always serve the latest.
 
 `.claude-plugin/marketplace.json` (repo root) defines the `req-bootcamp-plugin`
 marketplace pointing at `./plugins/req-bootcamp-plugin`. Attendees install from their
-org, from the public marketplace (`mainquest-labs/req-bootcamp-plugin`), or via the
+org, from the public marketplace (`REQ-org/req-bootcamp-plugin`), or via the
 downloadable `public/req-bootcamp-plugin.zip`. See `README.md` for the attendee flow.
 
 ## Working in this repo
