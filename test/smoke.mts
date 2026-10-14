@@ -50,6 +50,7 @@ const schedText = sched.content[0].text as string;
 if (!schedText.includes("18. august 2026")) throw new Error("schedule content wrong");
 if (!schedText.includes("4. sep 2026")) throw new Error("schedule missing Friday 4 Sep session 3");
 if (schedText.includes("MCP: koble til")) throw new Error("schedule still has stale økt 3 topic");
+if (!schedText.includes("13. november 2026")) throw new Error("schedule does not end 13 Nov");
 console.log("get_schedule ok");
 
 const s1 = await rpc("tools/call", { name: "get_session", arguments: { number: 1 } });
@@ -88,6 +89,13 @@ if (!s4text.includes("Arbeidsøkt") || !s4text.includes("18. sep 2026")) {
 }
 if (!s4text.includes("Send oss to setninger")) throw new Error("session 4 missing case pre-work");
 console.log("get_session(4) ok");
+
+const s6 = await rpc("tools/call", { name: "get_session", arguments: { number: 6 } });
+const s6text = s6.content[0].text as string;
+if (!s6text.includes("Dashboard-eksempel og arbeidsøkt") || !s6text.includes("16. okt 2026")) {
+  throw new Error("session 6 is not the 16 Oct dashboard example and working session");
+}
+console.log("get_session(6) ok");
 
 const s8 = await rpc("tools/call", { name: "get_session", arguments: { number: 8 } });
 if (!s8.content[0].text.includes("Bygge en MCP")) throw new Error("session 8 content wrong");

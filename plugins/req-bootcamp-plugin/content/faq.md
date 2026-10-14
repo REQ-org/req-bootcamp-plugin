@@ -2,13 +2,13 @@
 
 ## Praktisk
 
-- **Når og hvor?** Kl. 08:30 - ti økter fra 18. august til 30. oktober 2026. Økt 1–2 var tirsdager, fra økt 3 er det fredager. Sommerrogata 17, Oslo - hybrid på Teams. Første økt (18. aug) er fysisk.
+- **Når og hvor?** Kl. 08:30 - ti økter fra 18. august til 13. november 2026. Økt 1–2 var tirsdager, fra økt 3 er det fredager. Sommerrogata 17, Oslo - hybrid på Teams. Første økt (18. aug) er fysisk.
 - **Hvor lang er hver økt?** Ca. 60 minutter, minst 70 % hands-on. Kom med PC.
 - **Jeg gikk glipp av en økt - hva nå?** Spør Claude: «hva skjedde i økt N?» (skillen `bootcamp-recap` henter oppsummeringen). Forarbeidet til neste økt finner du med `prep-me-for-bootcamp` eller `/kurs`.
 
 ## Verktøy
 
-- **Hva trenger jeg?** Claude-konto (dekkes av REQ). I økt 2 skrev dere en skill i Claude - uten installering. Claude Code er økt 5 (25. sep): åpne den før økta. GitHub-konto og deploy er *ikke* et krav. Kurspluginen installerer du fra organisasjonen; stegene står i README-en.
+- **Hva trenger jeg?** Claude-konto (dekkes av REQ). I økt 2 skrev dere en skill i Claude - uten installering. Claude Code tok vi i økt 5 (25. sep). GitHub-konto og deploy er *ikke* et krav. Kurspluginen installerer du fra organisasjonen; stegene står i README-en.
 - **Hvordan oppdaterer jeg pluginen?** Kjør `/plugin update` i Claude Code (velg `req-bootcamp-plugin`), eller på kommandolinjen: `claude plugin update req-bootcamp-plugin@req-bootcamp-plugin`. Innholdet oppdateres etter hver økt.
 - **Hva er MCP-serverne?** Pluginen kobler Claude til to åpne servere, uten innlogging — begge inne i **denne** kurspluginen, ikke som et eget Garden-plugin:
   - `req-bootcamp` — timeplan, oppsummeringer og FAQ (dette repoet)
