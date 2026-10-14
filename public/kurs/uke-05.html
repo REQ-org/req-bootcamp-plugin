@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Uke 5 · Claude Code – Intro - REQ AI Bootcamp</title>
-<meta name="description" content="Markedsføringsside-eksempel; Herman starter en oppgave, går rundt og hjelper, gjentar">
+<meta name="description" content="Utforsk økt 5: en investor-side for REQ Evergreen Income Fund i Claude Code - mappen Claude leser, første versjon, og neste steg du kan prøve selv.">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,17 +21,163 @@
       <img src="/req-logo.png" alt="REQ Capital" width="1280" height="533">
       <a href="index.html">← Kartet</a>
     </div>
+    <div class="hero">
+      <p class="eyebrow">Uke 5 · Claude Code – Intro</p>
+      <h1>En investor-side for Evergreen, bygget i Claude Code</h1>
+      <p class="lead">Dette er ikke lysbildene på nytt. Det er stedet å gå litt dypere etter økta: se hva som lå i mappen, gå gjennom stegene, og prøv de neste endringene selv.</p>
+      <div class="hero-dl">
+        <a class="dl-btn" href="slides/uke-05.html">
+          <span class="dl-ico" aria-hidden="true">→</span> Åpne lysbildene
+        </a>
+        <span class="dl-meta">HTML · som brukt i økta 25. sep</span>
+      </div>
+      <nav class="anchor-nav" aria-label="Moduler på siden">
+        <a href="#oppgaven">Oppgaven</a>
+        <a href="#mappen">Mappen</a>
+        <a href="#stegene">Stegene</a>
+        <a href="#begrepsbank">Begrepsbank</a>
+        <a href="#prompter">Prompter</a>
+      </nav>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
-  <section class="kommer-block">
-    <p class="kicker">Uke 5 · Kommer</p>
-    <h2>Claude Code – Intro</h2>
-    <p>Herman starter en oppgave i Claude Code på et markedsføringsside-eksempel, går rundt og hjelper dere, og gjør det igjen. GitHub og deploy er ikke et krav denne økta.</p>
-    <p>Innholdet for denne uka legges ut etter økta - da får den sine egne interaktive moduler, akkurat som uke 1 og 2.</p>
-    <p style="margin-top:30px;"><a href="index.html">← Tilbake til kartet</a></p>
+
+  <!-- ── 1 · Oppgaven ─────────────────────────────────────────── -->
+  <section class="modul" id="oppgaven">
+    <p class="kicker">Oppgaven</p>
+    <h2>Hva dere bygde</h2>
+    <p class="lead">En investor-side for REQ Evergreen Income Fund, skrevet for pensjonskasser, livselskap og stiftelser. Siden samler tesen bak fondet, teamet som forvalter det og tallene som underbygger tesen.</p>
+
+    <div class="ladder">
+      <div class="ladder-step">
+        <p class="step-num">1</p>
+        <h3 class="step-title">Du beskriver</h3>
+        <p class="step-desc">Med vanlige ord: hva siden skal være, og for hvem. Ingen trengte å kunne kode.</p>
+      </div>
+      <div class="ladder-step">
+        <p class="step-num">2</p>
+        <h3 class="step-title">Claude leser mappen</h3>
+        <p class="step-desc">Tallene, REQ-profilen og fondsfakta ligger i én mappe. Du limer ikke inn noe.</p>
+      </div>
+      <div class="ladder-step highlight">
+        <p class="step-num">3</p>
+        <h3 class="step-title">Claude bygger siden</h3>
+        <p class="step-desc">En første versjon, og så gjør du den bedre én endring om gangen.</p>
+      </div>
+    </div>
+    <p class="takeaway"><b>I økta</b> jobbet alle i sin egen Claude Code, og de fleste fikk bygget en første versjon av siden i løpet av timen.</p>
   </section>
+
+  <!-- ── 2 · Mappen ───────────────────────────────────────────── -->
+  <section class="modul" id="mappen">
+    <p class="kicker">Mappen</p>
+    <h2>Alt Claude trenger, i én mappe</h2>
+    <p class="lead">Claude Code leser mappen selv. Poenget er at siden bare skal bruke tallene som ligger der, og ikke finne på noe. Klikk i treet for å se rollen til hver del.</p>
+
+    <div class="anatomy-split" id="evergreen-tree">
+      <div>
+        <div class="ft-root">req-evergreen-site/</div>
+        <button type="button" class="ft-item active" data-file="readme" aria-pressed="true">README.md</button>
+        <button type="button" class="ft-item" data-file="data" aria-pressed="false">data/</button>
+        <button type="button" class="ft-item indent" data-file="fakta" aria-pressed="false">evergreen-fund-facts.csv</button>
+        <button type="button" class="ft-item" data-file="theme" aria-pressed="false">theme/</button>
+        <p class="ft-hint">Klikk en del. Poenget er rollene, ikke å lese alt.</p>
+      </div>
+      <div>
+        <div class="file-view active" data-file="readme">
+          <p class="file-role">Beskrivelsen - og den lengre prompten</p>
+          <p>Forklarer hva siden skal være, hvem den er for og hvilke grenser tallene har. Her står også den lengre versjonen av prompten fra steg 1, med seksjonene siden skal ha.</p>
+          <pre class="code"><span class="c">## Datagrenser</span>
+- 6–8 % er et mål, ikke et resultat.
+- Ingen NAV, gebyr, beholdning eller
+  realisert avkastning - det er ikke
+  publisert.
+- Referansepunktene i data/ er ikke
+  fondets portefølje.</pre>
+        </div>
+        <div class="file-view" data-file="data" hidden>
+          <p class="file-role">Tallene - bruk dem som de er</p>
+          <p>Offentlige tall som CSV-filer, med kilde på hver rad. Observert og framskrevet holdes adskilt.</p>
+          <pre class="code">data/
+  norway-population-80plus.csv
+    <span class="c">80+ i Norge, 2010–2050 (SSB)</span>
+  norway-age-structure.csv
+    <span class="c">0–19 mot 65+ fram til 2050 (SSB)</span>
+  norway-care-capacity.csv
+    <span class="c">sykehjemsplasser 2021–2025 (SSB)</span>
+  yield-context.csv
+    <span class="c">statsrente mot målet 6–8 %</span>
+  evergreen-real-estate-fund.csv
+    <span class="c">referansepunkter for sektorene</span></pre>
+        </div>
+        <div class="file-view" data-file="fakta" hidden>
+          <p class="file-role">Fondsfakta - bare det som er offentlig</p>
+          <p>Fondet ble lansert i mai 2026, er evigvarende og ubelånt, og har et avkastningsmål på 6–8 %. Det som ikke er publisert, skal stå som ikke publisert.</p>
+        </div>
+        <div class="file-view" data-file="theme" hidden>
+          <p class="file-role">REQ-profilen</p>
+          <p>Fargene, logoene og bildene fra req.no, så siden ser ut som resten av REQ.</p>
+          <pre class="code">theme/
+  README.md    <span class="c">slik bruker du temaet</span>
+  tokens.css   <span class="c">farger, skrift, avstand</span>
+  brand.md     <span class="c">REQ-profilen beskrevet</span>
+  assets/      <span class="c">logoer og foto</span></pre>
+        </div>
+      </div>
+    </div>
+    <p class="takeaway"><b>Poenget:</b> når alt ligger i mappen, kan prompten være kort. Claude finner tallene, profilen og grensene selv.</p>
+  </section>
+
+  <!-- ── 3 · Stegene ──────────────────────────────────────────── -->
+  <section class="modul" id="stegene">
+    <p class="kicker">Steg for steg</p>
+    <h2>Først en versjon, så én endring om gangen</h2>
+    <p class="lead">Bare steg 1 ble kjørt i økta. Steg 2 er neste steg hvis du vil jobbe videre med siden på egen hånd. Bytt mellom stegene.</p>
+
+    <div class="segmented" id="run-toggle" role="group" aria-label="Hvilket steg">
+      <button type="button" data-run="1" aria-pressed="true">Steg 1 · i økta</button>
+      <button type="button" data-run="2" aria-pressed="false">Steg 2 · prøv selv</button>
+    </div>
+
+    <div class="run-panel" data-run="1">
+      <p class="file-role">Steg 1 · en første versjon</p>
+      <p class="statement">«Bygg en investor-side for REQ Evergreen Income Fund. Bruk REQ-profilen i theme/ og bare tallene i data/.»</p>
+      <ul class="plain-list">
+        <li>Claude leser mappen og bygger en første versjon av siden.</li>
+        <li>Den lengre versjonen av prompten står i README-en i mappen.</li>
+      </ul>
+    </div>
+    <div class="run-panel" data-run="2" hidden>
+      <p class="file-role">Steg 2 · én endring om gangen</p>
+      <p>Ta én om gangen, og se på siden mellom hver:</p>
+      <ol class="plain-list">
+        <li>«Legg inn en graf over antall personer over 80 år, fra 2010 og fram til 2050» - tallene ligger i <code>norway-population-80plus.csv</code>.</li>
+        <li>«Skriv om teksten så den passer for en pensjonskasse» - samme side, ny mottaker.</li>
+        <li>«Sjekk at hvert tall på siden finnes i datafilene, og vis meg kilden» - slik ber du Claude sjekke sitt eget arbeid mot kildene.</li>
+      </ol>
+    </div>
+    <p class="takeaway"><b>Før 16. okt:</b> åpne Claude Code minst én gang til i løpet av uken, enten på Evergreen-siden eller på noe du selv jobber med, og ta med både det som fungerte og det som stoppet opp. Neste økt er et kort dashboard-eksempel, så arbeidsøkt på egne oppgaver.</p>
+  </section>
+
+  <!-- ── 4 · Begrepsbank ──────────────────────────────────────── -->
+  <section class="modul" id="begrepsbank">
+    <p class="kicker">Begrepsbank</p>
+    <h2>Ordene vi bruker</h2>
+    <p class="lead">Begrepene fra kurset, forklart på naturlig bokmål. Den vokser for hver uke - søk for å finne det du er ute etter.</p>
+    <input type="search" id="gloss-search" class="gloss-search" placeholder="Søk i begrepene …" aria-label="Søk i begrepsbanken" autocomplete="off">
+    <div class="gloss-list" id="gloss-list"></div>
+  </section>
+
+  <!-- ── 5 · Prompt-oppskrifter ───────────────────────────────── -->
+  <section class="modul" id="prompter">
+    <p class="kicker">Prøv selv</p>
+    <h2>Prompt-oppskrifter</h2>
+    <p class="lead">Promptene fra økta: steg 1 og de tre fra steg 2. Kopier én, lim den inn i Claude Code og gjør den til din egen.</p>
+    <div class="prompt-list" id="prompt-list" data-uke="5"></div>
+  </section>
+
 </main>
 
 <footer>
@@ -40,5 +186,7 @@
     <p>Bygget av <a href="https://vardenlab.com">Varden</a> for REQ Capital</p>
   </div>
 </footer>
+
+<script src="kurs.js"></script>
 </body>
 </html>

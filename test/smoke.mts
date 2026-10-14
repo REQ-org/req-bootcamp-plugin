@@ -54,7 +54,11 @@ if (!schedText.includes("13. november 2026")) throw new Error("schedule does not
 console.log("get_schedule ok");
 
 const s1 = await rpc("tools/call", { name: "get_session", arguments: { number: 1 } });
-if (!s1.content[0].text.includes("Fundamentals I")) throw new Error("session 1 content wrong");
+const s1text = s1.content[0].text as string;
+if (!s1text.includes("Fundamentals I")) throw new Error("session 1 content wrong");
+if (s1text.includes("kommer etter økten")) throw new Error("session 1 recap still stub");
+if (!s1text.includes("Fange → Samle → Bygge")) throw new Error("session 1 missing Varden demo recap");
+if (!s1text.includes("installerte kurspluginen")) throw new Error("session 1 missing plugin hands-on recap");
 console.log("get_session(1) ok");
 
 const s2 = await rpc("tools/call", { name: "get_session", arguments: { number: 2 } });
@@ -89,6 +93,15 @@ if (!s4text.includes("Arbeidsøkt") || !s4text.includes("18. sep 2026")) {
 }
 if (!s4text.includes("Send oss to setninger")) throw new Error("session 4 missing case pre-work");
 console.log("get_session(4) ok");
+
+const s5 = await rpc("tools/call", { name: "get_session", arguments: { number: 5 } });
+const s5text = s5.content[0].text as string;
+if (s5text.includes("kommer etter økten")) throw new Error("session 5 recap still stub");
+if (!s5text.includes("REQ Evergreen Income Fund")) throw new Error("session 5 missing Evergreen example recap");
+if (!s5text.includes("Sjekk at hvert tall på siden finnes i datafilene")) {
+  throw new Error("session 5 missing step 2 prompts");
+}
+console.log("get_session(5) ok");
 
 const s6 = await rpc("tools/call", { name: "get_session", arguments: { number: 6 } });
 const s6text = s6.content[0].text as string;
