@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Uke 4 · Arbeidsøkt - REQ AI Bootcamp</title>
-<meta name="description" content="Du bygger din egen ting; to innsendte caser løses i plenum">
+<meta name="description" content="Utforsk økt 4: arbeidsflyten fra use-case til noe som virker, og de tre retningene - skill, Project eller kunnskaps-wiki.">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,17 +21,149 @@
       <img src="/req-logo.png" alt="REQ Capital" width="1280" height="533">
       <a href="index.html">← Kartet</a>
     </div>
+    <div class="hero">
+      <p class="eyebrow">Uke 4 · Arbeidsøkt</p>
+      <h1>Én ting du får bruk for, bygget på eget materiale</h1>
+      <p class="lead">Dette er ikke lysbildene på nytt. Økta var arbeidstid, ikke ny undervisning. Her kan du gå gjennom arbeidsflyten steg for steg, og se de tre retningene dere kunne velge mellom.</p>
+      <div class="hero-dl">
+        <a class="dl-btn" href="slides/uke-04.html">
+          <span class="dl-ico" aria-hidden="true">→</span> Åpne lysbildene
+        </a>
+        <span class="dl-meta">HTML · som brukt i økta 18. sep</span>
+      </div>
+      <nav class="anchor-nav" aria-label="Moduler på siden">
+        <a href="#timen">Slik timen gikk</a>
+        <a href="#flyten">Arbeidsflyten</a>
+        <a href="#retninger">Tre retninger</a>
+        <a href="#begrepsbank">Begrepsbank</a>
+        <a href="#prompter">Prompter</a>
+      </nav>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
-  <section class="kommer-block">
-    <p class="kicker">Uke 4 · Kommer</p>
-    <h2>Arbeidsøkt</h2>
-    <p>Du bygger din egen ting; to innsendte caser løses i plenum.</p>
-    <p>Innholdet for denne uka legges ut etter økta - da får den sine egne interaktive moduler, akkurat som uke 1 og 2.</p>
-    <p style="margin-top:30px;"><a href="index.html">← Tilbake til kartet</a></p>
+
+  <!-- ── 1 · Slik timen gikk ──────────────────────────────────── -->
+  <section class="modul" id="timen">
+    <p class="kicker">Arbeidsøkt</p>
+    <h2>Slik timen gikk</h2>
+    <p class="lead">Byggeklossene fra økt 2 og 3 - skills, Projects, dokumenter og offentlige MCP-er - skulle brukes på én ekte oppgave.</p>
+
+    <div class="ladder">
+      <div class="ladder-step">
+        <p class="step-num">Del 1</p>
+        <h3 class="step-title">Rundebord</h3>
+        <p class="step-desc">Hva har dere lært eller brukt siden sist?</p>
+      </div>
+      <div class="ladder-step">
+        <p class="step-num">Del 2</p>
+        <h3 class="step-title">Caser i plenum</h3>
+        <p class="step-desc">Innsendte caser ble løst live, så fremgangsmåten ble synlig - også for dere på Teams.</p>
+      </div>
+      <div class="ladder-step highlight">
+        <p class="step-num">Del 3</p>
+        <h3 class="step-title">Alle bygger</h3>
+        <p class="step-desc">Alle jobbet videre på eget materiale, med Herman og Nicolay som hjelp underveis.</p>
+      </div>
+    </div>
+    <p class="takeaway"><b>Målet</b> var én ting ferdig nok til å vises: en skill, et Project eller en wiki, eller en MCP-kobling, på eget materiale.</p>
   </section>
+
+  <!-- ── 2 · Arbeidsflyten ────────────────────────────────────── -->
+  <section class="modul" id="flyten">
+    <p class="kicker">Arbeidsflyten</p>
+    <h2>Fra use-case til noe som virker</h2>
+    <p class="lead">Herman kjørte arbeidsflyten use-case → datakilde → MCP → skill → test. Poenget er å gå fra ustrukturert informasjon til noe Claude faktisk kan slå opp i, uten at alt lastes opp manuelt hver gang. Klikk deg gjennom stegene.</p>
+
+    <div class="anatomy-split" id="flyt-tree">
+      <div>
+        <div class="ft-root">Arbeidsflyten</div>
+        <button type="button" class="ft-item active" data-file="usecase" aria-pressed="true">1 · Use-case</button>
+        <button type="button" class="ft-item" data-file="kilde" aria-pressed="false">2 · Datakilde</button>
+        <button type="button" class="ft-item" data-file="mcp" aria-pressed="false">3 · MCP</button>
+        <button type="button" class="ft-item" data-file="skill" aria-pressed="false">4 · Skill</button>
+        <button type="button" class="ft-item" data-file="test" aria-pressed="false">5 · Test</button>
+        <p class="ft-hint">Klikk et steg.</p>
+      </div>
+      <div>
+        <div class="file-view active" data-file="usecase">
+          <p class="file-role">Én konkret oppgave, ikke et tema</p>
+          <p>Start med én ting fra arbeidsuka di. Forarbeidet var to setninger: hva oppgaven er, og hva du vil sitte igjen med.</p>
+        </div>
+        <div class="file-view" data-file="kilde" hidden>
+          <p class="file-role">Hvor ligger informasjonen?</p>
+          <p>Dokumentene, tallene eller notatene du trenger. Noe har du selv, noe finnes i offentlige kilder som SSB, Brreg og Kartverket. Interne REQ-kilder venter fortsatt på den juridiske avklaringen.</p>
+        </div>
+        <div class="file-view" data-file="mcp" hidden>
+          <p class="file-role">Koblingen, så Claude kan slå opp selv</p>
+          <p>En MCP lar Claude hente fra kilden selv, i stedet for at du laster opp alt manuelt hver gang. De offentlige MCP-ene ligger allerede i kurspluginen: SSB, Brreg, Kartverket, Norges Bank, Oslo PBE og flere.</p>
+        </div>
+        <div class="file-view" data-file="skill" hidden>
+          <p class="file-role">Oppskriften</p>
+          <p>Skillen sier hva Claude skal gjøre med det den henter, og i hvilket format. Formen kjenner dere fra uke 2: en trigger, en kort kropp, en målestokk og gjerne et eksempel.</p>
+        </div>
+        <div class="file-view" data-file="test" hidden>
+          <p class="file-role">Kjør den på en ekte oppgave</p>
+          <p>Prøv på en oppgave den ikke ble skrevet for, og se hvor det stopper. Det som ikke virket er ofte det mest lærerike - ta det med til rundebordet.</p>
+        </div>
+      </div>
+    </div>
+    <p class="takeaway"><b>Poenget:</b> fra ustrukturert informasjon til noe Claude kan slå opp i - og så teste det på ekte.</p>
+  </section>
+
+  <!-- ── 3 · Tre retninger ────────────────────────────────────── -->
+  <section class="modul" id="retninger">
+    <p class="kicker">Tre retninger</p>
+    <h2>Skill, Project eller kunnskaps-wiki?</h2>
+    <p class="lead">Sto du fast, var det tre retninger å velge mellom. Tre forslag, ikke en meny - har du noe eget du heller vil bygge, er det bedre. Bytt mellom dem.</p>
+
+    <div class="segmented" id="run-toggle" role="group" aria-label="Retning">
+      <button type="button" data-run="skill" aria-pressed="true">Skill</button>
+      <button type="button" data-run="project" aria-pressed="false">Project</button>
+      <button type="button" data-run="wiki" aria-pressed="false">Kunnskaps-wiki</button>
+    </div>
+
+    <div class="run-panel" data-run="skill">
+      <p class="file-role">Skill · noe du gjør igjen og igjen</p>
+      <p>Forbedre skillen fra uke 2, eller bygg en ny for en ukentlig oppgave. Eiendom: trekke tallene ut av IM-er og prospekter. Aksjer: kvartalsgjennomgangen.</p>
+      <ul class="plain-list">
+        <li>Eksempel fra økta: «Lag en skill som trekker nøkkeltallene ut av et prospekt og legger dem inn i Excel-malen vår»</li>
+      </ul>
+    </div>
+    <div class="run-panel" data-run="project" hidden>
+      <p class="file-role">Project · et selskap eller en case</p>
+      <p>Sett opp ett ordentlig, med prosjektinstruksjoner og dokumenter: selskapsdossier, eiendoms-DD eller styremøte-prep. Med konteksten samlet ett sted kan du forberede spørsmål til ledelsen, sammenligne rapporter og utfordre hypotesen.</p>
+    </div>
+    <div class="run-panel" data-run="wiki" hidden>
+      <p class="file-role">Kunnskaps-wiki · bygget fra offentlige rapporter</p>
+      <p>Notatene dine som lenkede markdown-filer, med kilder, som Claude leser, skriver videre på og holder oppdatert. For eksempel sider om forretningsmodell, konkurrenter, ledelse og historikk for et selskap.</p>
+      <ul class="plain-list">
+        <li>Eksempel fra økta: «Bygg en wiki om selskapene i porteføljen fra årsrapportene, med én side per selskap og kilder»</li>
+        <li>Etter <code>/plugin update</code> finnes skillen <code>init-knowledge-base</code>. Den stiller noen spørsmål og setter opp mappene <code>raw/</code> og <code>wiki/</code> - den spiser ikke kildene for deg.</li>
+      </ul>
+    </div>
+    <p class="takeaway"><b>Velg én ting,</b> og bestem selv hva «ferdig» betyr før du starter.</p>
+    <p class="takeaway"><b>Før 25. sep:</b> bruk det du bygde på én ekte oppgave, og ta med resultatet - også hvis det ikke fungerte. Neste økt var Claude Code – Intro.</p>
+  </section>
+
+  <!-- ── 4 · Begrepsbank ──────────────────────────────────────── -->
+  <section class="modul" id="begrepsbank">
+    <p class="kicker">Begrepsbank</p>
+    <h2>Ordene vi bruker</h2>
+    <p class="lead">Begrepene fra kurset, forklart på naturlig bokmål. Den vokser for hver uke - søk for å finne det du er ute etter.</p>
+    <input type="search" id="gloss-search" class="gloss-search" placeholder="Søk i begrepene …" aria-label="Søk i begrepsbanken" autocomplete="off">
+    <div class="gloss-list" id="gloss-list"></div>
+  </section>
+
+  <!-- ── 5 · Prompt-oppskrifter ───────────────────────────────── -->
+  <section class="modul" id="prompter">
+    <p class="kicker">Prøv selv</p>
+    <h2>Prompt-oppskrifter</h2>
+    <p class="lead">Ferdige prompter knyttet til arbeidsøkta. Kopier én, lim inn i Claude og gjør den til din egen.</p>
+    <div class="prompt-list" id="prompt-list" data-uke="4"></div>
+  </section>
+
 </main>
 
 <footer>
@@ -40,5 +172,7 @@
     <p>Bygget av <a href="https://vardenlab.com">Varden</a> for REQ Capital</p>
   </div>
 </footer>
+
+<script src="kurs.js"></script>
 </body>
 </html>

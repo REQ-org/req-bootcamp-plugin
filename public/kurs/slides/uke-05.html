@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Bootcamp for REQ - Uke 5</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy: #001D6C;
+            --petrol: #005070;
+            --petrol-blue: #007C9D;
+            --teal: #82C0C7;
+            --mist: #C8D8DF;
+            --ink: #1A1A1A;
+            --grey: #666666;
+            --hairline: #E5E5E5;
+            --white: #FFFFFF;
+            --off-white: #FAFBFC;
+            --negative: #8C1D18;
+
+            --font-display: 'DM Serif Display', Georgia, serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+            --stage-bg: #0A0F1C;
+            --ease: cubic-bezier(0.16, 1, 0.3, 1);
+            --dur: 0.7s;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%; margin: 0;
+            overflow: hidden;
+            background: var(--stage-bg);
+        }
+
+        .deck-viewport {
+            position: fixed; inset: 0; overflow: hidden;
+            background: var(--stage-bg);
+        }
+
+        .deck-stage {
+            position: absolute; left: 0; top: 0;
+            width: 1920px; height: 1080px;
+            overflow: hidden; transform-origin: 0 0;
+        }
+
+        .slide {
+            position: absolute; inset: 0;
+            width: 1920px; height: 1080px;
+            overflow: hidden;
+            visibility: hidden; opacity: 0;
+            pointer-events: none;
+            background: var(--white);
+            color: var(--ink);
+            font-family: var(--font-body);
+        }
+
+        .slide.active, .slide.visible {
+            visibility: visible; opacity: 1;
+            pointer-events: auto; z-index: 1;
+        }
+
+        img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+
+        @media print {
+            html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+            .deck-viewport { position: static; overflow: visible; background: #fff; }
+            .deck-stage { position: static; width: auto; height: auto; transform: none !important; }
+            .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; }
+            .slide:last-child { break-after: auto; }
+            .deck-controls { display: none !important; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+        }
+
+        /* ---- SLIDE CHROME ---- */
+
+        .slide-inner {
+            position: absolute;
+            left: 100px; top: 80px;
+            width: 1720px; height: 920px;
+        }
+
+        .slide-number {
+            position: absolute;
+            right: 220px; bottom: 48px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            color: var(--grey);
+        }
+
+        .corner-logo {
+            position: absolute;
+            right: 100px; top: 56px;
+            height: 30px; width: auto;
+        }
+
+        .brand-logo {
+            position: absolute;
+            right: 100px; bottom: 44px;
+            height: 15px; width: auto;
+            opacity: 0.75;
+        }
+
+        .nav-rule {
+            position: absolute;
+            left: 100px; right: 100px;
+            bottom: 72px;
+            height: 1px;
+            background: var(--hairline);
+        }
+
+        .slide-footer {
+            position: absolute;
+            left: 100px; bottom: 48px;
+            font-size: 13px;
+            color: var(--grey);
+            letter-spacing: 0.02em;
+        }
+
+        /* ---- TYPOGRAPHY ---- */
+
+        .kicker {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--petrol-blue);
+            margin-bottom: 20px;
+        }
+
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: 72px;
+            font-weight: 400;
+            line-height: 1.0;
+            color: var(--ink);
+            letter-spacing: -0.01em;
+        }
+
+        .lede {
+            margin-top: 24px;
+            font-size: 28px;
+            font-weight: 300;
+            line-height: 1.4;
+            color: var(--grey);
+            max-width: 1200px;
+        }
+
+        .divider {
+            width: 80px; height: 2px;
+            background: var(--navy);
+            margin: 36px 0 40px;
+        }
+
+        .statement {
+            font-family: var(--font-display);
+            font-size: 44px;
+            font-weight: 400;
+            line-height: 1.25;
+            max-width: 1300px;
+            color: var(--ink);
+        }
+
+        .statement-sub {
+            margin-top: 28px;
+            font-size: 26px;
+            font-weight: 300;
+            color: var(--grey);
+            line-height: 1.45;
+            max-width: 1200px;
+        }
+
+        /* ---- CLAUDE INPUT MOCK ---- */
+
+        .claude-input {
+            margin-top: 56px;
+            width: 900px;
+            background: var(--white);
+            border: 1px solid var(--hairline);
+            border-radius: 24px;
+            padding: 26px 28px 20px;
+            box-shadow: 0 18px 48px rgba(10, 15, 28, 0.10);
+        }
+
+        .claude-input-text {
+            font-family: var(--font-body);
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--ink);
+            line-height: 1.4;
+        }
+
+        .claude-input-text .caret {
+            display: inline-block;
+            width: 2px;
+            height: 30px;
+            background: var(--petrol-blue);
+            margin-left: 3px;
+            vertical-align: -5px;
+            animation: caretBlink 1.1s steps(1) infinite;
+        }
+
+        @keyframes caretBlink {
+            0%, 50% { opacity: 1; }
+            50.01%, 100% { opacity: 0; }
+        }
+
+        .claude-input-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 26px;
+        }
+
+        .claude-input-tools {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .claude-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 40px;
+            padding: 0 16px;
+            border: 1px solid var(--hairline);
+            border-radius: 20px;
+            font-family: var(--font-body);
+            font-size: 18px;
+            color: var(--grey);
+        }
+
+        .claude-chip.icon-only { width: 40px; padding: 0; justify-content: center; }
+
+        .claude-send {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: #D97757;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* ---- REVEAL ANIMATION ---- */
+
+        .rv {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+        }
+
+        .slide.visible .rv { opacity: 1; transform: translateY(0); }
+
+        .slide.visible .rv:nth-child(1) { transition-delay: 0.06s; }
+        .slide.visible .rv:nth-child(2) { transition-delay: 0.14s; }
+        .slide.visible .rv:nth-child(3) { transition-delay: 0.22s; }
+        .slide.visible .rv:nth-child(4) { transition-delay: 0.30s; }
+        .slide.visible .rv:nth-child(5) { transition-delay: 0.38s; }
+        .slide.visible .rv:nth-child(6) { transition-delay: 0.46s; }
+        .slide.visible .rv:nth-child(7) { transition-delay: 0.54s; }
+        .slide.visible .rv:nth-child(8) { transition-delay: 0.62s; }
+
+        .slide.visible .d1 { transition-delay: 0.06s; }
+        .slide.visible .d2 { transition-delay: 0.16s; }
+        .slide.visible .d3 { transition-delay: 0.26s; }
+        .slide.visible .d4 { transition-delay: 0.36s; }
+        .slide.visible .d5 { transition-delay: 0.46s; }
+        .slide.visible .d6 { transition-delay: 0.56s; }
+
+        /* ---- TITLE SLIDE ---- */
+
+        .title-slide {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .title-slide .slide-inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .title-slide .title-logo {
+            position: absolute;
+            left: 100px; top: 72px;
+            height: 38px;
+        }
+
+        .title-slide .brand-logo,
+        .closing-slide .brand-logo {
+            right: 100px; bottom: 48px;
+            height: 15px;
+            opacity: 0.85;
+        }
+
+        .title-slide .week-badge {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 24px;
+        }
+
+        .title-slide h1 {
+            font-family: var(--font-display);
+            font-size: 96px;
+            font-weight: 400;
+            line-height: 1.0;
+            color: var(--white);
+            letter-spacing: -0.01em;
+            max-width: 1400px;
+        }
+
+        .title-slide .title-sub {
+            margin-top: 32px;
+            font-size: 26px;
+            font-weight: 300;
+            line-height: 1.45;
+            color: var(--mist);
+            max-width: 1100px;
+        }
+
+        .title-slide .title-meta {
+            margin-top: 64px;
+            font-size: 16px;
+            color: rgba(255,255,255,0.45);
+            letter-spacing: 0.02em;
+        }
+
+        .title-slide .title-stripe {
+            position: absolute;
+            right: 0; top: 0;
+            width: 480px; height: 1080px;
+            background: linear-gradient(180deg, var(--petrol) 0%, var(--navy) 100%);
+            opacity: 0.35;
+        }
+
+        .title-slide .big-num {
+            position: absolute;
+            right: 140px; top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-display);
+            font-size: 340px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.04);
+            line-height: 0.85;
+            pointer-events: none;
+        }
+
+        /* ---- AGENDA LIST ---- */
+
+        .agenda-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 8px;
+        }
+
+        .agenda-item {
+            display: flex;
+            align-items: baseline;
+            gap: 28px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        .agenda-item:last-child { border-bottom: none; }
+
+        .agenda-num {
+            font-family: var(--font-display);
+            font-size: 36px;
+            color: var(--navy);
+            width: 52px;
+            flex-shrink: 0;
+        }
+
+        .agenda-text {
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--ink);
+        }
+
+        /* ---- FEATURE CARDS ---- */
+
+        .feature-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 32px;
+            width: 100%;
+            margin-top: 16px;
+        }
+
+        .feature-card {
+            background: var(--off-white);
+            border: 1px solid var(--hairline);
+            padding: 40px 36px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-card.accent {
+            background: rgba(0, 29, 108, 0.04);
+            border: 2px solid var(--navy);
+        }
+
+        .feature-card .card-icon {
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .feature-card .card-title {
+            font-family: var(--font-display);
+            font-size: 30px;
+            color: var(--ink);
+        }
+
+        .feature-card .card-desc {
+            font-size: 20px;
+            color: var(--grey);
+            line-height: 1.45;
+        }
+
+        /* ---- IDEA CARDS ---- */
+
+        .idea-label {
+            margin-top: 44px;
+            font-family: var(--font-mono);
+            font-size: 15px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--navy);
+        }
+
+        .idea-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .idea-card {
+            background: var(--off-white);
+            border: 1px solid var(--hairline);
+            border-left: 3px solid var(--navy);
+            padding: 24px 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .idea-card .idea-title {
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--ink);
+        }
+
+        .idea-card .idea-desc {
+            font-size: 18px;
+            color: var(--grey);
+            line-height: 1.4;
+        }
+
+        /* ---- SPLIT LAYOUT ---- */
+
+        .split-two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 56px;
+            width: 100%;
+        }
+
+        /* ---- WORKFLOW STEPS ---- */
+
+        .workflow {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .workflow-step {
+            flex: 1;
+            padding: 36px 32px;
+            background: var(--off-white);
+            border: 1px solid var(--hairline);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .workflow-step:first-child { border-radius: 2px 0 0 2px; }
+        .workflow-step:last-child { border-radius: 0 2px 2px 0; }
+
+        .workflow-step .step-num {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--petrol-blue);
+        }
+
+        .workflow-step .step-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--ink);
+        }
+
+        .workflow-step .step-desc {
+            font-size: 18px;
+            color: var(--grey);
+            line-height: 1.45;
+        }
+
+        .workflow-arrow {
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            color: var(--mist);
+            font-size: 28px;
+        }
+
+        /* ---- MCP TABLE ---- */
+
+        .mcp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        .mcp-table th {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--petrol-blue);
+            text-align: left;
+            padding: 16px 20px;
+            border-bottom: 2px solid var(--navy);
+        }
+
+        .mcp-table td {
+            font-size: 22px;
+            color: var(--ink);
+            padding: 20px 20px;
+            border-bottom: 1px solid var(--hairline);
+            vertical-align: top;
+            line-height: 1.35;
+        }
+
+        .mcp-table tr:last-child td { border-bottom: none; }
+
+        .mcp-table .mcp-name {
+            font-family: var(--font-display);
+            font-size: 26px;
+            color: var(--navy);
+            white-space: nowrap;
+        }
+
+        .mcp-table .mcp-example {
+            font-size: 19px;
+            color: var(--grey);
+        }
+
+        /* ---- DEMO PROMPTS ---- */
+
+        .demo-prompts {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .demo-prompt {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 24px;
+            align-items: center;
+            padding: 24px 28px;
+            background: var(--off-white);
+            border: 1px solid var(--hairline);
+        }
+
+        .demo-prompt .prompt-source {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--petrol-blue);
+        }
+
+        .demo-prompt .prompt-text {
+            font-size: 24px;
+            color: var(--ink);
+            line-height: 1.35;
+            font-style: italic;
+        }
+
+        /* ---- LADDER / STEPS ---- */
+
+        .ladder {
+            display: flex;
+            gap: 32px;
+            align-items: flex-end;
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .ladder-step {
+            flex: 1;
+            background: var(--off-white);
+            border: 1px solid var(--hairline);
+            padding: 32px;
+            transition: all 0.5s var(--ease);
+        }
+
+        .ladder-step:nth-child(1) { min-height: 200px; }
+        .ladder-step:nth-child(2) { min-height: 280px; }
+        .ladder-step:nth-child(3) { min-height: 360px; border: 2px solid var(--navy); background: rgba(0,29,108,0.03); }
+
+        .ladder-step .step-num {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--petrol-blue);
+            margin-bottom: 12px;
+        }
+
+        .ladder-step .step-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            color: var(--ink);
+            margin-bottom: 10px;
+        }
+
+        .ladder-step .step-desc {
+            font-size: 18px;
+            color: var(--grey);
+            line-height: 1.45;
+        }
+
+        /* ---- CLOSING SLIDE ---- */
+
+        .closing-slide {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .closing-slide .slide-inner {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .closing-slide .closing-logo {
+            position: absolute;
+            left: 100px; top: 72px;
+            height: 38px;
+        }
+
+        .closing-slide .closing-week {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 20px;
+        }
+
+        .closing-slide h2 {
+            font-family: var(--font-display);
+            font-size: 64px;
+            font-weight: 400;
+            line-height: 1.05;
+            color: var(--white);
+            max-width: 1200px;
+        }
+
+        .closing-slide .closing-body {
+            margin-top: 32px;
+            font-size: 24px;
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--mist);
+            max-width: 1000px;
+        }
+
+        .closing-slide .contacts {
+            position: absolute;
+            left: 100px; bottom: 80px;
+            font-size: 16px;
+            color: rgba(255,255,255,0.45);
+            line-height: 1.7;
+        }
+
+        .closing-slide .big-num {
+            position: absolute;
+            right: 140px; top: 50%;
+            transform: translateY(-50%);
+            font-family: var(--font-display);
+            font-size: 340px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.04);
+            line-height: 0.85;
+            pointer-events: none;
+        }
+
+        /* ---- DECK CONTROLS ---- */
+
+        .deck-controls {
+            display: none;
+            position: fixed;
+            left: 50%; bottom: 20px;
+            transform: translateX(-50%);
+            z-index: 1000;
+            align-items: center;
+            gap: 14px;
+            padding: 7px 16px;
+            background: rgba(10, 15, 28, 0.7);
+            backdrop-filter: blur(8px);
+            color: rgba(255,255,255,0.7);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            border-radius: 2px;
+        }
+
+        .deck-controls.show { display: flex; }
+
+        .progress-track {
+            width: 140px; height: 2px;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .progress-fill { height: 2px; background: var(--teal); width: 0; }
+
+        /* ---- EDIT MODE ---- */
+
+        .edit-hotzone {
+            position: fixed; top: 0; left: 0;
+            width: 80px; height: 80px;
+            z-index: 10000; cursor: pointer;
+        }
+
+        .edit-toggle {
+            position: fixed; top: 16px; left: 16px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10001;
+            border: 0;
+            background: var(--navy);
+            color: var(--white);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: 6px 14px;
+            cursor: pointer;
+            letter-spacing: 0.06em;
+        }
+
+        .edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+
+        body.editing [contenteditable="true"] {
+            outline: 1px dashed rgba(0, 29, 108, 0.3);
+            outline-offset: 3px;
+        }
+
+        /* ---- NOTES OVERLAY ---- */
+
+        .notes-panel {
+            position: fixed;
+            left: 24px; right: 24px; bottom: 56px;
+            max-width: 860px; margin: 0 auto;
+            background: rgba(12, 18, 34, 0.94);
+            backdrop-filter: blur(8px);
+            color: #D6D9E0;
+            padding: 18px 22px;
+            font-family: var(--font-body);
+            font-size: 15px;
+            line-height: 1.45;
+            z-index: 2000;
+            display: none;
+            border-radius: 2px;
+        }
+
+        .notes-panel.open { display: block; }
+        .notes-panel strong { color: var(--teal); }
+
+        /* ---- SKILL FILE PANEL ---- */
+
+        .skill-panel {
+            width: 100%;
+            background: #0C1222;
+            color: #D6D9E0;
+            padding: 40px 48px;
+            font-family: var(--font-mono);
+            font-size: 19px;
+            line-height: 1.5;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .skill-panel .sk-key { color: var(--teal); }
+        .skill-panel .sk-val { color: #E8E4DA; }
+        .skill-panel .sk-heading { color: var(--white); font-weight: 500; }
+        .skill-panel .sk-comment { color: #6B7394; }
+        .skill-panel .sk-rule { color: #9AA3B8; }
+        .skill-panel .sk-sep { color: #3A4260; }
+
+        /* ---- COMPARISON COLUMNS ---- */
+
+        .compare-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 32px;
+            width: 100%;
+        }
+
+        .compare-col {
+            padding: 36px 40px;
+            border-radius: 2px;
+        }
+
+        .compare-col.good {
+            background: var(--off-white);
+            border: 2px solid var(--navy);
+        }
+
+        .compare-col.neutral {
+            background: var(--off-white);
+            border: 1px solid var(--hairline);
+        }
+
+        .compare-badge {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            display: inline-block;
+            padding: 4px 12px;
+            margin-bottom: 20px;
+        }
+
+        .compare-col.good .compare-badge {
+            background: rgba(0, 29, 108, 0.08);
+            color: var(--navy);
+        }
+
+        .compare-col.neutral .compare-badge {
+            background: rgba(0, 80, 112, 0.08);
+            color: var(--petrol);
+        }
+
+        .compare-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .compare-list li {
+            font-size: 22px;
+            line-height: 1.4;
+            color: var(--ink);
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .compare-list li::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 10px;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+        }
+
+        .compare-col.good .compare-list li::before { background: var(--navy); }
+        .compare-col.neutral .compare-list li::before { background: var(--petrol); }
+
+        /* ---- SERVICE LOGOS ---- */
+
+        .badge-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .badge-row .compare-badge { margin-bottom: 0; }
+
+        .badge-logo {
+            height: 34px;
+            width: auto;
+            flex: none;
+        }
+
+        .mcp-table .mcp-name { line-height: 0; }
+
+        .mcp-logo {
+            max-height: 38px;
+            max-width: 190px;
+            width: auto;
+            height: auto;
+        }
+
+        .demo-prompt .prompt-source {
+            display: flex;
+            align-items: center;
+        }
+
+        .src-logo {
+            max-height: 30px;
+            max-width: 128px;
+            width: auto;
+            height: auto;
+        }
+
+        /* ---- CONNECTOR GRID ---- */
+
+        .connector-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .connector {
+            background: var(--off-white);
+            border: 1px solid var(--hairline);
+            border-radius: 2px;
+            padding: 30px 32px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .connector-logo {
+            height: 46px;
+            width: 46px;
+            object-fit: contain;
+            flex: none;
+        }
+
+        .connector-name {
+            font-family: var(--font-display);
+            font-size: 26px;
+            color: var(--ink);
+            line-height: 1.1;
+        }
+
+        .connector-tag {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            letter-spacing: 0.06em;
+            color: var(--grey);
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-hotzone"></div>
+    <button class="edit-toggle" id="editToggle" title="Edit mode (E)">EDIT</button>
+
+    <div class="deck-viewport">
+        <main class="deck-stage" id="deckStage">
+
+            <!-- ===== SLIDE 1 - COVER ===== -->
+            <section class="slide title-slide active" data-notes="Start med en kort velkomst og et rundebord der alle sier hva de har brukt Claude til siden sist. Nicolay tar Stockholm og Bergen først, slik at de kommer med fra starten.">
+                <div class="title-stripe"></div>
+                <div class="big-num">05</div>
+                <img class="title-logo rv d1" src="slides-assets/req-logo-navy.svg" alt="REQ" style="filter: brightness(0) invert(1);">
+                <img class="brand-logo rv d1" src="slides-assets/varden-wordmark-light.svg" alt="Varden">
+                <div class="slide-inner">
+                    <p class="week-badge rv d2">Økt 5 av 10</p>
+                    <h1 class="rv d3">Claude Code – Intro</h1>
+                    <p class="title-sub rv d4">I dag bygger vi en investor-side for Evergreen i Claude Code, med REQ-profilen og offentlige tall fra SSB, FHI og Norges Bank.</p>
+                    <p class="title-meta rv d5">Fredag 25. september 2026 · 08:30 – 09:30 · Teams</p>
+                </div>
+            </section>
+
+            <!-- ===== SLIDE 2 - OPPGAVEN ===== -->
+            <section class="slide" data-notes="Dette er det vi skal lage i dag, og alle jobber i sin egen Claude Code. Ingen trenger å kunne kode, fordi dere beskriver hva dere vil ha med vanlige ord og lar Claude lage selve siden.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner split-two" style="width: 1720px; align-items: center; grid-template-columns: 1fr 640px;">
+                    <div>
+                        <p class="kicker rv">Oppgaven</p>
+                        <h2 class="slide-title rv">En investor-side for<br>REQ Evergreen Income Fund</h2>
+                        <div class="divider rv"></div>
+                        <p class="statement-sub rv" style="margin-top: 0;">Siden er skrevet for pensjonskasser, livselskap og stiftelser, og samler tesen bak fondet, teamet som forvalter det og tallene som underbygger tesen.</p>
+                    </div>
+                    <img class="rv" src="slides-assets/hero-climber.webp" alt="" style="width: 100%; height: 720px; object-fit: cover;">
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ · Økt 5</span>
+                <span class="slide-number">02</span>
+            </section>
+
+            <!-- ===== SLIDE 3 - MAPPEN ===== -->
+            <section class="slide" data-notes="Alt ligger i én mappe som Claude leser selv, så dere trenger ikke lime inn noe. Poenget er at siden bare skal bruke tallene som ligger der, og ikke finne på noe.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner" style="display: flex; flex-direction: column; justify-content: center;">
+                    <p class="kicker rv">Det vi starter med</p>
+                    <h2 class="slide-title rv">Alt vi trenger ligger i én mappe</h2>
+                    <div class="divider rv"></div>
+                    <div class="feature-cards rv">
+                        <div class="feature-card">
+                            <span class="card-title">Tallene</span>
+                            <span class="card-desc">Datafiler om eldre over 80, sykehjemsplasser, demens, prisvekst og rente, hentet fra SSB, FHI og Norges Bank.</span>
+                        </div>
+                        <div class="feature-card">
+                            <span class="card-title">REQ-profilen</span>
+                            <span class="card-desc">Fargene, logoene og bildene fra req.no, slik at siden ser ut som resten av REQ.</span>
+                        </div>
+                        <div class="feature-card">
+                            <span class="card-title">Fondsfakta</span>
+                            <span class="card-desc">Det som allerede er offentlig om Evergreen: fondet ble lansert i mai 2026, er evigvarende og ubelånt, og har et avkastningsmål på 6–8 %.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ · Økt 5</span>
+                <span class="slide-number">03</span>
+            </section>
+
+            <!-- ===== SLIDE 4 - FØRSTE VERSJON ===== -->
+            <section class="slide" data-notes="Kjør prompten på skjerm, og nevn at den fulle versjonen ligger i README-en i mappen. Mens Claude jobber kan du slutte å dele og gå rundt, og når siden er ferdig åpner vi den i nettleseren og ser på den sammen.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner" style="display: flex; flex-direction: column; justify-content: center;">
+                    <p class="kicker rv">Steg 1</p>
+                    <h2 class="slide-title rv">Vi ber Claude om en første versjon</h2>
+                    <div class="divider rv"></div>
+                    <div class="claude-input rv" style="width: 1100px;">
+                        <div class="claude-input-text">Bygg en investor-side for REQ Evergreen Income Fund. Bruk REQ-profilen i theme/ og bare tallene i data/.<span class="caret"></span></div>
+                        <div class="claude-input-bar">
+                            <div class="claude-input-tools">
+                                <span class="claude-chip icon-only">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                </span>
+                                <span class="claude-chip">Claude Code</span>
+                            </div>
+                            <div class="claude-send">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ · Økt 5</span>
+                <span class="slide-number">04</span>
+            </section>
+
+            <!-- ===== SLIDE 5 - BYGG VIDERE ===== -->
+            <section class="slide" data-notes="Vis den første endringen på skjerm, og la folk jobbe videre selv med én endring om gangen mens Herman og Nicolay går rundt. Stockholm og Bergen sitter i breakout-rom. Den siste prompten er verdt å vise fram, fordi den viser hvordan man ber Claude sjekke sitt eget arbeid mot kildene.">
+                <img class="brand-logo" src="slides-assets/varden-wordmark.svg" alt="Varden">
+                <img class="corner-logo" src="slides-assets/req-logo-navy.svg" alt="">
+                <div class="slide-inner" style="display: flex; flex-direction: column; justify-content: center;">
+                    <p class="kicker rv">Steg 2</p>
+                    <h2 class="slide-title rv">Så gjør vi siden bedre, én endring om gangen</h2>
+                    <div class="divider rv"></div>
+                    <div class="rv" style="display: flex; gap: 32px; margin-top: 56px;">
+                        <div class="claude-input" style="margin-top: 0; width: 552px;">
+                            <div class="claude-input-text" style="font-size: 24px; min-height: 134px;">Legg inn en graf over antall personer over 80 år, fra 2010 og fram til 2050<span class="caret"></span></div>
+                            <div class="claude-input-bar">
+                                <div class="claude-input-tools">
+                                    <span class="claude-chip icon-only">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    </span>
+                                    <span class="claude-chip">Claude Code</span>
+                                </div>
+                                <div class="claude-send">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="claude-input" style="margin-top: 0; width: 552px;">
+                            <div class="claude-input-text" style="font-size: 24px; min-height: 134px;">Skriv om teksten så den passer for en pensjonskasse<span class="caret"></span></div>
+                            <div class="claude-input-bar">
+                                <div class="claude-input-tools">
+                                    <span class="claude-chip icon-only">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    </span>
+                                    <span class="claude-chip">Claude Code</span>
+                                </div>
+                                <div class="claude-send">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="claude-input" style="margin-top: 0; width: 552px;">
+                            <div class="claude-input-text" style="font-size: 24px; min-height: 134px;">Sjekk at hvert tall på siden finnes i datafilene, og vis meg kilden<span class="caret"></span></div>
+                            <div class="claude-input-bar">
+                                <div class="claude-input-tools">
+                                    <span class="claude-chip icon-only">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    </span>
+                                    <span class="claude-chip">Claude Code</span>
+                                </div>
+                                <div class="claude-send">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-rule"></div>
+                <span class="slide-footer">AI Bootcamp for REQ · Økt 5</span>
+                <span class="slide-number">05</span>
+            </section>
+
+            <!-- ===== SLIDE 6 - CLOSING ===== -->
+            <section class="slide closing-slide" data-notes="Før vi avslutter, be to eller tre personer vise skjermen sin, og spør eksplisitt om det som ikke virket.">
+                <div class="big-num">06</div>
+                <img class="closing-logo rv d1" src="slides-assets/req-logo-navy.svg" alt="REQ" style="filter: brightness(0) invert(1);">
+                <img class="brand-logo rv d1" src="slides-assets/varden-wordmark-light.svg" alt="Varden">
+                <div class="slide-inner">
+                    <p class="closing-week rv d2">Før neste gang</p>
+                    <h2 class="rv d3">Fortsett der du slapp</h2>
+                    <p class="closing-body rv d4">
+                        Åpne Claude Code minst én gang til i løpet av uken, enten på Evergreen-siden eller på noe du selv jobber med,
+                        og ta med deg både det som fungerte og det som stoppet opp til neste økt.
+                    </p>
+                    <div class="contacts rv d5">
+                        Herman Holmøy · herman@vardenlab.com<br>
+                        Nicolay Liaaen Hagen · nicolay@vardenlab.com
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+
+    </div>
+
+    <div class="deck-controls" aria-label="Fremdrift">
+        <span id="slideLabel">1 / 5</span>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+    <div class="notes-panel" id="notesPanel"></div>
+
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.stage = document.getElementById('deckStage');
+                this.label = document.getElementById('slideLabel');
+                this.progress = document.getElementById('progressFill');
+                this.notesPanel = document.getElementById('notesPanel');
+                this.notesOpen = false;
+                this.setupStageScale();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.setupWheelNav();
+                this.showSlide(0);
+            }
+
+            setupStageScale() {
+                const chrome = document.querySelector('.deck-controls');
+                const scale = () => {
+                    const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+                    const x = (window.innerWidth - 1920 * factor) / 2;
+                    const y = (window.innerHeight - 1080 * factor) / 2;
+                    this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+                    chrome.classList.toggle('show', y > 28);
+                };
+                scale();
+                window.addEventListener('resize', scale);
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.target && e.target.getAttribute('contenteditable') === 'true') return;
+                    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+                    const next = ['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'];
+                    const prev = ['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'];
+                    if (next.includes(e.key)) {
+                        e.preventDefault();
+                        this.showSlide(this.currentSlide + 1);
+                    } else if (prev.includes(e.key)) {
+                        e.preventDefault();
+                        this.showSlide(this.currentSlide - 1);
+                    } else if (e.key === 'Home') {
+                        this.showSlide(0);
+                    } else if (e.key === 'End') {
+                        this.showSlide(this.slides.length - 1);
+                    } else if (e.key === 'n' || e.key === 'N') {
+                        this.toggleNotes();
+                    }
+                });
+            }
+
+            setupTouchNav() {
+                let startX = 0;
+                this.stage.addEventListener('touchstart', (e) => {
+                    startX = e.changedTouches[0].screenX;
+                }, { passive: true });
+                this.stage.addEventListener('touchend', (e) => {
+                    const dx = e.changedTouches[0].screenX - startX;
+                    if (Math.abs(dx) < 40) {
+                        this.showSlide(this.currentSlide + 1);
+                        return;
+                    }
+                    this.showSlide(this.currentSlide + (dx < 0 ? 1 : -1));
+                }, { passive: true });
+            }
+
+            setupWheelNav() {
+                let locked = false;
+                window.addEventListener('wheel', (e) => {
+                    if (locked) return;
+                    if (Math.abs(e.deltaY) < 20) return;
+                    locked = true;
+                    this.showSlide(this.currentSlide + (e.deltaY > 0 ? 1 : -1));
+                    setTimeout(() => { locked = false; }, 420);
+                }, { passive: true });
+            }
+
+            toggleNotes() {
+                this.notesOpen = !this.notesOpen;
+                this.notesPanel.classList.toggle('open', this.notesOpen);
+                this.refreshNotes();
+            }
+
+            refreshNotes() {
+                const slide = this.slides[this.currentSlide];
+                const text = slide ? (slide.dataset.notes || '') : '';
+                this.notesPanel.innerHTML = '<strong>Notater</strong><br>' + text;
+            }
+
+            showSlide(index) {
+                this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
+                this.slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === this.currentSlide);
+                    slide.classList.toggle('visible', i === this.currentSlide);
+                });
+                this.label.textContent = (this.currentSlide + 1) + ' / ' + this.slides.length;
+                this.progress.style.width = ((this.currentSlide + 1) / this.slides.length * 100) + '%';
+                if (this.notesOpen) this.refreshNotes();
+            }
+        }
+
+        const deck = new SlidePresentation();
+
+        class InlineEditor {
+            constructor() {
+                this.isActive = false;
+                this.storageKey = 'req-bootcamp-uke05-edits-v2';
+                this.toggle = document.getElementById('editToggle');
+                this.restore();
+            }
+
+            editableNodes() {
+                return document.querySelectorAll('h1, h2, p, li, .statement, .statement-sub, .contacts, .agenda-text, .step-title, .step-desc, .card-title, .card-desc, .prompt-text, .mcp-name, td');
+            }
+
+            toggleEditMode() {
+                this.isActive = !this.isActive;
+                document.body.classList.toggle('editing', this.isActive);
+                this.toggle.classList.toggle('active', this.isActive);
+                this.toggle.textContent = this.isActive ? 'EDITING' : 'EDIT';
+                this.editableNodes().forEach((el) => {
+                    el.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+                });
+                if (!this.isActive) this.persist();
+            }
+
+            persist() {
+                const data = {};
+                this.editableNodes().forEach((el, i) => { data[i] = el.innerHTML; });
+                localStorage.setItem(this.storageKey, JSON.stringify(data));
+            }
+
+            restore() {
+                const raw = localStorage.getItem(this.storageKey);
+                if (!raw) return;
+                try {
+                    const data = JSON.parse(raw);
+                    this.editableNodes().forEach((el, i) => {
+                        if (data[i]) el.innerHTML = data[i];
+                    });
+                } catch (err) { /* ignore */ }
+            }
+
+            exportFile() {
+                this.persist();
+                const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'REQ-bootcamp-uke05.html';
+                a.click();
+                URL.revokeObjectURL(a.href);
+            }
+        }
+
+        const editor = new InlineEditor();
+        const editToggle = document.getElementById('editToggle');
+        const hotzone = document.querySelector('.edit-hotzone');
+        let hideTimeout = null;
+
+        editToggle.addEventListener('click', () => editor.toggleEditMode());
+        hotzone.addEventListener('mouseenter', () => {
+            clearTimeout(hideTimeout);
+            editToggle.classList.add('show');
+        });
+        hotzone.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                if (!editor.isActive) editToggle.classList.remove('show');
+            }, 400);
+        });
+        editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+        editToggle.addEventListener('mouseleave', () => {
+            hideTimeout = setTimeout(() => {
+                if (!editor.isActive) editToggle.classList.remove('show');
+            }, 400);
+        });
+        hotzone.addEventListener('click', () => editor.toggleEditMode());
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+                editor.toggleEditMode();
+            }
+            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                e.preventDefault();
+                editor.exportFile();
+            }
+        });
+    </script>
+</body>
+</html>

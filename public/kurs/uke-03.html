@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Uke 3 · Projects, dokumenter og offentlige data - REQ AI Bootcamp</title>
-<meta name="description" content="Forarbeid til økt 3: Projects, Word/PPT/Excel og offentlige data (SSB, Brreg, Kartverket, Oslo Planinnsyn). Fredag 4. september 2026, 08:30–09:30, Teams.">
+<meta name="description" content="Utforsk konseptene fra økt 3: Project eller skill, Word, PowerPoint og Excel fra Claude, og offentlige data fra SSB, Brreg, Kartverket og Oslo Planinnsyn.">
 <link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,14 +22,21 @@
       <a href="index.html">← Kartet</a>
     </div>
     <div class="hero">
-      <p class="eyebrow">Uke 3 · Forarbeid</p>
-      <h1>Projects, dokumenter og offentlige data</h1>
-      <p class="lead">Vedvarende kontekst, Word, PPT og Excel rett fra Claude, og SSB, Brreg, Kartverket og Oslo Planinnsyn/Saksinnsyn som live datakilder.</p>
-      <p class="dl-meta" style="margin-top:18px;">Fredag 4. september 2026 · 08:30–09:30 · Teams</p>
-      <nav class="anchor-nav" aria-label="Seksjoner på siden">
-        <a href="#agenda">Agenda</a>
-        <a href="#forarbeid">Forarbeid</a>
-        <a href="#neste">Før neste gang</a>
+      <p class="eyebrow">Uke 3 · Projects, dokumenter og offentlige data</p>
+      <h1>Et Project som husker, filer Claude lager, og offentlige data</h1>
+      <p class="lead">Dette er ikke lysbildene på nytt. Det er stedet å gå litt dypere etter økta: finn ut om oppgaven din hører hjemme i et Project eller en skill, se hvilke filer Claude kan lage, og prøv de offentlige kildene selv.</p>
+      <div class="hero-dl">
+        <a class="dl-btn" href="slides/uke-03.html">
+          <span class="dl-ico" aria-hidden="true">→</span> Åpne lysbildene
+        </a>
+        <span class="dl-meta">HTML · som brukt i økta 4. sep</span>
+      </div>
+      <nav class="anchor-nav" aria-label="Moduler på siden">
+        <a href="#projekt">Project eller skill</a>
+        <a href="#dokumenter">Dokumenter</a>
+        <a href="#mcp">Offentlige data</a>
+        <a href="#begrepsbank">Begrepsbank</a>
+        <a href="#prompter">Prompter</a>
       </nav>
     </div>
   </div>
@@ -37,49 +44,141 @@
 
 <main class="wrap">
 
-  <section class="modul" id="agenda">
-    <p class="kicker">I dag</p>
-    <h2>Tre deler på 60 minutter</h2>
-    <p class="lead">Mesteparten av timen er demo og hands-on. Interaktive moduler på denne siden kommer etter økta, akkurat som for uke 1 og 2.</p>
+  <!-- ── 1 · Project eller skill ──────────────────────────────── -->
+  <section class="modul" id="projekt">
+    <p class="kicker">Projects</p>
+    <h2>Project eller skill?</h2>
+    <p class="lead">Et Project er en kunnskapsbase som følger med i alle samtaler: instruksjoner (tone, rolle, format) og dokumenter ligger fast, så du slipper å lime dem inn. En skill er oppskriften fra uke 2. Velg hva du trenger, og se hvor det hører hjemme.</p>
+
+    <div class="chooser-opts" id="chooser-opts" data-set="projekt-skill" role="group" aria-label="Hva trenger du"></div>
+    <div class="chooser-result" id="chooser-result" aria-live="polite">
+      <p class="chooser-empty">Velg et behov for å se hvor det hører hjemme.</p>
+    </div>
+
+    <p class="takeaway"><b>I økta</b> satte dere opp minst ett Project med instruksjoner og et eget dokument. Typiske startpunkter: selskapsdossier, kandidat-scanner, skriving i REQ-stil og eiendoms-DD.</p>
+  </section>
+
+  <!-- ── 2 · Dokumenter ───────────────────────────────────────── -->
+  <section class="modul" id="dokumenter">
+    <p class="kicker">Dokumenter</p>
+    <h2>Claude lager Word, PowerPoint og Excel</h2>
+    <p class="lead">Du ber om et dokument, Claude bygger en ferdig fil, og du laster den ned og redigerer videre. Det virker også med et dokument du laster opp selv.</p>
 
     <div class="ladder">
+      <div class="ladder-step">
+        <p class="step-num">Steg 1</p>
+        <h3 class="step-title">Prompt</h3>
+        <p class="step-desc">«Lag et investeringsnotat for Aker BP»</p>
+      </div>
+      <div class="ladder-step">
+        <p class="step-num">Steg 2</p>
+        <h3 class="step-title">Claude bygger</h3>
+        <p class="step-desc">En formatert .docx, .pptx eller .xlsx med struktur, tabeller og innhold.</p>
+      </div>
       <div class="ladder-step highlight">
-        <p class="step-num">Del 1</p>
-        <h3 class="step-title">Projects</h3>
-        <p class="step-desc">Vedvarende kunnskapsbase. Instruksjoner og minst ett dokument. Eksempler: selskapsdossier, kandidat-scanner, skriving i REQ-stil, eiendoms-DD.</p>
-      </div>
-      <div class="ladder-step">
-        <p class="step-num">Del 2</p>
-        <h3 class="step-title">Word, PowerPoint og Excel</h3>
-        <p class="step-desc">Claude lager ferdige filer. Investeringsnotat for Aker BP, porteføljegjennomgang, nøkkeltallsmodeller.</p>
-      </div>
-      <div class="ladder-step">
-        <p class="step-num">Del 3</p>
-        <h3 class="step-title">Offentlige data</h3>
-        <p class="step-desc">SSB, Brreg, Kartverket og Oslo Planinnsyn/Saksinnsyn (<code>oslo-pbe</code>) ligger allerede i pluginen. Deretter egne connectors: Drive, SharePoint, OneDrive, Gmail, Slack, Notion.</p>
+        <p class="step-num">Steg 3</p>
+        <h3 class="step-title">Last ned og rediger</h3>
+        <p class="step-desc">Åpne i Word, PowerPoint eller Excel, tilpass og send videre.</p>
       </div>
     </div>
-    <p class="takeaway"><b>Live demo i økta:</b> «Hent befolkningsutviklingen i Oslo de siste 10 årene fra SSB». «Vis nøkkeltall fra siste årsregnskap for Aker BP». «Slå opp adressen Sommerrogata 17, Oslo». «Hvilke reguleringsplaner gjelder Sommerrogata 17?» — Kartverket slår opp gnr/bnr, Planinnsyn svarer S-2255.</p>
+
+    <div class="segmented" id="run-toggle" role="group" aria-label="Filtype" style="margin-top:28px;">
+      <button type="button" data-run="word" aria-pressed="true">Word</button>
+      <button type="button" data-run="ppt" aria-pressed="false">PowerPoint</button>
+      <button type="button" data-run="excel" aria-pressed="false">Excel</button>
+    </div>
+
+    <div class="run-panel" data-run="word">
+      <p class="file-role">Word · .docx</p>
+      <p class="statement">Investeringsnotat med nøkkeltall og risiko</p>
+      <ul class="plain-list">
+        <li>Memoer og notater</li>
+        <li>Due diligence-rapporter</li>
+      </ul>
+    </div>
+    <div class="run-panel" data-run="ppt" hidden>
+      <p class="file-role">PowerPoint · .pptx</p>
+      <p class="statement">Porteføljegjennomgang med avkastning og utsikter</p>
+      <ul class="plain-list">
+        <li>Styrepresentasjoner og sektoranalyser</li>
+        <li>Fra et opplastet dokument: «Gjør dette om til en styrepresentasjon»</li>
+      </ul>
+    </div>
+    <div class="run-panel" data-run="excel" hidden>
+      <p class="file-role">Excel · .xlsx</p>
+      <p class="statement">Nøkkeltallsmodeller og tallgrunnlag</p>
+      <ul class="plain-list">
+        <li>Sensitivitetsanalyser</li>
+        <li>Datauttrekk til regneark</li>
+      </ul>
+    </div>
+    <p class="takeaway"><b>Byggeklossene henger sammen:</b> en skill kan holde <em>formatet</em>, et Project holder <em>malene og konteksten</em>.</p>
   </section>
 
-  <section class="modul" id="forarbeid">
-    <p class="kicker">Før fredag</p>
-    <h2>Forarbeid</h2>
-    <p class="lead">Ingen installering. De offentlige kildene er allerede inne i kurspluginen.</p>
-    <ul class="plain-list">
-      <li><b>Tenk på noe du faktisk jobber med</b> som kan bli et Project - et selskap, en eiendom, en skriveoppgave eller en kandidatvurdering.</li>
-      <li><b>Ha minst ett dokument klart</b> du kan legge inn (rapport, notat, prospekt eller mal).</li>
-    </ul>
-    <p class="takeaway"><b>I Claude:</b> spør «hva er forarbeidet til neste økt» eller bruk <code>/kurs</code> - pluginen leser den samme timeplanen.</p>
+  <!-- ── 3 · Offentlige MCP-er ────────────────────────────────── -->
+  <section class="modul" id="mcp">
+    <p class="kicker">MCP</p>
+    <h2>Offentlige data, rett fra kilden</h2>
+    <p class="lead">MCP er broen mellom Claude og en datakilde. Kurspluginen peker allerede på offentlige kilder, så det er ingenting å installere og ingen juridisk avklaring å vente på. Klikk på hver kilde for å se hva den gir.</p>
+
+    <div class="expanders">
+      <button class="expander" data-target="mcp-ssb" aria-expanded="false">
+        <span class="ex-title">SSB</span><span class="ex-tag">statistikk</span><span class="ex-mark" aria-hidden="true">+</span>
+      </button>
+      <div class="expander-panel" id="mcp-ssb" hidden>
+        <p>Befolkning, boligpriser og makro. For REQ: befolkningsveksten i en kommune, eller boligprisindeksen.</p>
+        <p class="example">Prøv: «Hent befolkningsutviklingen i Oslo de siste 10 årene fra SSB»</p>
+      </div>
+
+      <button class="expander" data-target="mcp-brreg" aria-expanded="false">
+        <span class="ex-title">Brreg og regnskap</span><span class="ex-tag">selskaper</span><span class="ex-mark" aria-hidden="true">+</span>
+      </button>
+      <div class="expander-panel" id="mcp-brreg" hidden>
+        <p>Selskapsinformasjon, roller og regnskap. For REQ: nøkkeltall og styresammensetning for et porteføljeselskap.</p>
+        <p class="example">Prøv: «Vis nøkkeltall fra siste årsregnskap for Aker BP»</p>
+      </div>
+
+      <button class="expander" data-target="mcp-kartverket" aria-expanded="false">
+        <span class="ex-title">Kartverket</span><span class="ex-tag">adresser og eiendom</span><span class="ex-mark" aria-hidden="true">+</span>
+      </button>
+      <div class="expander-panel" id="mcp-kartverket" hidden>
+        <p>Adressesøk, eiendomsdata og matrikkel. For REQ: slå opp en adresse og finn tomteinformasjonen.</p>
+        <p class="example">Prøv: «Slå opp adressen Sommerrogata 17, Oslo»</p>
+      </div>
+
+      <button class="expander" data-target="mcp-pbe" aria-expanded="false">
+        <span class="ex-title">Oslo Planinnsyn</span><span class="ex-tag">reguleringsplaner</span><span class="ex-mark" aria-hidden="true">+</span>
+      </button>
+      <div class="expander-panel" id="mcp-pbe" hidden>
+        <p>Reguleringsplaner og saker hos Plan- og bygningsetaten i Oslo (<code>oslo-pbe</code>). Kartverket finner gnr/bnr for adressen, og Planinnsyn svarer med planen som gjelder.</p>
+        <p class="example">Prøv: «Hvilke reguleringsplaner gjelder Sommerrogata 17?»</p>
+      </div>
+
+      <button class="expander" data-target="mcp-egne" aria-expanded="false">
+        <span class="ex-title">Egne connectors</span><span class="ex-tag">venter på avklaring</span><span class="ex-mark" aria-hidden="true">+</span>
+      </button>
+      <div class="expander-panel" id="mcp-egne" hidden>
+        <p>Drive, SharePoint, OneDrive, Gmail, Slack og Notion. Samme mekanisme som de offentlige kildene, bare mot egne systemer. For REQ venter dette på den juridiske avklaringen. Å <em>bygge</em> en egen MCP tar vi i økt 8.</p>
+      </div>
+    </div>
+    <p class="takeaway"><b>Før arbeidsøkta 18. sep:</b> tenk på noe det gir mening å bygge et prosjekt rundt - og sett opp det prosjektet i Claude. Neste økt ble en arbeidsøkt der dere bygde videre på eget materiale.</p>
   </section>
 
-  <section class="modul" id="neste">
-    <p class="kicker">Før neste gang</p>
-    <h2>Én ting å gjøre</h2>
-    <p class="lead">Tenk på noe det gir mening å bygge et prosjekt rundt - og sett opp det prosjektet i Claude.</p>
-    <p>Spørsmål: Herman Holmøy (<a href="mailto:herman@vardenlab.com">herman@vardenlab.com</a>) eller Nicolay Liaaen Hagen (<a href="mailto:nicolay@vardenlab.com">nicolay@vardenlab.com</a>).</p>
-    <p class="takeaway"><b>Interaktive moduler</b> for uke 3 legges ut etter økta. Da får siden klikkbare gjennomganger, akkurat som uke 1 og 2.</p>
-    <p style="margin-top:30px;"><a href="index.html">← Tilbake til kartet</a></p>
+  <!-- ── 4 · Begrepsbank ──────────────────────────────────────── -->
+  <section class="modul" id="begrepsbank">
+    <p class="kicker">Begrepsbank</p>
+    <h2>Ordene vi bruker</h2>
+    <p class="lead">Begrepene fra kurset, forklart på naturlig bokmål. Den vokser for hver uke - søk for å finne det du er ute etter.</p>
+    <input type="search" id="gloss-search" class="gloss-search" placeholder="Søk i begrepene …" aria-label="Søk i begrepsbanken" autocomplete="off">
+    <div class="gloss-list" id="gloss-list"></div>
+  </section>
+
+  <!-- ── 5 · Prompt-oppskrifter ───────────────────────────────── -->
+  <section class="modul" id="prompter">
+    <p class="kicker">Prøv selv</p>
+    <h2>Prompt-oppskrifter</h2>
+    <p class="lead">Promptene fra økta, inkludert de fire offentlige oppslagene. Kopier én, lim inn i Claude og gjør den til din egen.</p>
+    <div class="prompt-list" id="prompt-list" data-uke="3"></div>
   </section>
 
 </main>
@@ -90,5 +189,7 @@
     <p>Bygget av <a href="https://vardenlab.com">Varden</a> for REQ Capital</p>
   </div>
 </footer>
+
+<script src="kurs.js"></script>
 </body>
 </html>

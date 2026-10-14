@@ -478,8 +478,8 @@ a.week-node:hover {
 }
 a.week-node .wn-num { background: var(--navy); color: var(--paper); }
 .week-node .wn-body { min-width: 0; }
-.week-node .wn-title { font-weight: 700; color: var(--navy); font-size: 15.5px; letter-spacing: -.01em; }
-.week-node .wn-tema { font-size: 13px; color: var(--navy-soft); margin-top: 2px; line-height: 1.35; }
+.week-node .wn-title { display: block; font-weight: 700; color: var(--navy); font-size: 15.5px; letter-spacing: -.01em; }
+.week-node .wn-tema { display: block; font-size: 13px; color: var(--navy-soft); margin-top: 2px; line-height: 1.35; }
 .week-node.kommer { opacity: .72; }
 .week-node.kommer .wn-title { color: var(--navy-soft); }
 .week-node .wn-flag { margin-left: auto; align-self: center; }

@@ -23,13 +23,16 @@ const WEEKS = [
   { nr: 2,  fase: 1, status: "live",   href: "uke-02.html",
     tittel: "Skills",             tema: "Ekte skills i praksis, og bygg din egen",
     slides: { file: "slides/uke-02.html", format: "HTML", storrelse: "som brukt i økta", open: true } },
-  { nr: 3,  fase: 1, status: "kommer", href: "uke-03.html",
+  { nr: 3,  fase: 1, status: "live",   href: "uke-03.html",
     tittel: "Projects, dokumenter og offentlige data",
-    tema: "Vedvarende kontekst, Word, PPT og Excel, og SSB, Brreg, Kartverket og Oslo Planinnsyn" },
-  { nr: 4,  fase: 2, status: "kommer", href: "uke-04.html",
-    tittel: "Arbeidsøkt",         tema: "Du bygger din egen ting; to innsendte caser løses i plenum" },
-  { nr: 5,  fase: 2, status: "kommer", href: "uke-05.html",
-    tittel: "Claude Code – Intro", tema: "Markedsføringsside-eksempel; Herman starter en oppgave, går rundt og hjelper, gjentar" },
+    tema: "Vedvarende kontekst, Word, PPT og Excel, og SSB, Brreg, Kartverket og Oslo Planinnsyn",
+    slides: { file: "slides/uke-03.html", format: "HTML", storrelse: "som brukt i økta", open: true } },
+  { nr: 4,  fase: 2, status: "live",   href: "uke-04.html",
+    tittel: "Arbeidsøkt",         tema: "Du bygger din egen ting; to innsendte caser løses i plenum",
+    slides: { file: "slides/uke-04.html", format: "HTML", storrelse: "som brukt i økta", open: true } },
+  { nr: 5,  fase: 2, status: "live",   href: "uke-05.html",
+    tittel: "Claude Code – Intro", tema: "En investor-side for REQ Evergreen Income Fund, bygget i Claude Code",
+    slides: { file: "slides/uke-05.html", format: "HTML", storrelse: "som brukt i økta", open: true } },
   { nr: 6,  fase: 2, status: "kommer", href: "uke-06.html",
     tittel: "Dashboard-eksempel og arbeidsøkt", tema: "Fra Excel-fil til interaktivt dashboard, så arbeidsøkt på egne oppgaver" },
   { nr: 7,  fase: 2, status: "kommer", href: "uke-07.html",
@@ -70,6 +73,17 @@ const GLOSSARY = [
   { term: "Projects", uke: 3, def: "Et arbeidsrom i Claude med fast kontekst - filer, instrukser og historikk samlet ett sted." },
   { term: "Artifacts", uke: 3, def: "Egne dokumenter og småapper Claude lager ved siden av samtalen, som du kan redigere videre." },
   { term: "Memory", uke: 3, def: "Det Claude husker på tvers av samtaler, så du slipper å gjenta konteksten hver gang." },
+  { term: "Prosjektinstruksjoner", uke: 3, def: "Regler som gjelder hele Projectet: tone, terminologi, rolle og output-format. Claude følger dem i alle samtaler i prosjektet." },
+  { term: "Offentlig MCP", uke: 3, def: "En MCP-kobling mot en offentlig datakilde, som SSB, Brreg, Kartverket eller Oslo Planinnsyn. Krever ingen juridisk avklaring, og ligger allerede i kurspluginen." },
+  { term: "Connector", uke: 3, def: "En MCP-kobling mot egne systemer - Drive, SharePoint, OneDrive, Gmail, Slack, Notion. Samme mekanisme som de offentlige kildene. For REQ venter dette på den juridiske avklaringen." },
+  { term: "Garden", uke: 3, def: "Varden MCP Garden: samlingen av offentlige MCP-er som kurspluginen peker på - SSB, Brreg, Kartverket, Oslo Planinnsyn og flere." },
+  { term: "Arbeidsøkt", uke: 4, def: "En økt uten ny undervisning. Dere bygger én ting på eget materiale, med hjelp underveis." },
+  { term: "Kunnskaps-wiki", uke: 4, def: "Notatene dine som lenkede markdown-filer, med kilder, som Claude leser, skriver videre på og holder oppdatert. Skillen init-knowledge-base setter opp mappene." },
+  { term: "raw/ og wiki/", uke: 4, def: "De to mappene i en kunnskaps-wiki. raw/ er kildene slik de kom inn, og endres ikke. wiki/ er sidene Claude skriver og holder oppdatert." },
+  { term: "README", uke: 5, def: "Filen som forklarer hva en mappe er og hvordan den brukes. Claude Code leser den selv - i økta lå den lengre prompten der." },
+  { term: "CSV-fil", uke: 5, def: "En enkel datafil med rader og kolonner, som et regneark i ren tekst. Tallene i data/ lå som CSV-filer." },
+  { term: "tokens.css", uke: 5, def: "Én fil med fargene, skrifttypene og avstandene i REQ-profilen. Siden lenker til den, så den ser ut som resten av REQ." },
+  { term: "Kildesjekk", uke: 5, def: "Å be Claude sjekke at hvert tall finnes i kildene, og vise hvor. Slik får du Claude til å kontrollere sitt eget arbeid." },
 ];
 
 // ── Prompt-oppskrifter (kopierbare «prøv selv») ──────────────────
@@ -96,6 +110,38 @@ const PROMPTS = [
     prompt: "Jeg har denne skillen:\n\n[lim inn SKILL.md]\n\nHer er to ekte oppgaver:\n1. [oppgave A]\n2. [oppgave B]\n\nFor hver: ville triggeren slått inn? Si hvorfor, og hva du ville endret i description hvis den bommet." },
   { tittel: "God mot dårlig skill", konsept: "Kontrast", uke: 2,
     prompt: "Her er et utkast til skill:\n\n[lim inn SKILL.md]\n\nMarker det som gjør den god (trigger med når-ikke, struktur, målestokk, regler, eksempel) og det som gjør den dårlig (vag trigger, tvungen balanse, positiv tone, ingen målestokk)." },
+  { tittel: "Spør Projectet", konsept: "Projects", uke: 3,
+    prompt: "Oppsummer de viktigste risikofaktorene basert på dokumentene" },
+  { tittel: "Investeringsnotat i Word", konsept: "Dokumenter", uke: 3,
+    prompt: "Lag et investeringsnotat for Aker BP som Word-dokument, med nøkkeltall og risiko." },
+  { tittel: "Fra dokument til presentasjon", konsept: "Dokumenter", uke: 3,
+    prompt: "Gjør dette om til en styrepresentasjon." },
+  { tittel: "Befolkning fra SSB", konsept: "SSB", uke: 3,
+    prompt: "Hent befolkningsutviklingen i Oslo de siste 10 årene fra SSB" },
+  { tittel: "Nøkkeltall fra årsregnskapet", konsept: "Brreg", uke: 3,
+    prompt: "Vis nøkkeltall fra siste årsregnskap for Aker BP" },
+  { tittel: "Slå opp en adresse", konsept: "Kartverket", uke: 3,
+    prompt: "Slå opp adressen Sommerrogata 17, Oslo" },
+  { tittel: "Reguleringsplaner", konsept: "Oslo Planinnsyn", uke: 3,
+    prompt: "Hvilke reguleringsplaner gjelder Sommerrogata 17?" },
+  { tittel: "Skriv oppgaven i to setninger", konsept: "Forarbeid", uke: 4,
+    prompt: "Hjelp meg å skrive oppgaven min som to setninger: hva oppgaven er, og hva jeg vil sitte igjen med etter en time.\n\nOppgaven: [beskriv den]" },
+  { tittel: "Bestem hva ferdig betyr", konsept: "Arbeidsøkt", uke: 4,
+    prompt: "Jeg skal bygge dette: [oppgaven]. Før jeg starter: hjelp meg å bestemme hva «ferdig» betyr, så jeg kan vise det fram om en time. Si om det bør bli en skill, et Project eller en kunnskaps-wiki, og hvorfor." },
+  { tittel: "Skill fra prospekt til Excel", konsept: "Skill", uke: 4,
+    prompt: "Lag en skill som trekker nøkkeltallene ut av et prospekt og legger dem inn i Excel-malen vår" },
+  { tittel: "Wiki fra årsrapporter", konsept: "Kunnskaps-wiki", uke: 4,
+    prompt: "Bygg en wiki om selskapene i porteføljen fra årsrapportene, med én side per selskap og kilder" },
+  { tittel: "Test det du bygde", konsept: "Mikrooppgave", uke: 4,
+    prompt: "Jeg brukte dette på en ekte oppgave denne uken:\n\n[lim inn skillen, instruksjonene eller wiki-siden]\n\nResultatet ble: [beskriv]. Hva stoppet opp, og hva bør jeg endre først?" },
+  { tittel: "Første versjon", konsept: "Steg 1", uke: 5,
+    prompt: "Bygg en investor-side for REQ Evergreen Income Fund. Bruk REQ-profilen i theme/ og bare tallene i data/." },
+  { tittel: "Graf over 80+", konsept: "Steg 2", uke: 5,
+    prompt: "Legg inn en graf over antall personer over 80 år, fra 2010 og fram til 2050" },
+  { tittel: "Ny mottaker", konsept: "Steg 2", uke: 5,
+    prompt: "Skriv om teksten så den passer for en pensjonskasse" },
+  { tittel: "Sjekk tallene", konsept: "Kildesjekk", uke: 5,
+    prompt: "Sjekk at hvert tall på siden finnes i datafilene, og vis meg kilden" },
 ];
 
 // ── Modellvelger ─────────────────────────────────────────────────
@@ -110,6 +156,22 @@ const CHOICES = [
     why: "Håndterer lange dokumenter godt til lav kostnad. Løft til Opus hvis konklusjonene er høy-risiko." },
   { task: "Idémyldring og utforsking", model: "Sonnet",
     why: "Rask nok til dialog, god nok til dybde. Bytt til Opus når du vil presse kvaliteten." },
+];
+
+// ── Project eller skill (uke 3) ──────────────────────────────────
+const PROJECT_SKILL = [
+  { task: "Samme dokumenter i hver samtale", model: "Project",
+    why: "Et Project holder instruksjoner og dokumenter fast, så de følger med i alle samtaler. Du slipper å lime dem inn hver gang." },
+  { task: "Alt om ett porteføljeselskap samlet", model: "Project",
+    why: "Selskapsdossier: ett Project per selskap, med rapporter, oppkjøp og nøkkeltall samlet på ett sted." },
+  { task: "Investorbrev i husets tone", model: "Project",
+    why: "Skriving i REQ-stil: prosjektinstruksjonene setter tone og terminologi, så investorbrev og analyser får husets tone hver gang." },
+  { task: "Samme format hver gang", model: "Skill",
+    why: "En skill holder formatet - oppskriften for hvordan notatet eller presentasjonen skal se ut. Den slår inn selv når oppgaven passer." },
+  { task: "Fast format på dokumenter fra én sak", model: "Begge",
+    why: "En skill kjører inne i et Project og bruker konteksten der. Skillen holder formatet, Projectet holder malene og dokumentene." },
+  { task: "Ferske tall fra SSB eller Brreg", model: "MCP",
+    why: "Verken Project eller skill: dette er en MCP-kobling. De offentlige kildene ligger allerede i kurspluginen." },
 ];
 
 // ── Hjelpere ─────────────────────────────────────────────────────
@@ -150,9 +212,8 @@ function renderMap(mount) {
     const wks = el("div", "phase-weeks");
     WEEKS.filter(w => w.fase === f.nr).forEach(w => {
     const live = w.status === "live";
-    const clickable = live || w.nr === 3;
-    const node = el(clickable ? "a" : "div", "week-node" + (live ? "" : " kommer"));
-    if (clickable) { node.href = w.href; }
+    const node = el(live ? "a" : "div", "week-node" + (live ? "" : " kommer"));
+    if (live) { node.href = w.href; }
       node.setAttribute("title", w.tema);
       node.innerHTML =
         `<span class="wn-num">${w.nr}</span>` +
@@ -258,8 +319,8 @@ function selectFallback(text, done) {
 }
 
 // ── Modellvelger ─────────────────────────────────────────────────
-function wireChooser(optsMount, resultMount) {
-  CHOICES.forEach((c, i) => {
+function wireChooser(optsMount, resultMount, choices) {
+  choices.forEach(c => {
     const b = el("button", null, esc(c.task));
     b.type = "button";
     b.setAttribute("aria-pressed", "false");
@@ -319,7 +380,7 @@ function wireContext(section) {
   });
 }
 
-// ── Skill-anatomi: klikk i fil-treet ─────────────────────────────
+// ── Fil-tre: klikk et element, vis rollen (uke 2, 4 og 5) ────────
 function wireFileTree(root) {
   const items = root.querySelectorAll(".ft-item[data-file]");
   const views = root.querySelectorAll(".file-view[data-file]");
@@ -442,7 +503,10 @@ ready(() => {
   if (promptMount) renderPrompts(promptMount);
 
   const chooserOpts = document.getElementById("chooser-opts");
-  if (chooserOpts) wireChooser(chooserOpts, document.getElementById("chooser-result"));
+  if (chooserOpts) {
+    const choices = chooserOpts.dataset.set === "projekt-skill" ? PROJECT_SKILL : CHOICES;
+    wireChooser(chooserOpts, document.getElementById("chooser-result"), choices);
+  }
 
   const anat = document.getElementById("anat-toggle");
   if (anat) wireAnatToggle(anat);
@@ -453,8 +517,7 @@ ready(() => {
   const ctx = document.getElementById("kontekst");
   if (ctx) wireContext(ctx);
 
-  const tree = document.getElementById("skill-tree");
-  if (tree) wireFileTree(tree);
+  document.querySelectorAll(".anatomy-split").forEach(wireFileTree);
 
   const runs = document.getElementById("run-toggle");
   if (runs) wireRunToggle(runs);
