@@ -1,11 +1,13 @@
-# Økt 6 - Research & kilder (2. okt 2026)
+# Økt 6 - Dashboard-eksempel og arbeidsøkt (16. okt 2026)
 
-Research med Claude: websøk, dokument- og filverktøy, og en intro til connectors/RAG - med kildekritikk på svarene. Du får verifikasjons-sjekklisten (be om kilder, klikk på dem, kryssjekk primærkilden), og vi introduserer case-selskapet som økt 7 og 8 bygger videre på.
+Først viser Herman et kort eksempel på hvordan Claude gjør en Excel-fil om til et
+interaktivt dashboard. Så jobber dere med en oppgave fra deres egen arbeidsuke, og
+Herman går rundt og hjelper.
 
-## Forarbeid (sendes fredag 25. sep, under 10 min)
+## Forarbeid (før 16. okt, under 10 min)
 
-- **Les:** verifikasjons-sjekklisten - be om kilder, klikk på dem, kryssjekk primærkilden.
-- **Ta med:** ett selskap eller én eiendom du faktisk gjør research på nå (ellers: kursets case-selskap).
+- **Velg én konkret oppgave** fra din egen arbeidsuke som du vil bruke AI på.
+- **Ha materialet klart på maskinen:** filene, tallene eller notatene du trenger.
 
 ## Oppsummering
 

@@ -3,6 +3,8 @@
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 > **Updated 2026-09-22:** week 5 in `kurs.js` is Claude Code – Intro (marketing site), not skriving/REQ-mal. Ten sessions, last 30 Oct; week 4 is the arbeidsøkt. The steps below are the record of the original build.
+>
+> **Updated 2026-10-14:** week 6 in `kurs.js` is the dashboard example and working session (16 Oct), not research. The last session is 13 Nov.
 
 **Goal:** Build an interactive, participant-facing exploration companion for the REQ AI Bootcamp - week 1 fully built, weeks 2-10 scaffolded - reached from the existing landing page.
 
