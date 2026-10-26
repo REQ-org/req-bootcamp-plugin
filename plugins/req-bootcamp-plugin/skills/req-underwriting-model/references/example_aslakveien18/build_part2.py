@@ -46,7 +46,7 @@ def write_block(ws, top, scen, cpi, title):
     R_["noi"] = r; tsrow(ws, r, "NOI", lambda c, i: f"={c}{R_['net']}+{c}{R_['eier']}+{c}{R_['es']}", bold=True); total_row(ws, r, "B", "O", PALEGRN); r += 1
     subhead(ws, r, "Forvaltning"); r += 1
     R_["am"] = r
-    tsrow(ws, r, "AM-kostnad", (lambda c, i: f"=-AMpct*Kjopspris*(1-BoligAndel*{soldfrac(c)})") if B else (lambda c, i: "=-AMpct*Kjopspris")); r += 1
+    tsrow(ws, r, "AM-kostnad" + (" (ikke i RREF)" if REFP else ""), (lambda c, i: f"=-AMpct*Kjopspris*(1-BoligAndel*{soldfrac(c)})") if B else (lambda c, i: "=-AMpct*Kjopspris")); r += 1
     R_["tf"] = r; tsrow(ws, r, "Teknisk forvaltning", lambda c, i: f"=-TFkr*{idxm(c)}"); r += 1
     R_["ff"] = r; tsrow(ws, r, "Forretningsførsel", lambda c, i: f"=-{c}{R_['net']}*FFpct"); r += 1
     R_["ebitda"] = r; tsrow(ws, r, "EBITDA", lambda c, i: f"={c}{R_['noi']}+{c}{R_['am']}+{c}{R_['tf']}+{c}{R_['ff']}", bold=True); total_row(ws, r, "B", "O"); r += 1
@@ -59,7 +59,7 @@ def write_block(ws, top, scen, cpi, title):
             terms.append(f"IF(YEAR(EDATE({exp},{vac}))={c}$6,-{cap}*{area}*{idxm(c)},0)")
         return "=" + "+".join(terms)
     R_["relet"] = r; tsrow(ws, r, "Capex ved re-letting", relet); r += 1
-    R_["lek"] = r; tsrow(ws, r, "Capex-lekkasje", lambda c, i: f"=-{c}{R_['net']}*CapexLek"); r += 1
+    R_["lek"] = r; tsrow(ws, r, "Capex-lekkasje" + (" (ikke i RREF)" if REFP else ""), lambda c, i: f"=-{c}{R_['net']}*CapexLek"); r += 1
     R_["opp"] = r; tsrow(ws, r, "Oppussing boligdel (seksjonssalg)", (lambda c, i: f"=IF(YEAR(OKUtlop)={c}$6,-OppussNom,0)") if B else 0); r += 1
     R_["seks"] = r; tsrow(ws, r, "Netto proveny seksjonssalg (etter skatt)", (lambda c, i: f"=IF(YEAR(SalgDato)={c}$6,SeksjonProveny,0)") if B else 0); r += 1
     subhead(ws, r, "Finansiering og skatt"); r += 1
@@ -106,6 +106,7 @@ R["A"], R["B"] = A, Bk
 # fill Overview formulas that needed CF rows
 ov[f"C{R['ov_entry']}"] = f"=CF!E{A['noi']}/Kjopspris"
 ov[f"C{R['ov_andel']}"] = f"=CF!E{A['rrnoib']}/CF!E{A['rrnoi']}"
+ov[f"C{R['ov_eierkvm']}"] = f"=-CF!E{A['eier']}/ArealTot"
 
 # ---- Tax accounts running tax rows
 tsrow(tx, 19, "Skattemessig resultat – A", lambda c, i: f"=CF!{c}{A['str']}", kind="link")
@@ -311,7 +312,7 @@ for k in range(1, 11): put(rt, f"{get_column_letter(3+k)}57", f"=DATE(YEAR(Start
 for n, ((sc, yn), c) in enumerate(zip(cases, CC)):
     r = 58 + n
     put(rt, f"B{r}", f'="{labels[n]} ("&{c}8&" år)"', "label", align="left")
-    put(rt, f"C{r}", "=-(Kjopspris-SkatteulempeInn+DDSPA+WC+Megler)", "calc", F_NOK)
+    put(rt, f"C{r}", "=-(Kjopesum+DDSPA+WC+Megler+KjopsHon)", "calc", F_NOK)
     ur = (A if sc == "A" else Bk)["ucf"]
     for k in range(1, 11):
         col = get_column_letter(3 + k)
@@ -321,6 +322,46 @@ for n, c in enumerate(CC):
     put(rt, f"{c}64", f"=XIRR(C{58+n}:M{58+n},$C$57:$M$57)", "calc", F_PCT, bold=True)
     put(rt, f"{c}65", f"=SUM(D{58+n}:M{58+n})/-C{58+n}", "calc", F_X, bold=True)
 line_rows(rt, 57, 63, "B", "M"); total_row(rt, 64, "B", "H", PALEGRN); total_row(rt, 65, "B", "H", PALEGRN)
+
+# ---- Avkastningsbro (base case: A · lang, kolonne E i exit-analysen)
+section(rt, 67, "B", "H", "Avkastningsbro · base case (A · lang holdeperiode)")
+header_row(rt, 68, "B", "J", ["Komponent", "NOK", "Akk. start", "Akk. slutt", "Diagram: base", "Diagram: økning", "Diagram: reduksjon", "Diagram: total", "Diagram: etikett"], height=28)
+SHORT = ["Egenkapital", "Drift", "Renter", "Skatt", "Verdiendring", "Skatteulempe / just.", "Transaksjonskost", "Totalt til EK"]
+hold = lambda row: f"SUMPRODUCT((CF!$E$5:$O$5<=ExitLang)*CF!$E${row}:$O${row})"
+br = [("Egenkapital investert", "=Egenkapital", "T"),
+      ("Driftskontantstrøm (NOI − forvaltning − capex)", "=" + "+".join(hold(A[k]) for k in ["ebitda", "relet", "lek", "opp", "seks"]), "D"),
+      ("Renter (inkl. kapitalisert)", "=SUMPRODUCT((Financing!$E$5:$O$5<=ExitLang)*Financing!$E$26:$O$26)", "D"),
+      ("Løpende skatt", "=" + hold(A["skatt"]), "D"),
+      ("Verdiendring eiendom (exit-verdi − eiendomsverdi)", "=E15-Kjopspris", "D"),
+      ("Skatteulempe netto og kjøpesumsjusteringer", "=SkatteulempeInn+E19-JustKjopesum", "D"),
+      ("Transaksjonskostnader (kjøp og salg)", "=-(DDSPA+WC+Megler+KjopsHon+EtabKost*LaanT0)+E20", "D"),
+      ("Totalt utbetalt til egenkapital", None, "T")]
+for j, (lab, f, kind) in enumerate(br):
+    r = 69 + j
+    put(rt, f"B{r}", lab, "label", bold=(kind == "T")); put(rt, f"J{r}", SHORT[j], "text", align="right")
+    if j == len(br) - 1:
+        f = f"=SUM(C69:C{r-1})"
+    put(rt, f"C{r}", f, "calc", F_NOK, bold=(kind == "T"))
+    if kind == "T":
+        put(rt, f"D{r}", 0, "calc", F_NOK); put(rt, f"E{r}", f"=C{r}", "calc", F_NOK)
+        put(rt, f"F{r}", 0, "calc", F_NOK); put(rt, f"G{r}", 0, "calc", F_NOK); put(rt, f"H{r}", 0, "calc", F_NOK)
+        put(rt, f"I{r}", f"=C{r}", "calc", F_NOK)
+    else:
+        put(rt, f"D{r}", f"=E{r-1}", "calc", F_NOK); put(rt, f"E{r}", f"=D{r}+C{r}", "calc", F_NOK)
+        put(rt, f"F{r}", f"=MAX(0,MIN(D{r},E{r}))", "calc", F_NOK)
+        put(rt, f"G{r}", f"=MAX(0,C{r})", "calc", F_NOK); put(rt, f"H{r}", f"=MAX(0,-C{r})", "calc", F_NOK)
+        put(rt, f"I{r}", 0, "calc", F_NOK)
+for r in (69, 69 + len(br) - 1): total_row(rt, r, "B", "J", PALEGRN)
+line_rows(rt, 70, 69 + len(br) - 2, "B", "J")
+put(rt, "B78", "Kontroll: bro = total utbetalt til EK (Returns E26)", "note"); put(rt, "C78", "=C76-E26", "calc", '#,##0;(#,##0);"–"')
+put(rt, "B79", "Avdrag er nøytrale (betales løpende, gir tilsvarende lavere restgjeld ved exit) og vises derfor ikke.", "note")
+for r in range(69, 69 + len(br)):
+    rt[f"F{r}"].number_format = '#,##0.0,,"m";;;'
+    rt[f"G{r}"].number_format = '+#,##0.0,,"m";;;'
+    rt[f"H{r}"].number_format = '-#,##0.0,,"m";;;'
+    rt[f"I{r}"].number_format = '#,##0.0,,"m";;;'
+R["rt_bridge"] = (69, 69 + len(br) - 1)
+
 rt.freeze_panes = "C7"
 
 import pickle

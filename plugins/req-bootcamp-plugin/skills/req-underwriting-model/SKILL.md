@@ -27,8 +27,11 @@ House style helpers: `scripts/req_style.py`. Visual standard in detail: `referen
 | Holdeperioder | 3 / 5 / 10 år | Typisk 3 / 5 / 7 år (bekreft per case) |
 | Sammendrag | Deck-KPI-er (yield, WAULT, CoC, DPI) | Samme + finansiering (bank- og total-LTV, all-in rente, ICR/DSCR, debt yield, gjeld ved exit), reversionary yield, yield on cost, økonomisk ledighet |
 | Exit yield | = inngangsyield | Stabilisert NOI; Δ vs. inngang som eget input med begrunnelse |
+| Kjøpshonorar REQ | 1 % av eiendomsverdi iht. mandat (eget input, inngår i EK) | Ingen |
+| AM-kostnad | % av kjøpspris p.a. | **Ingen** – honorar tas på fondsnivå (SHA 14.3); input 0, linjen merkes «ikke i RREF» |
+| Capex-lekkasje | % av leie (deck: 3–5 %) | **Ingen** – capex modelleres eksplisitt (re-letting, rehab); input 0 |
 
-Everything else in this skill applies to both profiles.
+REIF = REQ Evergreen Income Fund · RREF = REQ Real Estate Fund I/II. Everything else in this skill applies to both profiles.
 
 ## Workbook structure (tab order)
 
@@ -55,8 +58,20 @@ Every input row on Overview carries: value (blue font, pale-blue fill), unit, **
 fond, prosjektstart/verdidato (t0), holdeperioder (standard 3 / 5 / 10 år; base case = 10).
 
 **Kjøp**: **Kjøpspris (bud) is its own input and drives equity** — our bottom-up valuation is
-*verdistøtte*, never the price basis unless the user says so. DD/SPA, working capital, megler.
-Equity = kjøpspris − skatteulempe + transaksjonskostnader − lån (show as Kilder og anvendelse).
+*verdistøtte*, never the price basis unless the user says so. Inputs: DD/SPA, working capital,
+megler, øvrige tillegg/(fradrag) i kjøpesum (`JustKjopesum`, e.g. leierabatter gjort opp i
+kjøpesum, prisavslag, netto arbeidskapital; negative = fradrag) and – REIF only – kjøpshonorar
+REQ iht. mandat (`KjopsHonPct`, 1 % av eiendomsverdi, eks. mva).
+
+**Kjøpesumsberegning (both profiles, always)** – own section «2b · Kjøpesum og egenkapital (t0)»
+on Overview directly under the purchase inputs, **one line per tillegg/fradrag**, and the same
+block on Sammendrag (right third of the chart row):
+Eiendomsverdi (GAV) − skatteulempe ± øvrige tillegg/(fradrag) = **Kjøpesum** (aksjeoppgjør, før
+gjeld og kontanter) + DD/SPA + megler + working capital + kjøpshonorar (REIF) + etableringskost
+lån = **Total investering** − banklån − selgerkreditt = **Egenkapital**. Show also «Netto
+tillegg/(fradrag) vs. eiendomsverdi» (NOK and %). Defined names: `Kjopesum`, `KjopsHon`,
+`TotInv`, `Egenkapital`. Every equity/t0 formula elsewhere (ubelånt avkastning, Sens-motor
+price/LTV grids) must use the same items – kjøpshonorar scales with price in the price grid.
 
 **Skatt**
 - Skatteulempe = sats (typ. 10 %) × (GAV − (saldo + tomteverdi)), tomteverdi = % av GAV (typ. 20 %).
@@ -80,11 +95,13 @@ Global: KPI-steg basisår → år 1 (actual, per tenant KPI-andel), KPI p.a., **
 ledighet % fra år X**, ledig areal i dag.
 
 **Drift og forvaltning**
-- **Eierkost** = 5 % av leie (label exactly "Eierkost"); eiendomsskatt separate, on top.
-- **Forvaltningskostnader – three named lines below NOI**: AM-kostnad (% av kjøpspris),
+- **Eierkost** = 5 % av leie (label exactly "Eierkost"); eiendomsskatt separate, on top. Always
+  also show **eierkost år 1 i NOK/kvm** (info row on Overview + in the Sammendrag assumptions)
+  so the % can be sanity-checked against market levels.
+- **Forvaltningskostnader – named lines below NOI**: AM-kostnad (% av kjøpspris – REIF only),
   teknisk forvaltning (NOK p.a., KPI), forretningsførsel (% av leie).
-- **Capex-lekkasje** % av leie (REQ deck standard 5 %), plus capex ved re-letting (kr/kvm × areal,
-  in the re-let year). Both below EBITDA — cash flow, not valuation.
+- **Capex-lekkasje** % av leie (REIF only, deck standard 3–5 %), plus capex ved re-letting
+  (kr/kvm × areal, in the re-let year; both profiles). Below EBITDA — cash flow, not valuation.
 - Renteinntekt på kontantbeholdning (innskuddsrente × snitt kontant) if cash is retained in the SPV.
 
 **Exit**: exit yield = inngangsyield (NOI år 1 / kjøpspris) + Δ input (default 0 bp, as in deck);
@@ -133,6 +150,17 @@ Sammendrag content list in the visual standard.
 11. **Utbyttefordeling**: gross deal returns vs. net investor returns after management fee and
    carried interest per SHA 10.2 (8 % pref, catch-up, 80/20); JV promote only with a partner.
 
+12. **Avkastningsbro (return bridge), both profiles – required for RREF.** Base case (scenario A,
+   lang holdeperiode), from equity invested to total distributed:
+   Egenkapital → + driftskontantstrøm (Σ EBITDA + capex-linjer + seksjonsproveny) → − renter
+   (Σ rentekostnad inkl. kapitalisert PIK) → − løpende skatt → ± verdiendring (brutto exit-verdi −
+   eiendomsverdi) → ± skatteulempe netto og kjøpesumsjusteringer (skatteulempe inn − skatteulempe
+   exit − øvrige tillegg/fradrag) → − transaksjonskostnader (kjøp inkl. kjøpshonorar og
+   etablering + divestment) → **Totalt utbetalt til EK**. Avdrag are neutral (lower restgjeld at
+   exit) and are not a bar. Model check: bridge total = total utbetalt (exact). Chart = stacked
+   column waterfall (invisible base, totals navy, økning bright blue, reduksjon red) built from
+   helper columns on Returns whose cell formats drive the labels (`+#,##0.0,,"m";;;`).
+
 ## Sensitivities
 
 Minimum grids (5×5, base in centre, steps as inputs): IRR KPI × exit yield (deck standard),
@@ -149,7 +177,8 @@ amortisation recomputed per cell), plus value-add grids in `references/value-add
 Kilder = anvendelse · brutto leie år 1 = rent roll × KPI-steg · A = B før utløp · utløpsprofil
 = total leie · leieandeler = 100 % · each sensitivity grid centre = Returns. Belånt adds: all
 debt repaid at exit · no negative cash (udekket finansieringsbehov) · covenants per year
-(LTV, ICR) · waterfall: net investor + carry + fee = gross distributions. Status cells with
+(LTV, ICR) · waterfall: net investor + carry + fee = gross distributions. Always: avkastningsbro =
+total utbetalt til EK · kjøpesum + tillegg/fradrag = total investering. Status cells with
 OK/SJEKK conditional format; overall `ModellOK` shown in the Sammendrag footer.
 
 ## Build & QA workflow

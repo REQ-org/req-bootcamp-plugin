@@ -22,16 +22,21 @@ TT Hoves Pro (body). Helpers in `scripts/req_style.py`.
    WAULT inkl. opsjoner.
 3. Left: base case 10 år (IRR, MoE, gevinst tiles; CoC 3/5/10; DPI 3/5/10).
    Right: returns table per holdeperiode × scenario (exit-verdi, IRR, MoE) + methodology note.
-4. Chart row, three equal charts in separate column ranges: IRR per holdeperiode, MoE per
-   holdeperiode (clustered columns: categories = holdeperiode, one series per scenario,
-   data labels inside end in white), utløpsprofil % av leie (uten/inkl. opsjoner).
-5. Left: IRR sensitivity KPI × exit yield (heatmap, base cell boxed). Right: leietakermiks
+4. Chart row (B–G | H–M | N–S): IRR per holdeperiode (clustered columns, one series per
+   scenario, labels inside end in white) | utløpsprofil % av leie (uten/inkl. opsjoner) |
+   **Kjøpesum og egenkapital** table (eiendomsverdi → hvert tillegg/fradrag → kjøpesum →
+   transaksjonskostnader inkl. kjøpshonorar (REIF) / etablering (RREF) → total investering →
+   lån → egenkapital, + netto tillegg/fradrag i NOK og %). MoE is in the returns table, not a chart.
+5. **Avkastningsbro**: left (B–J) waterfall chart, right (L–S) the same components in NOK and
+   × EK, with a note that avdrag are neutral.
+6. Left: IRR sensitivity KPI × exit yield (heatmap, base cell boxed). Right: leietakermiks
    (leie, andel, kategori, utløp, sum + WAULT).
-6. Left: forutsetninger as live bullet formulas. Right: verdistøtte og residualrisiko
-   (kjøpspris, verdi øvrige blokker, implisitt verdi/pris per kvm, markedspris, rabatt,
-   netto residual, dekning, kjøpspris vs. bottom-up).
-7. Avstemming mot pipeline deck (modell, deck, avvik, kommentar) and footer with model-check
-   status and sources.
+7. Left: forutsetninger as live bullet formulas (incl. eierkost % and NOK/kvm). Right:
+   verdistøtte og residualrisiko (kjøpspris, verdi øvrige blokker, implisitt verdi/pris per kvm,
+   markedspris, rabatt, netto residual, dekning, kjøpspris vs. bottom-up).
+8. REIF: avstemming mot pipeline deck (modell, deck, avvik, kommentar). RREF: avkastningsnivåer
+   (ubelånt → belånt → etter honorar → netto investor) og finansiering/covenants. Footer with
+   model-check status and sources.
 
 ## Charts
 - Native openpyxl charts only (copyable into PowerPoint), placed with **TwoCellAnchor** spanning

@@ -1,4 +1,5 @@
 from build_part3 import *
+from build_part3 import _txt
 
 sd = S["Sammendrag"]
 COLS = [get_column_letter(ci("B") + k) for k in range(18)]   # B..S
@@ -108,31 +109,97 @@ txt("L", 17, "S", (("Belånt brutto IRR på EK (før fondets honorar og carry), 
                    "Scenario B, exit før utløp: kjøper priser boligdelen til laveste av leieverdi og residual etter gevinstskatt (nedside). "
                    "Etter utløp: seksjoner selges med gevinstskatt; næringsdel selges som aksjeselskap."), size=7.5, color=GREYTXT, r2=19, wrap=True, italic=True, valign="top")
 
-# ---- charts row
+# ---- charts row: IRR | utløpsprofil | kjøpesum og egenkapital
 sd.row_dimensions[20].height = 10
 sec("B", "G", 21, "IRR per holdeperiode")
-sec("H", "M", 21, "Equity multiple per holdeperiode")
-sec("N", "S", 21, "Utløpsprofil · % av leie")
+sec("H", "M", 21, "Utløpsprofil · % av leie")
+sec("N", "S", 21, "Kjøpesum og egenkapital (NOK)")
 cats = Reference(rt, min_col=2, min_row=51, max_row=53)
 bar(sd, cats, [(Reference(rt, min_col=3, min_row=51, max_row=53), "A · re-leie", DEEP),
                (Reference(rt, min_col=4, min_row=51, max_row=53), "B · seksjonssalg", BRIGHT)], '0.0%', ("B", 22, "G", 35))
-bar(sd, cats, [(Reference(rt, min_col=5, min_row=51, max_row=53), "A · re-leie", DEEP),
-               (Reference(rt, min_col=6, min_row=51, max_row=53), "B · seksjonssalg", BRIGHT)], '0.00"x"', ("H", 22, "M", 35))
 bar(sd, Reference(rr, min_col=2, min_row=E0, max_row=E1),
     [(Reference(rr, min_col=4, min_row=E0, max_row=E1), "Uten opsjon", DEEP),
-     (Reference(rr, min_col=7, min_row=E0, max_row=E1), "Inkl. opsjoner", BRIGHT)], '0%', ("N", 22, "S", 35), gap=40, labels=False)
+     (Reference(rr, min_col=7, min_row=E0, max_row=E1), "Inkl. opsjoner", BRIGHT)], '0%', ("H", 22, "M", 35), gap=40, labels=False)
+MN = '#,##0.0,,"m";(#,##0.0,,"m");"–"'
+for c in "NOPQRS": sd[f"{c}22"].fill = fill(DEEP)
+txt("N", 22, "R", "Post", size=8, bold=True, color=WHITE)
+txt("S", 22, "S", "NOK", size=8, bold=True, color=WHITE, align="right")
+kj = [("Eiendomsverdi (GAV)", "=Kjopspris", 0), ("− Skatteulempe (latent skatt)", "=-SkatteulempeInn", 0),
+      ("± Øvrige tillegg / (fradrag)", "=JustKjopesum", 0), ("Kjøpesum (aksjeoppgjør)", "=Kjopesum", 1),
+      ("+ DD / SPA", "=DDSPA", 0), ("+ Megler / working capital", "=Megler+WC", 0)]
+kj += ([("+ Etableringskost lån", "=EtabKost*LaanT0", 0)] if REFP else [("+ Kjøpshonorar REQ (mandat)", "=KjopsHon", 0)])
+kj += [("Total investering", "=TotInv", 1)]
+kj += ([("− Banklån og selgerkreditt", "=-(LaanT0+SKBelop)", 0)] if REFP else [])
+kj += [("Egenkapital", "=Egenkapital", 2)]
+for n, (lab, f, kind) in enumerate(kj):
+    rr_ = 23 + n
+    txt("N", rr_, "R", lab, size=8.5, bold=kind > 0)
+    txt("S", rr_, "S", f, size=9, fmt=MN, align="right", bold=kind > 0, color=NAVY if kind else TXT)
+    for c in "NOPQRS":
+        sd[f"{c}{rr_}"].border = Border(bottom=THIN)
+        if kind == 1: sd[f"{c}{rr_}"].fill = fill(PALE); sd[f"{c}{rr_}"].border = Border(top=NAVYLINE, bottom=NAVYLINE)
+        if kind == 2: sd[f"{c}{rr_}"].fill = fill(PALEGRN); sd[f"{c}{rr_}"].border = Border(top=NAVYLINE, bottom=NAVYLINE)
+rr_ = 23 + len(kj)
+txt("N", rr_, "S", '="Netto tillegg/(fradrag) vs. eiendomsverdi: "&FIXED((TotInv-Kjopspris)/1000000,1)&" MNOK ("&FIXED((TotInv/Kjopspris-1)*100,1)&" %)"',
+    size=7.5, color=GREYTXT, italic=True, r2=rr_ + 1, wrap=True, valign="top")
 sd.row_dimensions[36].height = 10
 
+# ---- return bridge (waterfall) + table
+from openpyxl.chart import BarChart as _BC, Series as _S
+sec("B", "J", 37, f"Avkastningsbro · base case ({LANG} år, scenario A)")
+sec("L", "S", 37, "Fra egenkapital til utbetalt (NOK)")
+b0, b1 = R["rt_bridge"]
+wc = _BC(); wc.type = "col"; wc.grouping = "stacked"; wc.overlap = 100; wc.gapWidth = 45; wc.style = 2
+for col, title, color, nf in [(6, "Base", None, None), (9, "Total", NAVY, '#,##0.0,,"m";;;'),
+                              (7, "Økning", BRIGHT, '+#,##0.0,,"m";;;'), (8, "Reduksjon", "D64545", '-#,##0.0,,"m";;;')]:
+    s_ = _S(Reference(rt, min_col=col, min_row=b0, max_row=b1), title=title)
+    if color is None:
+        s_.graphicalProperties.noFill = True; s_.graphicalProperties.line.noFill = True
+    else:
+        s_.graphicalProperties.solidFill = color; s_.graphicalProperties.line.noFill = True
+        s_.dLbls = DataLabelList(); s_.dLbls.showVal = True
+        s_.dLbls.showSerName = s_.dLbls.showCatName = s_.dLbls.showLegendKey = False
+        s_.dLbls.numFmt = nf; s_.dLbls.position = "inEnd"
+        s_.dLbls.txPr = _txt(750, "FFFFFF" if color != BRIGHT else NAVY, True)
+    wc.series.append(s_)
+wc.set_categories(Reference(rt, min_col=10, min_row=b0, max_row=b1))
+wc.legend = None; wc.title = None
+wc.y_axis.numFmt = '#,##0,,"m"'; wc.y_axis.scaling.min = 0
+wc.y_axis.majorGridlines.spPr = GraphicalProperties(ln=LineProperties(solidFill="E6E6E6"))
+wc.y_axis.spPr = GraphicalProperties(ln=LineProperties(noFill=True))
+wc.x_axis.spPr = GraphicalProperties(ln=LineProperties(solidFill="BFBFBF"))
+wc.x_axis.delete = False; wc.y_axis.delete = False
+wc.x_axis.txPr = _txt(750); wc.y_axis.txPr = _txt(750, "7F7F7F")
+wc.x_axis.majorTickMark = "none"; wc.y_axis.majorTickMark = "none"
+anchor(wc, "B", 38, "J", 51)
+sd.add_chart(wc)
+for c in "LMNOPQRS": sd[f"{c}38"].fill = fill(DEEP)
+txt("L", 38, "P", "Komponent", size=8, bold=True, color=WHITE)
+txt("Q", 38, "R", "NOK", size=8, bold=True, color=WHITE, align="right")
+txt("S", 38, "S", "x EK", size=8, bold=True, color=WHITE, align="right")
+for n in range(b1 - b0 + 1):
+    rr_ = 39 + n; src = b0 + n; tot = n in (0, b1 - b0)
+    sd.row_dimensions[rr_].height = 17
+    txt("L", rr_, "P", f"=Returns!B{src}", size=8.5, bold=tot)
+    txt("Q", rr_, "R", f"=Returns!C{src}", size=9, fmt=MN, align="right", bold=tot, color=NAVY if tot else TXT)
+    txt("S", rr_, "S", f"=Returns!C{src}/Egenkapital", size=9, fmt='0.00"x";(0.00"x");"–"', align="right", bold=tot)
+    for c in "LMNOPQRS":
+        sd[f"{c}{rr_}"].border = Border(bottom=THIN)
+        if tot: sd[f"{c}{rr_}"].fill = fill(PALEGRN); sd[f"{c}{rr_}"].border = Border(top=NAVYLINE, bottom=NAVYLINE)
+txt("L", 48, "S", "Avdrag er nøytrale (løpende nedbetaling gir tilsvarende lavere restgjeld ved exit). Gevinst = total utbetalt − egenkapital = MoE − 1 × EK.",
+    size=7.5, color=GREYTXT, italic=True, r2=50, wrap=True, valign="top")
+sd.row_dimensions[52].height = 10
+
 # ---- sensitivity (left) and tenant mix (right)
-sec("B", "J", 37, f"Sensitivitet · IRR {LANG} år (A) · KPI × exit yield")
-sec("L", "S", 37, "Leietakermiks")
+sec("B", "J", 53, f"Sensitivitet · IRR {LANG} år (A) · KPI × exit yield")
+sec("L", "S", 53, "Leietakermiks")
 g1, _ = SG[1]
-for c in "BCDEFGH": sd[f"{c}38"].fill = fill(DEEP)
-txt("B", 38, "C", "KPI \\ exit yield", size=8, bold=True, color=WHITE, align="center")
+for c in "BCDEFGH": sd[f"{c}54"].fill = fill(DEEP)
+txt("B", 54, "C", "KPI \\ exit yield", size=8, bold=True, color=WHITE, align="center")
 for j, col in enumerate("DEFGH"):
-    txt(col, 38, col, f"=Sensitivities!{get_column_letter(3+j)}16", size=8, bold=True, color=WHITE, align="center", fmt='0.00%')
+    txt(col, 54, col, f"=Sensitivities!{get_column_letter(3+j)}16", size=8, bold=True, color=WHITE, align="center", fmt='0.00%')
 for i in range(5):
-    rr_ = 39 + i
+    rr_ = 55 + i
     sd.row_dimensions[rr_].height = 17
     c = txt("B", rr_, "C", f"=Sensitivities!B{17+i}", size=8.5, bold=True, color=WHITE, align="center", fmt='0.0%')
     sd[f"B{rr_}"].fill = fill(DEEP); sd[f"C{rr_}"].fill = fill(DEEP)
@@ -140,44 +207,45 @@ for i in range(5):
         cell = txt(col, rr_, col, f"={g1[(i, j)].replace('C', 'Sensitivities!C', 0) if False else 'Sensitivities!' + g1[(i, j)]}",
                    size=9, align="center", fmt='0.0%', bold=(i == 2 and j == 2), color=NAVY if (i == 2 and j == 2) else TXT)
         cell.border = Border(bottom=THIN)
-sd["F41"].border = Border(left=Side(style="medium", color=NAVY), right=Side(style="medium", color=NAVY),
+sd["F57"].border = Border(left=Side(style="medium", color=NAVY), right=Side(style="medium", color=NAVY),
                           top=Side(style="medium", color=NAVY), bottom=Side(style="medium", color=NAVY))
-sd.conditional_formatting.add("D39:H43", ColorScaleRule(start_type="min", start_color="FFFFFF", end_type="max", end_color="7FCBFF"))
-txt("I", 39, "J", "Base case uthevet. Full omregning per celle – se Sensitivities for pris-, boligpris/capex- og MoE-grid.",
-    size=7.5, color=GREYTXT, r2=43, wrap=True, italic=True, valign="top")
+sd.conditional_formatting.add("D55:H59", ColorScaleRule(start_type="min", start_color="FFFFFF", end_type="max", end_color="7FCBFF"))
+txt("I", 55, "J", "Base case uthevet. Full omregning per celle – se Sensitivities for pris-, boligpris/capex- og MoE-grid.",
+    size=7.5, color=GREYTXT, r2=59, wrap=True, italic=True, valign="top")
 
-for c in "LMNOPQRS": sd[f"{c}38"].fill = fill(DEEP)
+for c in "LMNOPQRS": sd[f"{c}54"].fill = fill(DEEP)
 for c1, c2, v, al in [("L", "N", "Leietaker", "left"), ("O", "O", "Kategori", "center"), ("P", "P", "Leie 2026", "center"),
                       ("Q", "Q", "Andel", "center"), ("R", "S", "Kontraktsutløp", "center")]:
-    txt(c1, 38, c2, v, size=8, bold=True, color=WHITE, align=al)
+    txt(c1, 54, c2, v, size=8, bold=True, color=WHITE, align=al)
 mix = [("Oslo kommune", "='Rent roll'!D11", "='Rent roll'!F11", "='Rent roll'!I11"),
        ("Rema 1000 (butikk + garasje)", "='Rent roll'!D7", "='Rent roll'!F7+'Rent roll'!F8", "='Rent roll'!I7"),
        ("Telenor Norge AS", "='Rent roll'!D9", "='Rent roll'!F9", "='Rent roll'!I9"),
        ("Telia Norge AS", "='Rent roll'!D10", "='Rent roll'!F10", "='Rent roll'!I10")]
 for n, (lab, cat, rent, exp) in enumerate(mix):
-    rr_ = 39 + n
+    rr_ = 55 + n
     txt("L", rr_, "N", lab, size=9, bold=True)
     txt("O", rr_, "O", cat, size=8.5, align="center")
     txt("P", rr_, "P", rent, size=9, fmt='#,##0.00,,"m"', align="center")
     txt("Q", rr_, "Q", f"=P{rr_}/Leie2026", size=9, fmt='0.0%', align="center", bold=True, color=NAVY)
     txt("R", rr_, "S", exp, size=9, fmt='mmm yyyy', align="center")
     for c in "LMNOPQRS": sd[f"{c}{rr_}"].border = Border(bottom=THIN)
-txt("L", 43, "N", "Sum", size=9, bold=True)
-txt("P", 43, "P", "=Leie2026", size=9, fmt='#,##0.00,,"m"', align="center", bold=True)
-txt("Q", 43, "Q", "=SUM(Q39:Q42)", size=9, fmt='0.0%', align="center", bold=True)
-txt("R", 43, "S", '="WAULT "&FIXED(WAULT,1)&" år"', size=8.5, align="center")
+txt("L", 59, "N", "Sum", size=9, bold=True)
+txt("P", 59, "P", "=Leie2026", size=9, fmt='#,##0.00,,"m"', align="center", bold=True)
+txt("Q", 59, "Q", "=SUM(Q55:Q58)", size=9, fmt='0.0%', align="center", bold=True)
+txt("R", 59, "S", '="WAULT "&FIXED(WAULT,1)&" år"', size=8.5, align="center")
 for c in "LMNOPQRS":
-    sd[f"{c}43"].fill = fill(PALE); sd[f"{c}43"].border = Border(top=NAVYLINE, bottom=NAVYLINE)
-sd.row_dimensions[44].height = 10
+    sd[f"{c}59"].fill = fill(PALE); sd[f"{c}59"].border = Border(top=NAVYLINE, bottom=NAVYLINE)
+sd.row_dimensions[60].height = 10
 
 # ---- assumptions (left) and value support (right)
-sec("B", "J", 45, "Forutsetninger · base case")
-sec("L", "S", 45, "Verdistøtte og residualrisiko")
+sec("B", "J", 61, "Forutsetninger · base case")
+sec("L", "S", 61, "Verdistøtte og residualrisiko")
 bul = [
-    '="Kjøp "&FIXED(Kjopspris/1000000,0)&" MNOK (oppdatert bud-nivå) 1.1."&YEAR(Start)&" · "&IF(LTV=0,"ubelånt","LTV "&FIXED(LTV*100,0)&" %")&" · løpende skatt "&FIXED(SkattLop*100,0)&" %."',
+    '="Eiendomsverdi "&FIXED(Kjopspris/1000000,0)&" MNOK 1.1."&YEAR(Start)&" · total investering "&FIXED(TotInv/1000000,1)&" MNOK"&IF(KjopsHon>0," inkl. kjøpshonorar "&FIXED(KjopsHonPct*100,1)&" %","")&" · "&IF(LTV=0,"ubelånt","LTV "&FIXED(LTV*100,0)&" %")&" · løpende skatt "&FIXED(SkattLop*100,0)&" %."',
     '="KPI "&FIXED(KPI*100,1)&" % p.a. (Rema 80 %, øvrige 100 %) · 2026→27: "&FIXED(KPIstart*100,1)&" %."',
-    '="Eierkost "&FIXED(Eierkost*100,1)&" % av leie + eiendomsskatt · forvaltning (AM, TF, FF) "&FIXED(-(CF!E' + str(A['am']) + '+CF!E' + str(A['tf']) + '+CF!E' + str(A['ff']) + ')/1000,0)&" TNOK år 1."',
-    '="Strukturell ledighet "&FIXED(StruktLed*100,1)&" % fra år "&StruktFra&" · capex-lekkasje "&FIXED(CapexLek*100,1)&" % av leie."',
+    ('="Eierkost "&FIXED(Eierkost*100,1)&" % av leie ("&FIXED(EierkostKvm,0)&" kr/kvm år 1) + eiendomsskatt · forvaltning ' + ('(TF, FF; ingen AM i RREF) ' if REFP else '(AM, TF, FF) ') + '"&FIXED(-(CF!E' + str(A['am']) + '+CF!E' + str(A['tf']) + '+CF!E' + str(A['ff']) + ')/1000,0)&" TNOK år 1."'),
+    ('="Strukturell ledighet "&FIXED(StruktLed*100,1)&" % fra år "&StruktFra&" · ingen capex-lekkasje i RREF (capex modelleres eksplisitt)."' if REFP else
+     '="Strukturell ledighet "&FIXED(StruktLed*100,1)&" % fra år "&StruktFra&" · capex-lekkasje "&FIXED(CapexLek*100,1)&" % av leie."'),
     '="Exit yield "&FIXED(ExitYield*100,2)&" % (= inngangsyield"&IF(ExitDelta=0,")"," + "&FIXED(ExitDelta*10000,0)&" bp)")&" på annualisert NOI år N+1 · divestment "&FIXED(Divest*100,2)&" %."',
     '="Oslo kommune utløper "&YEAR(OKUtlop)&" uten gjenværende opsjon · A: re-leie på markedsleie etter "&\'Rent roll\'!P11&" mnd ledighet."',
     '="B: seksjonssalg "&YEAR(SalgDato)&" à "&FIXED(EgenKvm,0)&" kr/kvm, oppussing "&FIXED(CapexKvm,0)&" kr/kvm, gevinstskatt "&FIXED(SkattSeksjon*100,0)&" %."',
@@ -186,7 +254,7 @@ bul = [
     '="Gule celler i Overview er foreløpige (transaksjonskost, forvaltning, boligpris, capex) – se Modellkontroller: "&ModellOK&"."'),
 ]
 for n, f in enumerate(bul):
-    rr_ = 46 + n
+    rr_ = 62 + n
     sd.row_dimensions[rr_].height = 16
     c = txt("B", rr_, "J", f, size=8.5)
     txt("B", rr_, "B", None) if False else None
@@ -201,20 +269,20 @@ vs = [("Kjøpspris", "=Kjopspris", '#,##0.0,,"m"', False),
       ("Residual i % av implisitt boligverdi", "=Dekning", '0%', True),
       ("Kjøpspris vs. bottom-up verdi", "=Kjopspris/VerdiBottomUp-1", '0.0%', False)]
 for n, (lab, f, fmt, b) in enumerate(vs):
-    rr_ = 46 + n
+    rr_ = 62 + n
     txt("L", rr_, "Q", lab, size=8.5, bold=b)
     txt("R", rr_, "S", f, size=9, fmt=fmt, align="right", bold=b, color=NAVY if b else TXT)
     for col in "LMNOPQRS": sd[f"{col}{rr_}"].border = Border(bottom=THIN)
-sd["R47"].value = "=VerdiNaering"   # VerdiNaering is stored negative on Boligverdi
-sd.row_dimensions[55].height = 10
+sd["R63"].value = "=VerdiNaering"   # VerdiNaering is stored negative on Boligverdi
+sd.row_dimensions[71].height = 10
 
 # ---- reconciliation vs pipeline deck (EIF) / return bridge (REF)
 if REFP:
-    sec("B", "S", 56, f"Avkastningsbro og finansiering · base case ({LANG} år, scenario A)")
-    for c in COLS: sd[f"{c}57"].fill = fill(DEEP)
+    sec("B", "S", 72, f"Avkastningsnivåer og finansiering · base case ({LANG} år, scenario A)")
+    for c in COLS: sd[f"{c}73"].fill = fill(DEEP)
     for c1, c2, v, al in [("B", "E", "Nivå / nøkkeltall", "left"), ("F", "G", "IRR / verdi", "center"), ("H", "I", "MoE / krav", "center"),
                           ("J", "K", "Status", "center"), ("L", "S", "Kommentar", "left")]:
-        txt(c1, 57, c2, v, size=8, bold=True, color=WHITE, align=al)
+        txt(c1, 73, c2, v, size=8, bold=True, color=WHITE, align=al)
     rec = [("Ubelånt (eiendomsnivå)", "=Returns!E64", "=Returns!E65", None, '0.0%', '0.00"x"', "Før finansiering, skatt uten rentefradrag"),
            ("Belånt brutto (deal)", "=Returns!E28", "=Returns!E29", None, '0.0%', '0.00"x"', "Etter renter, avdrag og 22 % skatt"),
            ("Etter forvaltningshonorar", "=Utbyttefordeling!E9", None, None, '0.0%', '0.00"x"', "1,6 % p.a. av investert EK"),
@@ -226,7 +294,7 @@ if REFP:
            ("Gjeld ved exit", "=GjeldExit", None, None, '#,##0.0,,"m"', None, "Innfris fra exit-proveny"),
            ("Covenant-brudd (antall)", "=CovBrudd", None, '=IF(CovBrudd=0,"OK","BRUDD")', '0', None, "Se Financing · rad 36–37")]
     for n, (lab, f1, f2, st, fm1, fm2, com) in enumerate(rec):
-        rr_ = 58 + n
+        rr_ = 74 + n
         sd.row_dimensions[rr_].height = 16
         txt("B", rr_, "E", lab, size=8.5, bold=True)
         txt("F", rr_, "G", f1, size=9, fmt=fm1, align="center", color=NAVY, bold=True)
@@ -234,14 +302,14 @@ if REFP:
         txt("J", rr_, "K", st, size=9, align="center", bold=True)
         txt("L", rr_, "S", com, size=7.5, color=GREYTXT, italic=True)
         for col in COLS: sd[f"{col}{rr_}"].border = Border(bottom=THIN)
-    sd.conditional_formatting.add("J58:K67", CellIsRule(operator="equal", formula=['"BRUDD"'], font=Font(color="C00000", bold=True)))
-    sd.conditional_formatting.add("J58:K67", CellIsRule(operator="equal", formula=['"OK"'], font=Font(color="1E7B34", bold=True)))
+    sd.conditional_formatting.add("J74:K83", CellIsRule(operator="equal", formula=['"BRUDD"'], font=Font(color="C00000", bold=True)))
+    sd.conditional_formatting.add("J74:K83", CellIsRule(operator="equal", formula=['"OK"'], font=Font(color="1E7B34", bold=True)))
 else:
-    sec("B", "S", 56, "Avstemming mot pipeline deck (17.09.2026)")
-    for c in COLS: sd[f"{c}57"].fill = fill(DEEP)
+    sec("B", "S", 72, "Avstemming mot pipeline deck (17.09.2026)")
+    for c in COLS: sd[f"{c}73"].fill = fill(DEEP)
     for c1, c2, v, al in [("B", "E", "Nøkkeltall", "left"), ("F", "G", "Modell", "center"), ("H", "I", "Deck", "center"),
                           ("J", "K", "Avvik", "center"), ("L", "S", "Kommentar", "left")]:
-        txt(c1, 57, c2, v, size=8, bold=True, color=WHITE, align=al)
+        txt(c1, 73, c2, v, size=8, bold=True, color=WHITE, align=al)
     rec = [("Kjøpspris", "=Kjopspris", 130_000_000, '#,##0.0,,"m"', "Oppdatert bud-nivå"),
            ("Netto yield på kjøp", "=EntryYield", 0.058, '0.00%', "Deck: leie − eierkost (ekskl. eiendomsskatt). Modell: NOI etter eiendomsskatt."),
            ("WAULT", "=WAULT", 8.9, '0.0" år"', "Modell: fra 01.01.2027, uten opsjoner"),
@@ -253,7 +321,7 @@ else:
            ("Cash-on-cash år 3 (A)", "=Returns!C44", 0.056, '0.0%', ""),
            ("DPI år 10 (A)", "=Returns!E45", 0.588, '0.0%', "")]
     for n, (lab, f, deck, fmt, com) in enumerate(rec):
-        rr_ = 58 + n
+        rr_ = 74 + n
         sd.row_dimensions[rr_].height = 16
         txt("B", rr_, "E", lab, size=8.5, bold=True)
         txt("F", rr_, "G", f, size=9, fmt=fmt, align="center", color=NAVY, bold=True)
@@ -263,7 +331,7 @@ else:
         for col in COLS: sd[f"{col}{rr_}"].border = Border(bottom=THIN)
 
 
-rr_ = 58 + len(rec) + 1
+rr_ = 74 + len(rec) + 1
 sd.row_dimensions[rr_].height = 18
 txt("B", rr_, "H", '="Modellkontroller: "&ModellOK', size=8.5, bold=True, color=DEEP)
 txt("I", rr_, "S", "Kilder: leietakeroversikt 2026, leiekontrakter, saldoskjema 31.12.2024, pipeline deck 17.09.2026, markedsdata Røa (se Boligverdi).",

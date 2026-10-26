@@ -26,9 +26,13 @@ cost × (1 − LTC), equity paid-in date. Monthly draw helper (EK først, derett
 at completion (optionally after lease-up months). If the property is bought vacant with a
 signed tenant (e.g. hotel), rent start = completion + any rent-free per lease.
 
+## Cost lines in RREF
+No AM-kostnad (fee is charged at fund level, SHA 14.3) and no capex-lekkasje (capex is explicit:
+TI/re-letting per unit and rehab/utvikling modules). Eierkost stays % av leie, shown also as NOK/kvm.
+
 ## Returns and KPIs for value-add
 Exit on **stabilised** annualised NOI (N+1). Exit yield may differ from entry yield — input
 Δ with rationale. Show: yield on cost (stabilised NOI / (kjøpspris + capex)), development
 margin / profit on cost, value-add bridge (kjøpspris → capex → verdiøkning → exit-verdi),
-peak equity and months to stabilisation. Sensitivities: markedsleie × ledighetsmåneder,
+peak equity and months to stabilisation. The avkastningsbro (SKILL.md rule 12) is required on Sammendrag. Sensitivities: markedsleie × ledighetsmåneder,
 kostnadsoverskridelse × exit yield, byggetid × markedsleie.

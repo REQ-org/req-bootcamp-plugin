@@ -129,7 +129,7 @@ for i in range(5):
         put(sm, f"C{r}", f"=Kjopspris+StegPris*({i}-2)", "calc", F_NOK); put(sm, f"D{r}", f"=ExitYield+StegYield*({j}-2)", "calc", F_PCT2)
         sc = f"IF(LTV=0,1,$C{r}/Kjopspris)"
         tf = lambda k: f"IF(INDEX(CF!$E${A['skatt']}:$O${A['skatt']},{k})<0,1-SkattLop,1)"
-        tl_row(r, lambda k, col: f"=-($C{r}-SUsats*MAX(0,$C{r}-SaldoBygg-SaldoTek-TomtPct*$C{r})+DDSPA+WC+Megler+(EtabKost-1)*LTV*$C{r}-SKBelop)" if k == 0 else
+        tl_row(r, lambda k, col: f"=-($C{r}-SUsats*MAX(0,$C{r}-SaldoBygg-SaldoTek-TomtPct*$C{r})+JustKjopesum+DDSPA+WC+Megler+KjopsHonPct*$C{r}+(EtabKost-1)*LTV*$C{r}-SKBelop)" if k == 0 else
                f"=IF({k}<=ExitLang,INDEX(CF!$E${A['cfe']}:$O${A['cfe']},{k})+(-AMpct*($C{r}-Kjopspris)+INDEX(Financing!$E$14:$O$14,{k})*({sc}-1))*{tf(k)}"
                f"+INDEX(Financing!$E$12:$O$12,{k})*({sc}-1)+IF({k}=ExitLang,$AF{r},0),0)")
         put(sm, f"AB{r}", f"=INDEX(CF!$E${A['rrnoi']}:$O${A['rrnoi']},ExitLang+1)/D{r}", "calc", F_NOK)
@@ -194,7 +194,7 @@ if REFP:
                     debt = "=-INDEX(Financing!$E$27:$O$27,ExitLang)"
                 else:
                     s = f"IF(LTV=0,0,$C{r}/LTV)"
-                    t0 = f"=-(Kjopspris-SkatteulempeInn+DDSPA+WC+Megler+(EtabKost-1)*$C{r}*Kjopspris-SKBelop)"
+                    t0 = f"=-(Kjopesum+DDSPA+WC+Megler+KjopsHon+(EtabKost-1)*$C{r}*Kjopspris-SKBelop)"
                     yr = lambda k, s=s: (f"=IF({k}<=ExitLang,INDEX(CF!$E${A['cfe']}:$O${A['cfe']},{k})+INDEX(Financing!$E$14:$O$14,{k})*({s}-1)*{tf(k)}"
                                          f"+INDEX(Financing!$E$12:$O$12,{k})*({s}-1)+IF({k}=ExitLang,$AF{r},0),0)")
                     debt = f"=-(INDEX(Financing!$E$13:$O$13,ExitLang)*{s}+INDEX(Financing!$E$20:$O$20,ExitLang))"
@@ -264,6 +264,8 @@ checks = [
     ("Sensitivitet grid 1 base = Returns (A · lang)", f"={G[1][(2,2)]}-Returns!E28", 0.00001, "Sens-motor gir samme IRR som Returns"),
     ("Sensitivitet grid 2 base = Returns (A · lang)", f"={G[2][(2,2)]}-Returns!E28", 0.00001, ""),
     ("Sensitivitet grid 3 base = Returns (B · lang)", f"={G[3][(2,2)]}-Returns!H28", 0.00001, ""),
+    ("Avkastningsbro = total utbetalt til EK (A · lang)", "=Returns!C78", 1, "Broen forklarer hele gevinsten"),
+    ("Kjøpesum: eiendomsverdi + tillegg/fradrag = total investering", "=Kjopspris+(TotInv-Kjopspris)-(Kjopesum+DDSPA+WC+Megler+KjopsHon+EtabKost*LaanT0)", 1, "Seksjon 2b"),
 ] + ([("Sensitivitet grid 5 base = Returns (A · lang)", f"={G[5][(2,2)]}-Returns!E28", 0.00001, ""),
       ("Sensitivitet grid 6 base = Returns (A · lang)", f"={G[6][(2,2)]}-Returns!E28", 0.00001, ""),
       ("All gjeld innfridd ved exit (A · lang)", "=Returns!E21+GjeldExit", 1, "Restgjeld trukket fra exit-proveny"),

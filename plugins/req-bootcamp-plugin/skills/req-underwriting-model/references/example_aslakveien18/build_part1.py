@@ -58,7 +58,42 @@ sec("2 · Kjøp og transaksjonskostnader")
 inrow(r, "Kjøpspris (eiendomsverdi / GAV)", 130_000_000, "NOK", "Iht. deck", "Oppdatert bud-nivå, pipeline deck 17.09.2026. Driver egenkapital og AM-kostnad.", "Kjopspris", F_NOK); r += 1
 inrow(r, "DD / SPA-kostnader", 0, "NOK", "Foreløpig", "Venter på tall", "DDSPA", F_NOK); r += 1
 inrow(r, "Working capital", 0, "NOK", "Foreløpig", "Venter på tall", "WC", F_NOK); r += 1
-inrow(r, "Megler / øvrige kjøpskostnader", 0, "NOK", "Foreløpig", "Venter på tall", "Megler", F_NOK); r += 2
+inrow(r, "Megler / øvrige kjøpskostnader", 0, "NOK", "Foreløpig", "Venter på tall", "Megler", F_NOK); r += 1
+inrow(r, "Øvrige tillegg / (fradrag) i kjøpesum", 0, "NOK", "Antakelse", "F.eks. leierabatter, avtalte prisavslag, netto arbeidskapital i SPV. Negativt = fradrag.", "JustKjopesum", F_NOK); r += 1
+if REFP:
+    inrow(r, "Kjøpshonorar REQ (iht. mandat), % av eiendomsverdi", 0.0, "%", "Fondsprofil", "Kun REQ Evergreen Income Fund – ikke i RREF", "KjopsHonPct", F_PCT2); r += 2
+else:
+    inrow(r, "Kjøpshonorar REQ (iht. mandat), % av eiendomsverdi", 0.01, "%", "Iht. mandat", "Kjøpshonorar til REQ per investering iht. forvaltningsmandatet. Belastes fondet ved kjøp og inngår i egenkapitalen. Eks. mva.", "KjopsHonPct", F_PCT2); r += 2
+
+section(ov, r, "B", "F", "2b · Kjøpesum og egenkapital (t0)"); r += 1
+header_row(ov, r, "B", "F", ["Post", "NOK", "", "", "Kommentar"]); r += 1
+k0 = r
+for lab, f, note, nm_, bold in [
+        ("Eiendomsverdi (GAV)", "=Kjopspris", "Avtalt eiendomsverdi", None, False),
+        ("− Skatteulempe (latent skatt)", "=-SkatteulempeInn", "Se Tax accounts", None, False),
+        ("± Øvrige tillegg / (fradrag)", "=JustKjopesum", "Se seksjon 2", None, False),
+        ("Kjøpesum (aksjeoppgjør, før gjeld og kontanter)", f"=SUM(C{r}:C{r+2})", "Det selger mottar for eiendommen", "Kjopesum", True),
+        ("+ DD / SPA", "=DDSPA", "", None, False),
+        ("+ Megler / øvrige", "=Megler", "", None, False),
+        ("+ Working capital", "=WC", "", None, False),
+        ("+ Kjøpshonorar REQ (iht. mandat)", "=KjopsHonPct*Kjopspris", "Kun REIF", "KjopsHon", False),
+        ("+ Etableringskost lån", "=EtabKost*LaanT0", "", None, False)]:
+    put(ov, f"B{r}", lab, "label", bold=bold); put(ov, f"C{r}", f, "calc", F_NOK, bold=bold); put(ov, f"F{r}", note, "note")
+    if nm_: name(wb, nm_, "Overview", f"C{r}")
+    if bold: total_row(ov, r, "B", "F")
+    r += 1
+put(ov, f"B{r}", "Total investering (sum anvendelse)", "label", bold=True); put(ov, f"C{r}", f"=C{k0+3}+SUM(C{k0+4}:C{r-1})", "calc", F_NOK, bold=True)
+put(ov, f"F{r}", "Kjøpesum + transaksjonskostnader", "note")
+total_row(ov, r, "B", "F"); R["ov_uses"] = r; name(wb, "TotInv", "Overview", f"C{r}"); r += 1
+put(ov, f"B{r}", "Netto tillegg / (fradrag) vs. eiendomsverdi", "label", italic=True); put(ov, f"C{r}", "=TotInv-Kjopspris", "calc", F_NOK)
+put(ov, f"F{r}", "Alle tillegg og fradrag fra eiendomsverdi til total investering", "note"); r += 1
+put(ov, f"B{r}", "Banklån", "label"); put(ov, f"C{r}", "=LTV*Kjopspris", "calc", F_NOK); name(wb, "LaanT0", "Overview", f"C{r}"); r += 1
+put(ov, f"B{r}", "Selgerkreditt", "label"); put(ov, f"C{r}", "=SKBelop", "calc", F_NOK); r += 1
+put(ov, f"B{r}", "Egenkapital", "label", bold=True); put(ov, f"C{r}", "=TotInv-LaanT0-SKBelop", "calc", F_NOK, bold=True); name(wb, "Egenkapital", "Overview", f"C{r}")
+total_row(ov, r, "B", "F", PALEGRN); r += 1
+put(ov, f"B{r}", "Sum kilder", "label", bold=True); put(ov, f"C{r}", "=LaanT0+SKBelop+Egenkapital", "calc", F_NOK, bold=True)
+total_row(ov, r, "B", "F"); R["ov_src"] = r
+line_rows(ov, k0, r - 1, "B", "F"); r += 2
 
 sec("3 · Skatt")
 inrow(r, "Skatteulempe-sats", 0.10, "%", "REQ-standard", "Skatteulempe = sats × (GAV − (saldo + tomteverdi)) ved kjøp og exit", "SUsats", F_PCT); r += 1
@@ -84,11 +119,19 @@ inrow(r, "Ledig areal i dag", 0, "kvm", "Iht. rent roll", "Ingen fysisk ledighet
 
 sec("5 · Driftskostnader, forvaltning og capex")
 inrow(r, "Eierkost, % av leie", 0.05, "%", "REQ-standard", "Eiendomsskatt kommer i tillegg", "Eierkost", F_PCT); r += 1
+R["ov_eierkvm"] = r
+inrow(r, "Eierkost år 1, NOK/kvm (info)", "=0", "NOK/kvm", "Beregnet", "Eierkost år 1 / totalt areal BTA – kontroll mot markedsnivå", "EierkostKvm", F_NOK); r += 1
 inrow(r, "Eiendomsskatt 2026", 102_854, "NOK", "Iht. rent roll", "Indekseres med KPI", "EiendSkatt", F_NOK); r += 1
-inrow(r, "AM-kostnad, % av kjøpspris p.a.", 0.005, "%", "Foreløpig", "Videreført fra Claude Monets Allé 21 – bekreft", "AMpct", F_PCT2); r += 1
+if REFP:
+    inrow(r, "AM-kostnad, % av kjøpspris p.a.", 0.0, "%", "Fondsprofil", "Ikke i RREF – forvaltningshonorar tas på fondsnivå (SHA 14.3)", "AMpct", F_PCT2); r += 1
+else:
+    inrow(r, "AM-kostnad, % av kjøpspris p.a.", 0.005, "%", "Foreløpig", "Videreført fra Claude Monets Allé 21 – bekreft", "AMpct", F_PCT2); r += 1
 inrow(r, "Teknisk forvaltning p.a. (2026-kr)", 80_000, "NOK", "Foreløpig", "Videreført fra Claude Monets Allé 21 – bekreft", "TFkr", F_NOK); r += 1
 inrow(r, "Forretningsførsel, % av leie", 0.005, "%", "Foreløpig", "Videreført fra Claude Monets Allé 21 – bekreft", "FFpct", F_PCT2); r += 1
-inrow(r, "Capex-lekkasje, % av leie", 0.05, "%", "Iht. deck", "Avsatt utover ordinær reserve (eierkost). Påvirker kontantstrøm, ikke verdivurdering.", "CapexLek", F_PCT); r += 2
+if REFP:
+    inrow(r, "Capex-lekkasje, % av leie", 0.0, "%", "Fondsprofil", "Ikke i RREF – capex modelleres eksplisitt (re-letting, rehab)", "CapexLek", F_PCT); r += 2
+else:
+    inrow(r, "Capex-lekkasje, % av leie", 0.05, "%", "Iht. deck", "Avsatt utover ordinær reserve (eierkost). Påvirker kontantstrøm, ikke verdivurdering.", "CapexLek", F_PCT); r += 2
 
 sec("6 · Exit")
 inrow(r, "Holdeperiode – kort", 3, "år", "Standard", "", "ExitKort", F_INT); r += 1
@@ -145,21 +188,6 @@ if REFP:
     inrow(r, "Catch-up – andel til founder", 0.50, "%", "Iht. SHA", "Pkt 10.2 (c)", "CatchUp", F_PCT); r += 1
     inrow(r, "Carried interest", 0.20, "%", "Iht. SHA", "Pkt 10.2 (d)", "Carry", F_PCT); r += 1
     inrow(r, "Forvaltningshonorar p.a., % av investert EK", 0.016, "%", "Iht. SHA", "Pkt 14.3 – Employed Capital", "MgmtFee", F_PCT2); r += 2
-section(ov, r, "B", "F", "10 · Kilder og anvendelse (t0)"); r += 1
-header_row(ov, r, "B", "F", ["Post", "NOK", "", "", "Kommentar"]); r += 1
-su0 = r
-for lab, f, note in [("Kjøpspris (GAV)", "=Kjopspris", ""),
-                     ("− Skatteulempe (latent skatt, trekkes fra pris)", "=-SkatteulempeInn", "Se Tax accounts"),
-                     ("+ DD / SPA", "=DDSPA", ""), ("+ Working capital", "=WC", ""), ("+ Megler / øvrige", "=Megler", ""),
-                     ("+ Etableringskost lån", "=EtabKost*LaanT0", "")]:
-    put(ov, f"B{r}", lab, "label"); put(ov, f"C{r}", f, "calc", F_NOK); put(ov, f"F{r}", note, "note"); r += 1
-put(ov, f"B{r}", "Sum anvendelse", "label", bold=True); put(ov, f"C{r}", f"=SUM(C{su0}:C{r-1})", "calc", F_NOK, bold=True)
-total_row(ov, r, "B", "F"); R["ov_uses"] = r; r += 1
-put(ov, f"B{r}", "Banklån", "label"); put(ov, f"C{r}", "=LTV*Kjopspris", "calc", F_NOK); name(wb, "LaanT0", "Overview", f"C{r}"); r += 1
-put(ov, f"B{r}", "Selgerkreditt", "label"); put(ov, f"C{r}", "=SKBelop", "calc", F_NOK); r += 1
-put(ov, f"B{r}", "Egenkapital", "label"); put(ov, f"C{r}", f"=C{R['ov_uses']}-LaanT0-SKBelop", "calc", F_NOK); name(wb, "Egenkapital", "Overview", f"C{r}"); r += 1
-put(ov, f"B{r}", "Sum kilder", "label", bold=True); put(ov, f"C{r}", "=LaanT0+SKBelop+Egenkapital", "calc", F_NOK, bold=True)
-total_row(ov, r, "B", "F"); R["ov_src"] = r; r += 2
 R["ov_checks"] = r  # checks written in part 2
 ov.freeze_panes = "B5"
 
