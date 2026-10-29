@@ -1,59 +1,112 @@
 ---
 name: req-presentation
-description: Use when the attendee wants a presentation in REQ's own look — asks to «lag en presentasjon / REQ-presentasjon», a resultat-/PnL-presentasjon, slides or et lysbilde-dekk om et tema i REQ-stil, or to turn notes or numbers into an REQ-branded PowerPoint.
+description: "Use for EVERY slide deck or PowerPoint made at or for REQ – IC memos and case intros, seminar- og foredragspresentasjoner, resultat-/kvartals-/PnL-presentasjoner, investor- og fondspresentasjoner, styremøter, interne oppdateringer og strategi – in Norwegian or English. Triggers: «lag en presentasjon», «lag slides», «sett dette opp som slides», «REQ-mal», «REQ ny ppt mal», «IC-memo», «case-intro», «presentasjon til seminaret», «oppdater presentasjonen med tall fra modellen». Builds an editable .pptx on REQ's official template (TT Hoves Pro, 41 layouts) in REQ's PREP design system: action titles, kicker, cards, big numbers, navy take-away banners and native, editable charts. Whenever the deck is for REQ, use this skill instead of a generic deck or a hand-styled «REQ look». Pair with the general pptx skill for the OOXML mechanics."
 ---
 
-# Lag en REQ-presentasjon
+# REQ-presentasjoner (PREP-designet)
 
-Produce an **editable PowerPoint** (`.pptx`) in REQ's own visual identity — including **REQ-branded charts** for results and P&L — and hand it to the attendee. The bundled `req_deck.py` carries the brand (navy `#001D6C` accent, Calibri, white slides, petrol section dividers, the REQ logo) and `req_charts.py` renders on-brand line / bar / waterfall / donut charts, so you only decide the *content and the numbers*.
+Alle REQ-presentasjoner skal se like ut, uansett om det er et IC-memo, et foredrag på et
+seminar eller en kvartalsrapport. Denne skillen er den eneste kilden til det utseendet:
+REQs offisielle mal (`assets/REQ_Template.pptx`) med **PREP-designsystemet** oppå.
+Innhold og antall sider varierer; utseendet gjør det ikke.
 
-## How
+**Last alltid den generelle `pptx`-skillen i tillegg** for mekanikken (`add_slide.py`,
+`clean.py`, `validate.py`, rendering). Sider bygges som rå XML med `scripts/prep_kit.py`;
+grafer og bilder legges inn etterpå med python-pptx (`scripts/charts_kit.py`). Sett aldri
+`.text` på malens plassholdere med python-pptx – det flater ut formateringen.
 
-1. **Ensure the tools.** Run `python3 -c "import pptx, matplotlib"`; if it fails, `python3 -m pip install python-pptx matplotlib` (quietly). `matplotlib` is only needed when the deck has charts.
-2. **Get the topic and any data.** Use what the attendee gave you. If they point at numbers (a P&L, returns, a file), read them and use the **real figures**. If the ask is thin, ask one short question for subject and audience, then proceed — do not stall.
-3. **Draft the content**, then build the deck with the helper. Import from the skill directory:
+## Hvilken oppskrift?
 
-   ```python
-   import sys
-   sys.path.insert(0, "<this skill's directory>")   # holds req_deck.py + req-logo-navy.png
-   from req_deck import ReqDeck
+| Oppdrag | Les |
+|---|---|
+| IC-memo, case-intro, investeringscase, tall fra underwriting-modellen | `references/ic-memo.md` |
+| Seminar/foredrag, resultat/PnL, investor/fond, styre/intern/strategi | `references/recipes.md` |
+| Alltid | `references/design.md` – grid, palett, byggeklosser, skrivestil |
 
-   deck = ReqDeck("Presentasjonstittel", "Undertittel · 18. august 2026")
-   deck.section("Bakgrunn")
-   deck.content("Innholdsoverskrift", [
-       "Ett poeng per kule, med tallene inne i setningen.",
-       "Nøktern og redaksjonell — skuffelser nevnes åpent.",
-   ], footer="REQ · tema")
-   deck.figure("La konklusjonen være overskriften", image="/sti/til/figur.png",
-               source="Kilde: … Tall per [dato].")   # or placeholder="[figur her]"
-   deck.closing()
-   deck.save("presentasjonstittel.pptx")
-   ```
+## Arbeidsflyt
 
-   Slide methods: `section(title)`, `content(heading, bullets, footer="")`, `figure(heading, placeholder=…, image=…, source=…)`, `closing()`. The title slide is created for you.
+**1. Forstå oppdraget.** Hvem er publikum, hva skal de sitte igjen med, hvor lang tid, hvilke
+tall og kilder? Les alt brukeren har gitt deg og bruk de **ekte tallene**. Er oppdraget
+tynt, still ett kort spørsmål (tema og publikum) og gå videre.
 
-   **Charts (for results, P&L, allocation).** Add on-brand charts with one call each — colours are fixed by the brand, you pass only data:
+**2. Finnes det et deck fra før?** Bygg *på brukerens versjon* – behold forside og avslutning
+de har laget, bytt bare innholdssidene – og skriv tilbake til samme sti. Fjern talenotater
+som fulgte med fra et annet deck.
 
-   ```python
-   deck.kpi("Hovedtall", [("+4,2 %", "Avkastning i kvartalet"), ("1,24 mrd", "Forvaltet kapital")])
-   deck.chart_line("Avkastning slår referanseindeksen", ["Q1","Q2","Q3"],
-                   {"REQ Global Compounders": [0,4,8], "MSCI World": [0,2,4]})
-   deck.chart_bars("Kvartalsvis avkastning", ["Q1","Q2","Q3"], [3.1, -1.5, 4.2])   # negatives auto-red
-   deck.chart_waterfall("Utvikling i forvaltet kapital (mNOK)", ["Tegning","Avkastning","Innløsning"],
-                        [180, 96, -55], start=1020)
-   deck.chart_donut("Sektorallokering", ["Teknologi","Helse","Industri"], [34, 22, 18], center="18\nselskaper")
-   ```
+**3. Lag en storyboard før du rører filer.** Én linje per side: layout, tittel (en påstand,
+ikke et tema), byggeklosser. Bestem om decket skal ha navigasjonspiller (`tabs_items`):
+ja for IC-memoer og decks med ≥ 8 sider og 5–9 seksjoner; ellers nei.
 
-   **Read `reference/charts.md` to pick the right chart for the data** (which form for which job, and the full signatures). `examples/build_example.py` builds a complete results/P&L deck end-to-end; `examples/preview.png` shows how it looks.
-4. **Run the script**, then open the file (`open` on macOS, `start` on Windows, `xdg-open` on Linux).
-5. Tell the attendee in **Norwegian (bokmål)** what you built and where the file is — one or two sentences.
+**4. Bygg strukturen.** Kopier `assets/REQ_Template.pptx`, pakk ut, og lag alle sidene med
+`add_slide.py` fra riktig layout:
 
-For a results or P&L presentation, a good default shape is: title → section → `kpi` headline → `chart_line` (vs benchmark) → `chart_bars` (by period) → `chart_waterfall` (the bridge) → `chart_donut` (allocation) → a short `content` read-through → `closing`.
+| Side | Layout |
+|---|---|
+| Forside | `slideLayout1–3.xml` (hvit / lys / navy) – eller `4–6` med bilde i nedre halvdel |
+| Innhold | `slideLayout9.xml` |
+| Seksjonsskiller | `slideLayout2.xml` |
+| Avslutning | `slideLayout39–41.xml` (hvit / lys / navy) |
 
-## REQ house style (the helper enforces the look; you keep the substance on-brand)
+Fjern malens egen eksempelside fra `<p:sldIdLst>` og kjør `clean.py`.
 
-- One strong accent — REQ navy `#001D6C`. Supporting tones only: petrol `#005070`, teal `#82C0C7`. White background. **Never** gradients, purple, emoji, or stock icons.
-- Editorial and calm: one point per bullet, numbers *inside* sentences, the conclusion as the slide heading. Confident first-person plural; name disappointments openly.
-- Aim for a tight deck (title → a few content/figure slides → closing), not a wall of bullets. Real numbers over illustration.
+**5. Skriv hver side med `prep_kit`:**
 
-A blank starting template in the same style — `REQ-presentasjon-mal.pptx` — lives in the course's `req-design-pack/templates/` if the attendee would rather fill one in by hand.
+```python
+import sys; sys.path.insert(0, "<denne skillen>/scripts")
+from prep_kit import *
+
+s = Slide()
+cover(s, "Eiendom i en ny rentevirkelighet", "Seminar i Næringseiendom Norge", kicker="REQ · 12. november 2026")
+s.write("u/ppt/slides/slide2.xml")
+
+s = Slide()
+header(s, "Yield-gapet er tilbake – første gang siden 2021", "Markedet",
+       "Netto prime yield kontor Oslo mot 10-årig statsrente.", cite="Kilde: Norges Bank, REQ.")
+big_number(s, 0.458, 1.95, "+1,2 pp", "Yield-gap kontor Oslo", "Prime yield 4,9 % mot 3,7 % rente")
+bullets(s, 6.76, 2.0, 6.1, 3.6, [("Rentene: ", "ned 75 bp siden toppen."), ("Volum: ", "opp 40 % hittil i år.")])
+banner(s, 0.458, 6.05, 12.425, 0.48, "Konklusjon: ", "kjøpsvinduet er åpent for egenkapitalsterke aktører.")
+s.write("u/ppt/slides/slide3.xml")
+```
+
+Plassholder-taggene i `prep_kit` (`PH_TITLE`, `PH_LEDE`, `PH_FOOT`, `PH_NUM`, `PH_SUB13`)
+passer layoutene over. For andre layouter: kopier taggene fra
+`python scripts/dump_layouts.py --layout "<navn>"` – feil `type` bryter posisjonsarven
+uten at `validate.py` merker det.
+
+**6. Zip, og legg til grafer og bilder** med python-pptx: `charts_kit` (`columns`, `line`,
+`hbar`, `waterfall`, `donut`). Bilde på forsiden: `slide.placeholders[21].insert_picture(sti)`
+på layout 4–6. Andre bilder: `slide.shapes.add_picture` innenfor innholdsflaten
+(y 1,95–6,0). Bruk bare ekte bilder brukeren har gitt deg – aldri stockbilder; uten bilde
+velger du en forside uten bilde.
+
+**7. QA – render hver side og se på den.** `validate.py --original assets/REQ_Template.pptx`,
+konverter til PDF/PNG og sjekk:
+- Titler ≤ ~64 tegn (28 pt); en andre linje kolliderer med kickeren.
+- Ingressen er én linje; ingenting under y 6,0 unntatt banneret; banneret ≤ 2 linjer.
+- Største tall/etikett i et kort får plass; tekst renner ikke ut av bokser.
+- Samme tall har samme verdi på alle sider; kilde i fotnoten på hver side med tall.
+- Grafene har ingen autotittel, etikettene er lesbare, negative søyler synes.
+
+**8. Lever.** Fortell kort på norsk hva du har laget og hvor filen ligger, og nevn tall som
+fortsatt er foreløpige.
+
+## Regler som ikke brytes
+
+- Bare malens master og paletten i `references/design.md` – aldri egne farger, fonter,
+  gradienter, emoji eller ikoner. Trenger du noe nytt, bygg det av `box()`/`card()` i paletten.
+- Aldri rediger `assets/REQ_Template.pptx`; jobb alltid på en kopi.
+- Norske tall: mellomrom som tusenskille, komma som desimal, «%» med mellomrom, «−» for minus
+  (`nb()`, `pct()`, `mnok()` i `prep_kit`).
+- Den gamle IC-stilen (`references/old-ic-style.md`) brukes bare når brukeren ber om den
+  eller oppdaterer et gammelt deck.
+
+## Filer
+
+- `references/design.md` – grid, palett, byggeklosser, grafer, skrivestil
+- `references/recipes.md` – sideoppskrifter for foredrag, resultat, investor og intern
+- `references/ic-memo.md` – IC-memo og case-intro: arbeidsflyt, tall fra modellen, 14 sider
+- `references/layouts.md` – alle 41 layouter med idx og bruk
+- `references/old-ic-style.md` – den eldre IC-stilen
+- `scripts/prep_kit.py` – sidebyggere; `scripts/charts_kit.py` – native grafer;
+  `scripts/dump_layouts.py` – plassholdere og posisjoner rett fra malen
+- `assets/REQ_Template.pptx` – malen; `assets/layout-catalog.jpg` – én side per layout

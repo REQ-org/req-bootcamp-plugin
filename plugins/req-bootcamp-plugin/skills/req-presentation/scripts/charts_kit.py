@@ -14,7 +14,8 @@ Leave an empty area on the slide (and a label() above it) where the chart goes.
 Number formats use '.' in code; PowerPoint renders them with the viewer's locale (comma in nb-NO).
 """
 from pptx.chart.data import CategoryChartData
-from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION, XL_TICK_LABEL_POSITION
+from pptx.enum.chart import XL_CHART_TYPE, XL_LEGEND_POSITION, XL_LABEL_POSITION, XL_TICK_LABEL_POSITION, XL_MARKER_STYLE
+from pptx.oxml.ns import qn
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 
@@ -61,6 +62,7 @@ def columns(slide, pos, cats, series, colors=(NAVY, LBLUE, BRIGHT), fmt="0.0;-0.
     cd = CategoryChartData(); cd.categories = cats
     for n, v in series: cd.add_series(n, v)
     ch = _add(slide, XL_CHART_TYPE.COLUMN_CLUSTERED, pos, cd); _style(ch)
+    legend = legend and len(series) > 1   # one series: a legend would just list the categories
     ch.has_legend = legend
     if legend:
         ch.legend.position = XL_LEGEND_POSITION.TOP; ch.legend.include_in_layout = False; ch.legend.font.size = Pt(9)
@@ -111,4 +113,52 @@ def waterfall(slide, pos, steps, axis_max=None, axis_min=0, unit="%", dec=1):
     ch.value_axis.minimum_scale = axis_min
     ch.value_axis.number_format = f'0"{unit}"' if unit else "0"; ch.value_axis.number_format_is_linked = False
     ch.category_axis.tick_labels.font.size = Pt(8)
+    return ch
+
+
+def line(slide, pos, cats, series, colors=(NAVY, BRIGHT, LBL, LBLUE), dec=1, axis_fmt="0", legend=True, label_last=True):
+    """Lines over time, e.g. avkastning vs. referanseindeks. series = [(name, [values...]), ...].
+    First series NAVY (our number), then BRIGHT, LBL, LBLUE. label_last writes the end value."""
+    cd = CategoryChartData(); cd.categories = cats
+    for n, v in series: cd.add_series(n, v)
+    ch = _add(slide, XL_CHART_TYPE.LINE, pos, cd); _style(ch)
+    ch.has_legend = legend
+    if legend:
+        ch.legend.position = XL_LEGEND_POSITION.TOP; ch.legend.include_in_layout = False; ch.legend.font.size = Pt(9)
+    for ser, (_, vals), c in zip(ch.plots[0].series, series, colors):
+        ser.smooth = False; ser.marker.style = XL_MARKER_STYLE.NONE
+        ser.format.line.color.rgb = rgb(c); ser.format.line.width = Pt(2.25)
+        if label_last:
+            dl = ser.points[len(vals) - 1].data_label
+            dl.has_text_frame = True
+            dl.text_frame.text = f"{vals[-1]:.{dec}f}".replace(".", ",").replace("-", "−")
+            dl.position = XL_LABEL_POSITION.RIGHT
+            f = dl.text_frame.paragraphs[0].runs[0].font
+            f.size = Pt(9); f.bold = True; f.color.rgb = rgb(c)
+    ch.value_axis.number_format = axis_fmt; ch.value_axis.number_format_is_linked = False
+    ch.category_axis.tick_label_position = XL_TICK_LABEL_POSITION.LOW
+    return ch
+
+
+def donut(slide, pos, cats, vals, colors=(NAVY, MID, BRIGHT, LBLUE, LBL, "D8E2EE"), hole=60, dec=0):
+    """Allocation as a doughnut; slices labelled with their share in %. Max ~6 slices –
+    group the rest as «Øvrige». Legend to the right."""
+    cd = CategoryChartData(); cd.categories = cats; cd.add_series("Andel", vals)
+    ch = _add(slide, XL_CHART_TYPE.DOUGHNUT, pos, cd)
+    ch.has_title = False
+    ch.font.name = "TT Hoves Pro"; ch.font.size = Pt(9); ch.font.color.rgb = rgb("1F1E1E")
+    ch.has_legend = True; ch.legend.position = XL_LEGEND_POSITION.RIGHT
+    ch.legend.include_in_layout = False; ch.legend.font.size = Pt(9)
+    hs = ch.plots[0]._element.find(qn("c:holeSize"))
+    if hs is not None: hs.set("val", str(hole))
+    total = float(sum(vals))
+    for i, v in enumerate(vals):
+        c = colors[i % len(colors)]
+        pt = ch.plots[0].series[0].points[i]
+        pt.format.fill.solid(); pt.format.fill.fore_color.rgb = rgb(c)
+        pt.format.line.color.rgb = rgb("FFFFFF")
+        pt.data_label.has_text_frame = True
+        pt.data_label.text_frame.text = f"{v / total * 100:.{dec}f} %".replace(".", ",")
+        f = pt.data_label.text_frame.paragraphs[0].runs[0].font
+        f.size = Pt(9); f.bold = True; f.color.rgb = rgb("FFFFFF" if c in (NAVY, MID, LBL) else NAVY)
     return ch

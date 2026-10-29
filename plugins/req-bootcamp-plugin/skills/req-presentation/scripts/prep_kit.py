@@ -1,6 +1,6 @@
-"""REQ «PREP-stil» slide kit – raw OOXML builders for the REQ IC memo template.
+"""REQ «PREP-stil» slide kit – raw OOXML builders for REQ's official template.
 
-Reverse-engineered from REQ PREP (okt. 2026) and used for the Puru Infra IC intro.
+Reverse-engineered from REQ PREP (okt. 2026); REQ's standard look for every deck.
 Every helper writes shapes straight into a slide's <p:spTree>, so the template's own
 master, fonts (TT Hoves Pro) and layout furniture (REQ mark, footer) stay intact.
 
@@ -10,7 +10,7 @@ Typical use (after add_slide.py has created an EMPTY slide from slideLayout9.xml
     from prep_kit import *
     s = Slide()
     header(s, "Action-tittel ≤ 64 tegn", "Seksjon · underseksjon",
-           "Én setning ingress i kursiv.", tabs=TABS, active="Sammendrag",
+           "Én setning ingress i kursiv.", tabs_items=TABS, active="Sammendrag",
            cite="Kilde: ...")
     big_number(s, 0.458, 1.95, "12,9 %", "IRR på A-aksjene, 5 år", "REQ base · 1,80x MoE")
     banner(s, 0.458, 6.05, 12.425, 0.48, "Konklusjon: ", "resten av setningen.")
@@ -172,12 +172,13 @@ def step(s, x, y, n, head, desc, w=4.9, line_h=None, fill=NAVY):
     box(s, x + 0.5, y + 0.25, w, 0.6, [P(desc, sz=9.5)], name="Step desc")
 
 def chevrons(s, x, y, items, w=2.12, h=0.85, pitch=2.0):
-    """Process arrow: items = [(head, sub), ...]; colours NAVY → MID → BRIGHT."""
+    """Process arrow: items = [(head, sub), ...]; colours NAVY → MID → BRIGHT → LBLUE."""
     cols = [NAVY, MID, BRIGHT, LBLUE]
     for k, (hd, sub) in enumerate(items):
         col = cols[min(k, 3)]
         light = col in (BRIGHT, LBLUE)
-        box(s, x + k * pitch, y, w, h, [P(hd, sz=12.5, b=True, c="FFFFFF"), P(sub, sz=9.5, c="FFFFFF" if light else LBLUE)],
+        hc = NAVY if col == LBLUE else "FFFFFF"   # white text is unreadable on LBLUE
+        box(s, x + k * pitch, y, w, h, [P(hd, sz=12.5, b=True, c=hc), P(sub, sz=9.5, c=hc if light else LBLUE)],
             fill=col, geom="homePlate" if k == 0 else "chevron", adj=30000, anchor="ctr", ins=(0.15, 0.05, 0.25, 0.05), name="Chev")
 
 def chip(s, x, y, text, color, w=0.85):
@@ -240,11 +241,33 @@ def heat_table(s, x, y, col_labels, row_labels, values, hurdle=0.125, base_rc=(2
         rows.append(row)
     table(s, x, y, list(colw), rows, rh=rh, sz=9.5, fills=fills, txtc=txtc, aligns=["l"] + ["ctr"] * (len(colw) - 1), bold_rows=(base_rc[0] + 1,))
 
+def bullets(s, x, y, w, h, items, sz=11, after=6):
+    """Bullet list (max ~5 per box). items = str or (bold lead, rest) tuples."""
+    paras = [P([(it[0], {"b": True}), (it[1], {})] if isinstance(it, tuple) else it, sz=sz, bullet=True, after=after)
+             for it in items]
+    box(s, x, y, w, h, paras, name="Bullets")
+
+def quote(s, x, y, w, h, text, who=None):
+    """Navy quote card: large white quote + attribution in LBLUE."""
+    paras = [P(f"«{text}»", sz=20, c="FFFFFF")]
+    if who: paras.append(P(who, sz=10, c=LBLUE, before=8))
+    box(s, x, y, w, h, paras, fill=NAVY, geom="roundRect", adj=5000, anchor="ctr", ins=(0.35, 0.2, 0.35, 0.2), name="Quote")
+
+def cover(s, title, sub=None, kicker=None, dark=False):
+    """Cover on slideLayout1–6: 1 white, 2 pale, 3 navy; 4–6 the same with a photo placeholder
+    (idx 21, lower half) – fill it afterwards with python-pptx insert_picture. dark=True for 3 and 6.
+    Title and sub sit at the layout's own positions, right of the REQ logo lockup."""
+    c = "FFFFFF" if dark else TX2
+    if kicker: box(s, 6.77, 0.22, 6.12, 0.26, [P(kicker.upper(), sz=11, c=c)], name="Kicker")
+    ph(s, PH_TITLE, [P(title, sz=40, c=c)], name="Title")
+    if sub: ph(s, PH_SUB13, [P(sub, sz=14, c=c)], name="Sub")
+
 def divider(s, title, sub=None):
     """Section divider on slideLayout2.xml (pale blue with dot wave)."""
     ph(s, PH_TITLE, [P(title, sz=40, c=TX2)], name="Title")
     if sub: ph(s, PH_SUB13, [P(sub, sz=14, c=TX2)], xfrm=(6.77, 1.35, 6.12, 0.6), name="Sub")
 
-def closing(s):
-    """Closing on slideLayout39.xml (white)."""
-    ph(s, '<p:ph type="body" sz="quarter" idx="14" hasCustomPrompt="1"/>', [P("Investing with insight.", sz=30, c=TX2), P("Building what's next.", sz=30, c=TX2)], name="Tagline")
+def closing(s, dark=False):
+    """Closing on slideLayout39.xml (white), 40 (pale) or 41 (navy → dark=True)."""
+    c = "FFFFFF" if dark else TX2
+    ph(s, '<p:ph type="body" sz="quarter" idx="14" hasCustomPrompt="1"/>', [P("Investing with insight.", sz=30, c=c), P("Building what's next.", sz=30, c=c)], name="Tagline")

@@ -1,6 +1,6 @@
 # Layout catalog — REQ IC memo template
 
-The bundled `assets/REQ_IC_Memo_Template.pptx` ships 41 slide layouts on one master. This
+The bundled `assets/REQ_Template.pptx` ships 41 slide layouts on one master. This
 doc groups them by what they're for and tells you which one fits a given piece of content,
 grounded in how REQ's own analysts actually used them in a real, delivered IC memo
 (Revora AS, Fund II — the worked example this skill was built from).

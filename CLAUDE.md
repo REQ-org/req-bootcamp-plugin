@@ -48,7 +48,8 @@ updated after each session; the plugin/server always serve the latest.
   - `bootcamp-recap` — catch up on past sessions
   - `bootcamp-faq` — practical/logistical answers
   - `forklar` — `/forklar <tema>` — explain any concept in plain Norwegian
-  - `req-presentation` — generate an REQ-branded PowerPoint (`req_deck.py`, `req_charts.py`)
+  - `req-presentation` — the single skill for every REQ slide deck (IC memos, seminars, results, investor, board): REQ's official template + PREP design system (`prep_kit.py`, `charts_kit.py`). Don't add other slide skills — extend this one so all decks share one look.
+  - `req-underwriting-model` — REQ underwriting/investment models in Excel (maintained by Haakon)
   - `visualiser-bootcamp` — self-contained HTML visual of the 10-session course
   - `ssb` / `brreg` / `regnskap` / `kartverket` / `met` / `oslo-pbe` / `nb` — when to use each Garden pack (not course skills)
 
@@ -72,6 +73,6 @@ downloadable `public/req-bootcamp-plugin.zip`. See `README.md` for the attendee 
 - **Local test:** `npm test` — `test/smoke.mts` drives the course MCP; `test/garden-pointer.mts`
   asserts `.mcp.json` has `varden-garden` → Garden (not a second plugin, not `/api/norge/mcp`),
   that the seven pack skills exist, and that the live Garden lists SSB/Brreg/Kartverket/MET/regnskap/oslo-pbe/nb.
-- **Stack:** TypeScript ESM, `mcp-handler`, `zod`. Python (`python-pptx`, `matplotlib`)
-  only for the `req-presentation` skill.
+- **Stack:** TypeScript ESM, `mcp-handler`, `zod`. Python (`python-pptx`) only for the
+  `req-presentation` skill; `openpyxl` for `req-underwriting-model`.
 - After editing content, the smoke test and skills pick it up automatically — no build step.

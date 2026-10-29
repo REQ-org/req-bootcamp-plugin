@@ -1,5 +1,8 @@
 # Style guide — REQ IC memo conventions
 
+> **Eldre stil.** Standard for alle REQ-decks er PREP-designet i `design.md`. Bruk denne
+> filen bare når brukeren ber om den gamle IC-stilen eller oppdaterer et eldre deck.
+
 These are the visual conventions that make a deck look like it came from REQ, distilled
 from a real, delivered IC memo built on this template. The template's masters and layouts
 already carry most of this automatically (colors, fonts, footer position) — what's below

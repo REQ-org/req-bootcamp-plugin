@@ -21,7 +21,7 @@ from pathlib import Path
 
 from pptx import Presentation
 
-DEFAULT_TEMPLATE = Path(__file__).parent.parent / "assets" / "REQ_IC_Memo_Template.pptx"
+DEFAULT_TEMPLATE = Path(__file__).parent.parent / "assets" / "REQ_Template.pptx"
 
 PH_TAG_RE = re.compile(r"<p:ph\b[^>]*/>|<p:ph\b[^>]*>.*?</p:ph>", re.DOTALL)
 IDX_ATTR_RE = re.compile(r'idx="(\d+)"')
